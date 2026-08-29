@@ -80,6 +80,8 @@ deployment-specific files committed to the repository.
   `scripts/sync-unycloud-git.sh` when `UNYCLOUD_GIT_SYNC_ENABLED=1`.
 - `scripts/sync-unycloud-git.sh` must refuse commit/push unless a build was
   verified (`UNYCLOUD_GIT_REQUIRE_BUILD=1`, default). Prefer the watcher path.
+- With `UNYCLOUD_GIT_AUTO_BUMP=1` (default), sync bumps `UNYCLOUD_VERSION`
+  automatically from detected change kind before committing.
 - Keep `unycloud-git-sync.env` local; commit only
   `unycloud-git-sync.env.example`.
 - `v0.0.1` publishes binary archives; Docker/Compose examples build local images

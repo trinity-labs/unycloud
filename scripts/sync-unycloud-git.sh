@@ -12,6 +12,7 @@ UNYCLOUD_GIT_BRANCH=${UNYCLOUD_GIT_BRANCH:-master}
 UNYCLOUD_GIT_RELEASE_VERSION=${UNYCLOUD_GIT_RELEASE_VERSION:-}
 UNYCLOUD_GIT_RELEASE_PUSH_TAGS=${UNYCLOUD_GIT_RELEASE_PUSH_TAGS:-1}
 UNYCLOUD_GIT_RELEASE_KIND=${UNYCLOUD_GIT_RELEASE_KIND:-auto}
+UNYCLOUD_GIT_AUTO_BUMP=${UNYCLOUD_GIT_AUTO_BUMP:-1}
 UNYCLOUD_GIT_COMMIT_FILE_LIMIT=${UNYCLOUD_GIT_COMMIT_FILE_LIMIT:-80}
 UNYCLOUD_GIT_REQUIRE_BUILD=${UNYCLOUD_GIT_REQUIRE_BUILD:-1}
 UNYCLOUD_GIT_BUILD_VERIFIED=${UNYCLOUD_GIT_BUILD_VERIFIED:-0}
@@ -148,6 +149,10 @@ commit_and_push() {
     log "aucune modification a commit"
   else
     kind=$(detect_release_kind)
+    if [ -z "$UNYCLOUD_GIT_RELEASE_VERSION" ] && [ "$UNYCLOUD_GIT_AUTO_BUMP" = "1" ]; then
+      "$VERSION_SCRIPT" bump "$kind" >/dev/null
+      git -C "$ROOT_DIR" add UNYCLOUD_VERSION
+    fi
     version=$(release_version)
     subject="unycloud: ${kind} v${version} $(timestamp_utc)"
     git -C "$ROOT_DIR" commit -m "$subject" -m "$(commit_body)"
