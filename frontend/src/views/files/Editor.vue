@@ -366,7 +366,7 @@ const preview = () => {
 <style scoped>
 .editor-font-size {
   margin: 0 0.5em;
-  color: var(--fg);
+  color: white;
 }
 
 .editor-header {
