@@ -73,6 +73,13 @@ deployment-specific files committed to the repository.
 - Keep private deployment domains, sshfs paths, tokens, keys, and local service
   files out of the project history.
 - `dist/` remains ignored. Build artifacts are generated from the release tag.
+- Version source of truth is `UNYCLOUD_VERSION`; `scripts/build.sh` reads it
+  unless `UNYCLOUD_VERSION` is passed explicitly.
+- Auto-sync mirrors the docs policy:
+  `watch-unycloud.sh once|start|stop|status` builds, audits CSP, and calls
+  `scripts/sync-unycloud-git.sh` when `UNYCLOUD_GIT_SYNC_ENABLED=1`.
+- Keep `unycloud-git-sync.env` local; commit only
+  `unycloud-git-sync.env.example`.
 - `v0.0.1` publishes binary archives; Docker/Compose examples build local images
   from `dist/unycloud`.
 - Legacy installs can keep `/usr/local/bin/filebrowser` via

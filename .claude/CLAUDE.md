@@ -99,6 +99,13 @@ planned and documented.
 - Keep private deployment paths, domains, tokens, SSH material, and local
   server config out of the repository.
 - `dist/` is ignored; release artifacts are generated from the tagged commit.
+- Version source of truth is `UNYCLOUD_VERSION`; `scripts/build.sh` reads it
+  unless `UNYCLOUD_VERSION` is passed explicitly.
+- Auto-sync mirrors the docs watcher:
+  `watch-unycloud.sh once|start|stop|status` runs CSP audit, build, then
+  `scripts/sync-unycloud-git.sh` if `UNYCLOUD_GIT_SYNC_ENABLED=1`.
+- Keep `unycloud-git-sync.env` local; commit only
+  `unycloud-git-sync.env.example`.
 - `v0.0.1` publishes binary archives. Docker/Compose examples build local images
   from `dist/unycloud`.
 - Existing deployments can install `dist/unycloud` to

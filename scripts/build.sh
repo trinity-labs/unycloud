@@ -6,8 +6,17 @@ export GOTOOLCHAIN="${GOTOOLCHAIN:-go1.26.6}"
 
 repo_root="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 dist_dir="${UNYCLOUD_DIST_DIR:-$repo_root/dist}"
-version="${UNYCLOUD_VERSION:-$(git -C "$repo_root" describe --tags --abbrev=0 --match='v*' 2>/dev/null | sed 's/^v//')}"
+version_file="${UNYCLOUD_VERSION_FILE:-$repo_root/UNYCLOUD_VERSION}"
+version="${UNYCLOUD_VERSION:-}"
 commit="${UNYCLOUD_COMMIT:-$(git -C "$repo_root" log -n 1 --format=%h)}"
+
+if [ -z "$version" ]; then
+	if [ -f "$version_file" ]; then
+		version="$(sed -n '1s/^v//p' "$version_file")"
+	else
+		version="$(git -C "$repo_root" describe --tags --abbrev=0 --match='v*' 2>/dev/null | sed 's/^v//')"
+	fi
+fi
 
 if [ -z "$version" ]; then
 	version="0.0.1"
