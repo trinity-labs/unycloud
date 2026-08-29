@@ -2,6 +2,7 @@ import { useAuthStore } from "@/stores/auth";
 import { renew, logout } from "@/utils/auth";
 import { baseURL } from "@/utils/constants";
 import { encodePath } from "@/utils/url";
+import { responseErrorMessage } from "./error";
 
 export class StatusError extends Error {
   constructor(
@@ -50,11 +51,7 @@ export async function fetchURL(
   }
 
   if (res.status < 200 || res.status > 299) {
-    const body = await res.text();
-    const error = new StatusError(
-      body || `${res.status} ${res.statusText}`,
-      res.status
-    );
+    const error = new StatusError(await responseErrorMessage(res), res.status);
 
     if (auth && res.status == 401) {
       logout();
