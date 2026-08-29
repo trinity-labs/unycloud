@@ -56,6 +56,9 @@
 
     <link rel="stylesheet" href="[{[ .StaticURL ]}]/loading.css" />
     <script src="[{[ .StaticURL ]}]/runtime.js"></script>
+    [{[ if .CSS -]}]
+    <link rel="stylesheet" href="[{[ .StaticURL ]}]/custom.css" />
+    [{[ end ]}]
   </head>
   <body>
     <div id="app"></div>
@@ -69,9 +72,5 @@
     </div>
 
     <script type="module" src="/src/main.ts"></script>
-
-    [{[ if .CSS -]}]
-    <link rel="stylesheet" href="[{[ .StaticURL ]}]/custom.css" />
-    [{[ end ]}]
   </body>
 </html>

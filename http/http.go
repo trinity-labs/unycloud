@@ -44,6 +44,7 @@ func NewHandler(
 	}
 
 	r.HandleFunc("/health", healthHandler)
+	r.Handle("/static/custom.css", customStylesheetHandler(store, server))
 	r.PathPrefix("/static").Handler(static)
 	r.NotFoundHandler = index
 

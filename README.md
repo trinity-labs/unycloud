@@ -95,7 +95,7 @@ Known upstream issue classes remain important audit targets:
 Published upstream advisories remain relevant background:
 https://github.com/filebrowser/filebrowser/security/advisories
 
-## UnyCloud v0.5.3
+## UnyCloud v0.6.0
 
 The first UnyCloud release establishes the fork and applies the first
 maintenance hardening set:
@@ -150,7 +150,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.5.3`:
+Container builds are local in `v0.6.0`:
 
 ```sh
 scripts/build.sh

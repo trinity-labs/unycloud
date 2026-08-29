@@ -199,6 +199,32 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 	return index, static
 }
 
+func customStylesheetHandler(store *storage.Storage, server *settings.Server) http.Handler {
+	return handle(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
+		if r.Method != http.MethodGet {
+			return http.StatusNotFound, nil
+		}
+
+		if d.settings.Branding.Files == "" {
+			return http.StatusNotFound, nil
+		}
+
+		fPath := filepath.Join(d.settings.Branding.Files, "custom.css")
+		if _, err := os.Stat(fPath); err != nil {
+			if !os.IsNotExist(err) {
+				log.Printf("could not load custom stylesheet: %v", err)
+			}
+			return http.StatusNotFound, nil
+		}
+
+		w.Header().Set("Cache-Control", "no-store")
+		w.Header().Set("Content-Type", "text/css; charset=utf-8")
+		w.Header().Set("X-Content-Type-Options", "nosniff")
+		http.ServeFile(w, r, fPath)
+		return 0, nil
+	}, "", store, server)
+}
+
 func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 	name := d.settings.Branding.Name
 	if name == "" {
