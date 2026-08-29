@@ -12,7 +12,7 @@ commit="${UNYCLOUD_COMMIT:-$(git -C "$repo_root" log -n 1 --format=%h)}"
 
 if [ -z "$version" ]; then
 	if [ -f "$version_file" ]; then
-		version="$(sed -n '1s/^v//p' "$version_file")"
+		version="$(sed -n '1{s/^v//;p;}' "$version_file")"
 	else
 		version="$(git -C "$repo_root" describe --tags --abbrev=0 --match='v*' 2>/dev/null | sed 's/^v//')"
 	fi
