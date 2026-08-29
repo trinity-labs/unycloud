@@ -1,0 +1,13 @@
+#!/sbin/openrc-run
+
+name="UnyCloud autorestart"
+description="Restart Filebrowser when the UnyCloud binary is updated"
+
+command="/usr/local/sbin/unycloud-autorestart.sh"
+command_background="yes"
+pidfile="/run/unycloud-autorestart.pid"
+
+depend() {
+    need localmount
+    after filebrowser
+}
