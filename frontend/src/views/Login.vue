@@ -1,6 +1,11 @@
 <template>
   <div id="login" :class="{ recaptcha: recaptcha }">
-    <form autocomplete="on" @submit="submit">
+    <form
+      method="post"
+      :action="createMode ? '/api/signup' : '/api/login'"
+      autocomplete="on"
+      @submit="submit"
+    >
       <img :src="logoURL" alt="UnyCloud" />
       <h1>{{ name }}</h1>
       <p v-if="reason != null" class="logout-message">
@@ -8,6 +13,7 @@
       </p>
       <div v-if="error !== ''" class="wrong">{{ error }}</div>
 
+      <label class="sr-only" for="username">{{ t("login.username") }}</label>
       <input
         autofocus
         id="username"
@@ -15,21 +21,30 @@
         class="input input--block"
         type="text"
         autocomplete="username"
+        inputmode="text"
+        enterkeyhint="next"
+        :aria-label="t('login.username')"
         autocapitalize="off"
         autocorrect="off"
         spellcheck="false"
         v-model="username"
         :placeholder="t('login.username')"
       />
+      <label class="sr-only" for="password">{{ t("login.password") }}</label>
       <input
         id="password"
         name="password"
         class="input input--block"
         type="password"
         :autocomplete="createMode ? 'new-password' : 'current-password'"
+        enterkeyhint="done"
+        :aria-label="t('login.password')"
         v-model="password"
         :placeholder="t('login.password')"
       />
+      <label v-if="createMode" class="sr-only" for="password-confirm">
+        {{ t("login.passwordConfirm") }}
+      </label>
       <input
         id="password-confirm"
         name="passwordConfirm"
@@ -155,3 +170,17 @@ onMounted(() => {
   });
 });
 </script>
+
+<style scoped>
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+</style>
