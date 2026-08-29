@@ -101,11 +101,10 @@
           target="_blank"
           href="https://github.com/trinity-labs/unycloud/releases/latest"
         >
-          UnyCloud {{ version }}
+          <span>UnyCloud v{{ version }}</span>
           <small v-if="versionCheck.latest && versionCheck.updateRequired">
-            update required: {{ versionCheck.latest }}
+            - New v{{ versionCheck.latest }}
           </small>
-          <small v-else-if="versionCheck.latest">a jour</small>
         </a>
       </span>
       <span>
@@ -256,8 +255,9 @@ export default {
 <style scoped>
 .credits__version {
   display: inline-flex;
-  flex-direction: column;
-  gap: 0.125rem;
+  flex-direction: row;
+  gap: 0.25rem;
+  align-items: baseline;
 }
 
 .credits__version small {
@@ -272,5 +272,9 @@ export default {
 
 .credits__version--outdated {
   color: #d93025;
+}
+
+.credits__version--outdated small {
+  color: #8a8f98;
 }
 </style>
