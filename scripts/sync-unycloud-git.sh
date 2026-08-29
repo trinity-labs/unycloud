@@ -151,7 +151,7 @@ commit_and_push() {
     kind=$(detect_release_kind)
     if [ -z "$UNYCLOUD_GIT_RELEASE_VERSION" ] && [ "$UNYCLOUD_GIT_AUTO_BUMP" = "1" ]; then
       "$VERSION_SCRIPT" bump "$kind" >/dev/null
-      git -C "$ROOT_DIR" add UNYCLOUD_VERSION
+      git -C "$ROOT_DIR" add -A
     fi
     version=$(release_version)
     subject="unycloud: ${kind} v${version} $(timestamp_utc)"
