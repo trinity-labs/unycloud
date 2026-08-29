@@ -13,6 +13,8 @@ UNYCLOUD_GIT_RELEASE_VERSION=${UNYCLOUD_GIT_RELEASE_VERSION:-}
 UNYCLOUD_GIT_RELEASE_PUSH_TAGS=${UNYCLOUD_GIT_RELEASE_PUSH_TAGS:-1}
 UNYCLOUD_GIT_RELEASE_KIND=${UNYCLOUD_GIT_RELEASE_KIND:-auto}
 UNYCLOUD_GIT_COMMIT_FILE_LIMIT=${UNYCLOUD_GIT_COMMIT_FILE_LIMIT:-80}
+UNYCLOUD_GIT_REQUIRE_BUILD=${UNYCLOUD_GIT_REQUIRE_BUILD:-1}
+UNYCLOUD_GIT_BUILD_VERIFIED=${UNYCLOUD_GIT_BUILD_VERIFIED:-0}
 GH_TOKEN_FILE=${GH_TOKEN_FILE:-${GITHUB_TOKEN_FILE:-/home/coder/TRINITY-DOCKER/root/.config/gh/token}}
 GIT_TERMINAL_PROMPT=0
 GIT_ASKPASS=/bin/false
@@ -177,6 +179,11 @@ create_release_tag() {
 run_sync() {
   load_env
   [ "$UNYCLOUD_GIT_SYNC_ENABLED" = "1" ] || { log "sync git desactive"; return 0; }
+  if [ "$UNYCLOUD_GIT_REQUIRE_BUILD" = "1" ] && [ "$UNYCLOUD_GIT_BUILD_VERIFIED" != "1" ]; then
+    log "build non verifiee: commit/push refuse"
+    log "utilise ./watch-unycloud.sh once ou exporte UNYCLOUD_GIT_BUILD_VERIFIED=1 apres une build OK"
+    return 1
+  fi
   git_auth fetch origin --prune >/dev/null 2>&1 || true
   commit_and_push
 }

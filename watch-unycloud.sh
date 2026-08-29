@@ -83,7 +83,7 @@ release_build_lock() {
 
 sync_git() {
   [ -x "$GIT_SYNC_SCRIPT" ] || { echo "[unycloud] git sync script absent: $GIT_SYNC_SCRIPT"; return 0; }
-  "$GIT_SYNC_SCRIPT" sync
+  UNYCLOUD_GIT_BUILD_VERIFIED=1 "$GIT_SYNC_SCRIPT" sync
 }
 
 install_after_build() {

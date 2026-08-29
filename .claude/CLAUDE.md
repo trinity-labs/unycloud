@@ -104,6 +104,8 @@ planned and documented.
 - Auto-sync mirrors the docs watcher:
   `watch-unycloud.sh once|start|stop|status` runs CSP audit, build, then
   `scripts/sync-unycloud-git.sh` if `UNYCLOUD_GIT_SYNC_ENABLED=1`.
+- `scripts/sync-unycloud-git.sh` must refuse commit/push unless a build was
+  verified (`UNYCLOUD_GIT_REQUIRE_BUILD=1`, default). Prefer the watcher path.
 - Keep `unycloud-git-sync.env` local; commit only
   `unycloud-git-sync.env.example`.
 - `v0.0.1` publishes binary archives. Docker/Compose examples build local images
