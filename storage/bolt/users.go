@@ -79,18 +79,26 @@ func (st usersBackend) Update(user *users.User, fields ...string) error {
 		return st.Save(user)
 	}
 
+	updated, err := st.GetBy(user.ID)
+	if err != nil {
+		return err
+	}
+
 	for _, field := range fields {
 		userField := reflect.ValueOf(user).Elem().FieldByName(field)
 		if !userField.IsValid() {
 			return fmt.Errorf("invalid field: %s", field)
 		}
-		val := userField.Interface()
-		if err := st.db.UpdateField(user, field, val); err != nil {
-			return err
+
+		updatedField := reflect.ValueOf(updated).Elem().FieldByName(field)
+		if !updatedField.IsValid() || !updatedField.CanSet() {
+			return fmt.Errorf("invalid field: %s", field)
 		}
+
+		updatedField.Set(userField)
 	}
 
-	return nil
+	return st.Save(updated)
 }
 
 func (st usersBackend) Save(user *users.User) error {
