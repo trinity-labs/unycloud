@@ -3,7 +3,9 @@
 set -eu
 
 ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+ENV_FILE=${UNYCLOUD_GIT_SYNC_ENV:-"$ROOT_DIR/unycloud-git-sync.env"}
 GIT_SYNC_SCRIPT=${GIT_SYNC_SCRIPT:-"$ROOT_DIR/scripts/sync-unycloud-git.sh"}
+INSTALL_SCRIPT=${INSTALL_SCRIPT:-"$ROOT_DIR/scripts/install-legacy-filebrowser.sh"}
 POLL_INTERVAL=${POLL_INTERVAL:-30}
 WATCH_DEBOUNCE=${WATCH_DEBOUNCE:-6}
 PID_FILE=${PID_FILE:-/tmp/unycloud-watch.pid}
@@ -11,6 +13,15 @@ LOG_FILE=${LOG_FILE:-/tmp/unycloud-watch.log}
 BUILD_LOCK_DIR=${BUILD_LOCK_DIR:-/tmp/unycloud-build.lock}
 WATCH_STATE_DIR=${WATCH_STATE_DIR:-/tmp/unycloud-watch-state}
 MODE=${1:-watch}
+
+load_env() {
+  if [ -f "$ENV_FILE" ]; then
+    set -a
+    # shellcheck disable=SC1090
+    . "$ENV_FILE"
+    set +a
+  fi
+}
 
 watch_fingerprint() {
   find "$ROOT_DIR" \
@@ -75,13 +86,23 @@ sync_git() {
   "$GIT_SYNC_SCRIPT" sync
 }
 
+install_after_build() {
+  if [ "${UNYCLOUD_INSTALL_AFTER_BUILD:-0}" != "1" ]; then
+    return 0
+  fi
+
+  [ -x "$INSTALL_SCRIPT" ] || { echo "[unycloud] install script absent: $INSTALL_SCRIPT"; return 1; }
+  UNYCLOUD_INSTALL_ROOT=${UNYCLOUD_INSTALL_ROOT:-} "$INSTALL_SCRIPT"
+}
+
 build_and_sync() {
   if ! acquire_build_lock; then
     echo "[unycloud] build deja en cours"
     return 0
   fi
   rc=0
-  if scripts/csp-audit.sh && scripts/build.sh && sync_git; then
+  load_env
+  if scripts/csp-audit.sh && scripts/build.sh && install_after_build && sync_git; then
     mark_clean
   else
     rc=$?
@@ -91,6 +112,7 @@ build_and_sync() {
 }
 
 start_daemon() {
+  load_env
   if pid_is_running; then
     echo "[unycloud] watcher deja actif pid $(cat "$PID_FILE")"
     return 0
@@ -108,6 +130,7 @@ stop_daemon() {
 }
 
 watch_loop() {
+  load_env
   trap 'release_build_lock; exit 143' INT TERM HUP
   ensure_watch_state
   echo "[unycloud] watching $ROOT_DIR every ${POLL_INTERVAL}s"
