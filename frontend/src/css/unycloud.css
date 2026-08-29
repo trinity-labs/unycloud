@@ -51,12 +51,10 @@ main {
     position: fixed;
     inset: 0;
     background-color: #5a52c8;
-    background-image:
-        linear-gradient(145deg, rgb(90 82 200), rgb(117 82 224 / 88%)),
-        url(/static/img/unycloud/unycloud-logo-simple.png);
-    background-size: cover, min(44rem, 76vw);
-    background-position: center, center calc(50% + 6rem);
-    background-repeat: no-repeat, no-repeat;
+    background-image: linear-gradient(145deg, rgb(90 82 200), rgb(117 82 224 / 88%));
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     padding: 1rem;
 }
 
