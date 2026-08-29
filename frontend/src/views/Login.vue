@@ -4,6 +4,7 @@
       method="post"
       :action="createMode ? '/api/signup' : '/api/login'"
       autocomplete="on"
+      novalidate
       @submit="submit"
     >
       <img :src="logoURL" alt="UnyCloud" />
@@ -19,7 +20,7 @@
         id="username"
         name="username"
         class="input input--block"
-        type="text"
+        type="email"
         autocomplete="username"
         inputmode="text"
         enterkeyhint="next"
