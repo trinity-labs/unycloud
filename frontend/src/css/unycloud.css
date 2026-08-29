@@ -51,7 +51,9 @@ main {
     position: fixed;
     inset: 0;
     background-color: #5a52c8;
-    background-image: linear-gradient(145deg, rgb(90 82 200), rgb(117 82 224 / 88%));
+    background-image:
+        linear-gradient(rgb(90 82 200), rgb(117 82 224 / 80%)),
+        url(/static/img/unycloud/cloud-background.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
