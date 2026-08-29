@@ -54,6 +54,7 @@ func NewHandler(
 	api.Handle("/signup", monkey(signupHandler, "")).Methods("POST")
 	api.Handle("/renew", monkey(renewHandler(tokenExpirationTime), "")).Methods("POST")
 	api.Handle("/logout", monkey(logoutHandler, "")).Methods("POST")
+	api.Handle("/version/check", monkey(versionCheckHandler, "")).Methods("GET")
 	api.Handle("/security/status", monkey(securityStatusHandler, "")).Methods("GET")
 	api.Handle("/security/events", monkey(securityEventsHandler, "")).Methods("GET")
 	api.Handle("/security/fail2ban", monkey(securityFail2BanHandler, "")).Methods("GET")
