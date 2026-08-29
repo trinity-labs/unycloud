@@ -96,11 +96,17 @@
         <span v-if="disableExternal">UnyCloud {{ version }}</span>
         <a
           v-else
+          :class="versionStatusClass"
           rel="noopener noreferrer"
           target="_blank"
           href="https://github.com/trinity-labs/unycloud/releases/latest"
-          >UnyCloud {{ version }}</a
         >
+          UnyCloud {{ version }}
+          <small v-if="versionCheck.latest && versionCheck.updateRequired">
+            update required: {{ versionCheck.latest }}
+          </small>
+          <small v-else-if="versionCheck.latest">a jour</small>
+        </a>
       </span>
       <span>
         <a @click="help">{{ $t("sidebar.help") }}</a>
@@ -128,16 +134,23 @@ import {
   loginPage,
 } from "@/utils/constants";
 import { files as api } from "@/api";
+import { fetchJSON } from "@/api/utils";
 import ProgressBar from "@/components/ProgressBar.vue";
 import prettyBytes from "pretty-bytes";
 
 const USAGE_DEFAULT = { used: "0 B", total: "0 B", usedPercentage: 0 };
+const VERSION_CHECK_DEFAULT = {
+  latest: "",
+  updateRequired: false,
+  error: "",
+};
 
 export default {
   name: "sidebar",
   setup() {
     const usage = reactive(USAGE_DEFAULT);
-    return { usage, usageAbortController: new AbortController() };
+    const versionCheck = reactive(VERSION_CHECK_DEFAULT);
+    return { usage, versionCheck, usageAbortController: new AbortController() };
   },
   components: {
     ProgressBar,
@@ -155,6 +168,12 @@ export default {
     version: () => version,
     disableExternal: () => disableExternal,
     disableUsedPercentage: () => disableUsedPercentage,
+    versionStatusClass() {
+      if (this.disableExternal || this.versionCheck.error) return "";
+      return this.versionCheck.updateRequired
+        ? "credits__version credits__version--outdated"
+        : "credits__version credits__version--current";
+    },
     canLogout: () => !noAuth && (loginPage || logoutPage !== "/login"),
   },
   methods: {
@@ -181,6 +200,21 @@ export default {
         };
       } finally {
         return Object.assign(this.usage, usageStats);
+      }
+    },
+    async fetchVersionCheck() {
+      if (this.disableExternal) return;
+      try {
+        const status = await fetchJSON("/api/version/check", {});
+        Object.assign(this.versionCheck, {
+          latest: status.latest || "",
+          updateRequired: Boolean(status.updateRequired),
+          error: status.error || "",
+        });
+      } catch {
+        Object.assign(this.versionCheck, VERSION_CHECK_DEFAULT, {
+          error: "unavailable",
+        });
       }
     },
     toRoot() {
@@ -210,8 +244,33 @@ export default {
       immediate: true,
     },
   },
+  mounted() {
+    this.fetchVersionCheck();
+  },
   unmounted() {
     this.abortOngoingFetchUsage();
   },
 };
 </script>
+
+<style scoped>
+.credits__version {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.credits__version small {
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.credits__version--current {
+  color: #188038;
+}
+
+.credits__version--outdated {
+  color: #d93025;
+}
+</style>
