@@ -96,8 +96,8 @@ main {
     border-radius: 7px;
     background: white;
     min-height: 24rem;
-    background-image: url(/static/img/unycloud/unycloud-logo-simple.png), none !important;
-    background-repeat: no-repeat !important;
+    background-image: url(/static/img/unycloud/unycloud-logo-simple.png), none;
+    background-repeat: no-repeat;
     background-position: center 1.75rem;
     background-size: 8rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 4px 10px rgba(0, 0, 0, 0.06);
