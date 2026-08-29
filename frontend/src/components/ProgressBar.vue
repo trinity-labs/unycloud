@@ -70,7 +70,7 @@ const props = withDefaults(
     max: 100,
     size: 3,
     bgColor: "#eee",
-    barColor: "#2196f3",
+    barColor: "#3e3aab",
     barTransition: "all 0.5s ease",
     barBorderRadius: 0,
     spacing: 4,
@@ -148,12 +148,12 @@ watchEffect(() => {
     "border-radius": radius,
   });
   upsertRule(`${scope} .vue-simple-progress-bar::-webkit-progress-value`, {
-    background: safeCssColor(props.barColor, "#2196f3"),
+    background: safeCssColor(props.barColor, "#3e3aab"),
     transition,
     "border-radius": radius,
   });
   upsertRule(`${scope} .vue-simple-progress-bar::-moz-progress-bar`, {
-    background: safeCssColor(props.barColor, "#2196f3"),
+    background: safeCssColor(props.barColor, "#3e3aab"),
     transition,
     "border-radius": radius,
   });

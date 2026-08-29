@@ -42,13 +42,13 @@
 }
 
 .upload-files .file .file-progress progress::-webkit-progress-value {
-  background-color: #40c4ff;
+  background-color: #3e3aab;
   transition: 0.2s ease width;
   border-radius: 10px;
 }
 
 .upload-files .file .file-progress progress::-moz-progress-bar {
-  background-color: #40c4ff;
+  background-color: #3e3aab;
   transition: 0.2s ease width;
   border-radius: 10px;
 }
