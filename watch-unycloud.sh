@@ -102,7 +102,7 @@ build_and_sync() {
   fi
   rc=0
   load_env
-  if scripts/csp-audit.sh && scripts/build.sh && install_after_build && sync_git; then
+  if scripts/csp-audit.sh && scripts/build.sh && sync_git && scripts/build.sh && install_after_build; then
     mark_clean
   else
     rc=$?
