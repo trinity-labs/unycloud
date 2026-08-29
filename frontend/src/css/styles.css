@@ -1,5 +1,4 @@
 @import "normalize.css/normalize.css";
-@import "vue-toastification/dist/index.css";
 @import "./_variables.css";
 @import "./_buttons.css";
 @import "./_inputs.css";
@@ -14,7 +13,6 @@
 @import "./dashboard.css";
 @import "./login.css";
 @import "./mobile.css";
-@import "./epubReader.css";
 @import "./mdPreview.css";
 @import "./context-menu.css";
 
@@ -348,6 +346,26 @@ main .spinner .bounce2 {
 
 #editor-container #editor {
   flex: 1;
+  width: 100%;
+  min-height: 0;
+  color: var(--textPrimary);
+  background: var(--surfacePrimary);
+  border: 0;
+  outline: 0;
+  resize: none;
+  padding: 1rem;
+  line-height: 1.45;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  white-space: pre;
+  overflow: auto;
+  tab-size: 2;
+  box-sizing: border-box;
+}
+
+#editor-container #editor[readonly] {
+  cursor: default;
 }
 
 #editor-container .breadcrumbs {

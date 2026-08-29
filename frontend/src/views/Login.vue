@@ -1,7 +1,7 @@
 <template>
   <div id="login" :class="{ recaptcha: recaptcha }">
-    <form @submit="submit">
-      <img :src="logoURL" alt="File Browser" />
+    <form autocomplete="on" @submit="submit">
+      <img :src="logoURL" alt="UnyCloud" />
       <h1>{{ name }}</h1>
       <p v-if="reason != null" class="logout-message">
         {{ t(`login.logout_reasons.${reason}`) }}
@@ -10,22 +10,33 @@
 
       <input
         autofocus
+        id="username"
+        name="username"
         class="input input--block"
         type="text"
+        autocomplete="username"
         autocapitalize="off"
+        autocorrect="off"
+        spellcheck="false"
         v-model="username"
         :placeholder="t('login.username')"
       />
       <input
+        id="password"
+        name="password"
         class="input input--block"
         type="password"
+        :autocomplete="createMode ? 'new-password' : 'current-password'"
         v-model="password"
         :placeholder="t('login.password')"
       />
       <input
+        id="password-confirm"
+        name="passwordConfirm"
         class="input input--block"
         v-if="createMode"
         type="password"
+        autocomplete="new-password"
         v-model="passwordConfirm"
         :placeholder="t('login.passwordConfirm')"
       />
@@ -75,11 +86,18 @@ const $showError = inject<IToastError>("$showError")!;
 
 const reason = route.query["logout-reason"] ?? null;
 
+const safeRedirect = (value: unknown): string => {
+  if (typeof value !== "string") return "/files/";
+  if (!value.startsWith("/") || value.startsWith("//")) return "/files/";
+  if (/[\r\n]/.test(value)) return "/files/";
+  return value;
+};
+
 const submit = async (event: Event) => {
   event.preventDefault();
   event.stopPropagation();
 
-  const redirect = (route.query.redirect || "/files/") as string;
+  const redirect = safeRedirect(route.query.redirect);
 
   let captcha = "";
   if (recaptcha) {

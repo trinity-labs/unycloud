@@ -38,6 +38,17 @@
 
 .share__box__info {
   flex: 1 1 18em;
+  position: sticky;
+  top: -20.6em;
+  z-index: 999;
+}
+
+.share__loading {
+  padding-top: 3em !important;
+}
+
+.share__password {
+  z-index: 9999999;
 }
 
 .share__box__element {
@@ -46,8 +57,47 @@
   word-break: break-all;
 }
 
+.share__box__element--short {
+  min-height: 3em;
+}
+
 .share__box__element .button {
   display: inline-block;
+}
+
+.share__download {
+  min-height: 4em;
+}
+
+.share__preview {
+  height: 12em;
+  padding: 0 !important;
+}
+
+.share__preview .button {
+  height: 12em;
+  padding: 0;
+  margin: 0;
+}
+
+.share__preview-media {
+  height: 12em;
+  padding: 0;
+  margin: 0;
+}
+
+.share__preview-audio {
+  height: 12em;
+  padding-top: 1em;
+  margin: 0;
+}
+
+.share__preview-play {
+  font-size: 6em !important;
+  border: 0;
+  outline: none;
+  background: var(--surfacePrimary);
+  color: var(--textPrimary);
 }
 
 .share__box__element .button i {

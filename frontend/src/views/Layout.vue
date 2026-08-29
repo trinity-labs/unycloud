@@ -1,11 +1,7 @@
 <template>
   <div>
     <div v-if="uploadStore.totalBytes" class="progress">
-      <div
-        v-bind:style="{
-          width: sentPercent + '%',
-        }"
-      ></div>
+      <progress :value="sentProgressValue" max="100"></progress>
     </div>
     <sidebar></sidebar>
     <main>
@@ -43,6 +39,8 @@ const route = useRoute();
 const sentPercent = computed(() =>
   ((uploadStore.sentBytes / uploadStore.totalBytes) * 100).toFixed(2)
 );
+
+const sentProgressValue = computed(() => Number(sentPercent.value));
 
 watch(route, () => {
   fileStore.selected = [];

@@ -32,6 +32,9 @@ export async function fetchURL(
         "X-Auth": authStore.jwt,
         ...headers,
       },
+      credentials: "same-origin",
+      cache: "no-store",
+      redirect: "error",
       ...rest,
     });
   } catch (e) {

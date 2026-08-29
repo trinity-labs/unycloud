@@ -1,5 +1,5 @@
 <template>
-  <div v-show="active" @click="closeHovers" class="overlay"></div>
+  <div v-if="active" @click="closeHovers" class="overlay"></div>
   <nav :class="{ active }">
     <template v-if="isLoggedIn">
       <button @click="toAccountSettings" class="action">
@@ -85,11 +85,7 @@
       </router-link>
     </template>
 
-    <div
-      class="credits"
-      v-if="isFiles && !disableUsedPercentage"
-      style="width: 90%; margin: 2em 2.5em 3em 2.5em"
-    >
+    <div class="credits" v-if="isFiles && !disableUsedPercentage">
       <progress-bar :val="usage.usedPercentage" size="small"></progress-bar>
       <br />
       {{ $t("sidebar.diskUsed", { used: usage.used, total: usage.total }) }}
@@ -97,15 +93,14 @@
 
     <p class="credits">
       <span>
-        <span v-if="disableExternal">File Browser</span>
+        <span v-if="disableExternal">UnyCloud {{ version }}</span>
         <a
           v-else
           rel="noopener noreferrer"
           target="_blank"
-          href="https://github.com/filebrowser/filebrowser"
-          >File Browser</a
+          href="https://github.com/trinity-labs/unycloud/releases/latest"
+          >UnyCloud {{ version }}</a
         >
-        <span> {{ " " }} {{ version }}</span>
       </span>
       <span>
         <a @click="help">{{ $t("sidebar.help") }}</a>

@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.1] - 2026-08-29
+
+### Added
+
+* establish UnyCloud as a maintained fork of File Browser;
+* document the File Browser compatibility contract;
+* add generic build, CSP audit, security scan, legacy install, nginx, and OpenRC maintenance assets;
+* add GitHub Dependabot and CI security scanning with `govulncheck`;
+* add admin-only security status/events/fail2ban endpoints.
+
+### Changed
+
+* identify release output as UnyCloud while preserving the inherited CLI/config/database contract;
+* build the primary artifact as `dist/unycloud`;
+* remove private deployment paths from commitable project files;
+* replace runtime style-injecting frontend dependencies with local CSP-safe code paths;
+* replace the Ace editor runtime with a native CSP-safe editor while preserving the compatibility field;
+* disable the embedded EPUB reader until it can comply with the strict CSP;
+* serve the PWA manifest as same-origin JSON instead of a generated blob;
+* render PDF previews in a sandboxed iframe instead of an object element;
+* switch video preview to native browser controls for strict CSP compatibility.
+
+### Security
+
+* enforce a stable CSP without inline script/style escape hatches or rebuild-dependent hashes;
+* move runtime bootstrap and loading styles out of inline HTML;
+* add global security headers;
+* add bounded, non-spoofable failure rate limiting for login and protected public shares;
+* log stable `unycloud_security` events for fail2ban integration;
+* issue auth cookies server-side with `HttpOnly`, `SameSite=Strict`, and HTTPS `Secure`;
+* reject cross-origin browser write requests when the `Origin` header is foreign;
+* limit JSON body sizes on mutation endpoints;
+* bound hook-auth execution time and output size;
+* tighten interactive command execution when shell mode is enabled.
+
+### Lineage
+
+* UnyCloud is derived from File Browser (`filebrowser/filebrowser`) under Apache-2.0.
+
 ## [2.63.23](https://github.com/filebrowser/filebrowser/compare/v2.63.22...v2.63.23) (2026-07-27)
 ## [2.63.22](https://github.com/filebrowser/filebrowser/compare/v2.63.21...v2.63.22) (2026-07-27)
 

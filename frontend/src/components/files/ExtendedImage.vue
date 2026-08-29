@@ -1,6 +1,7 @@
 <template>
   <div
     class="image-ex-container"
+    :class="props.classList"
     ref="container"
     @touchstart="touchStart"
     @touchmove="touchMove"
@@ -10,13 +11,23 @@
     @mouseup="mouseUp"
     @wheel="wheelMove"
   >
-    <img class="image-ex-img image-ex-img-center" ref="imgex" @load="onLoad" />
+    <img
+      :class="[
+        'image-ex-img',
+        imageLoaded
+          ? ['image-ex-img-ready', imageClass]
+          : 'image-ex-img-center',
+      ]"
+      ref="imgex"
+      @load="onLoad"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import { throttle } from "lodash-es";
 import UTIF from "utif";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { cssPx, cssScale, getDynamicClass, upsertRule } from "@/utils/cspStyle";
 
 interface IProps {
   src: string;
@@ -42,9 +53,11 @@ const disabledTimer = ref<number | null>(null);
 const imageLoaded = ref<boolean>(false);
 const position = ref<{
   center: { x: number; y: number };
+  current: { x: number; y: number };
   relative: { x: number; y: number };
 }>({
   center: { x: 0, y: 0 },
+  current: { x: 0, y: 0 },
   relative: { x: 0, y: 0 },
 });
 const maxScale = ref<number>(4);
@@ -53,6 +66,7 @@ const minScale = ref<number>(0.25);
 // Refs
 const imgex = ref<HTMLImageElement | null>(null);
 const container = ref<HTMLDivElement | null>(null);
+const imageClass = getDynamicClass("image-ex-position");
 
 onMounted(() => {
   if (!decodeUTIF() && imgex.value !== null) {
@@ -60,22 +74,6 @@ onMounted(() => {
     imgex.value.alt = decodeURIComponent(
       props.src.split("/").pop() || "preview"
     );
-  }
-
-  props.classList.forEach((className) =>
-    container.value !== null ? container.value.classList.add(className) : ""
-  );
-
-  if (container.value === null) {
-    return;
-  }
-
-  // set width and height if they are zero
-  if (getComputedStyle(container.value).width === "0px") {
-    container.value.style.width = "100%";
-  }
-  if (getComputedStyle(container.value).height === "0px") {
-    container.value.style.height = "100%";
   }
 
   window.addEventListener("resize", onResize);
@@ -129,9 +127,8 @@ const onLoad = () => {
     return;
   }
 
-  imgex.value.classList.remove("image-ex-img-center");
   setCenter();
-  imgex.value.classList.add("image-ex-img-ready");
+  updateImageRule();
 
   document.addEventListener("mouseup", onMouseUp);
 
@@ -174,8 +171,9 @@ const setCenter = () => {
     (container.value.clientHeight - imgex.value.clientHeight) / 2
   );
 
-  imgex.value.style.left = position.value.center.x + "px";
-  imgex.value.style.top = position.value.center.y + "px";
+  position.value.current.x = position.value.center.x;
+  position.value.current.y = position.value.center.y;
+  updateImageRule();
 };
 
 const mousedownStart = (event: MouseEvent) => {
@@ -276,13 +274,12 @@ const doMove = (x: number, y: number) => {
   if (imgex.value === null) {
     return;
   }
-  const style = imgex.value.style;
 
-  const posX = pxStringToNumber(style.left) + x;
-  const posY = pxStringToNumber(style.top) + y;
-
-  style.left = posX + "px";
-  style.top = posY + "px";
+  const posX = position.value.current.x + x;
+  const posY = position.value.current.y + y;
+  position.value.current.x = posX;
+  position.value.current.y = posY;
+  updateImageRule();
 
   position.value.relative.x = Math.abs(position.value.center.x - posX);
   position.value.relative.y = Math.abs(position.value.center.y - posY);
@@ -302,11 +299,18 @@ const wheelMove = (event: WheelEvent) => {
 const setZoom = () => {
   scale.value = scale.value < minScale.value ? minScale.value : scale.value;
   scale.value = scale.value > maxScale.value ? maxScale.value : scale.value;
-  if (imgex.value !== null)
-    imgex.value.style.transform = `scale(${scale.value})`;
+  updateImageRule();
 };
-const pxStringToNumber = (style: string) => {
-  return +style.replace("px", "");
+
+const updateImageRule = () => {
+  if (!imageLoaded.value) {
+    return;
+  }
+  upsertRule(`.${imageClass}`, {
+    left: cssPx(position.value.current.x),
+    top: cssPx(position.value.current.y),
+    transform: cssScale(scale.value),
+  });
 };
 </script>
 <style>
@@ -314,6 +318,8 @@ const pxStringToNumber = (style: string) => {
   margin: auto;
   overflow: hidden;
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .image-ex-img {

@@ -130,7 +130,7 @@
       </template>
     </div>
 
-    <div class="card-action" style="display: flex; justify-content: end">
+    <div class="card-action resolve-conflict-actions">
       <div>
         <button
           class="button button--flat button--grey"
@@ -244,6 +244,13 @@ const toogleCheckAll = (e: Event) => {
   }
 };
 </script>
+
+<style scoped>
+.resolve-conflict-actions {
+  display: flex;
+  justify-content: end;
+}
+</style>
 <style scoped>
 .conflict-list-container {
   max-height: 300px;

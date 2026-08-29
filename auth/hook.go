@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -10,6 +12,7 @@ import (
 	"os/exec"
 	"slices"
 	"strings"
+	"time"
 
 	fberrors "github.com/filebrowser/filebrowser/v2/errors"
 	"github.com/filebrowser/filebrowser/v2/files"
@@ -19,6 +22,23 @@ import (
 
 // MethodHookAuth is used to identify hook auth.
 const MethodHookAuth settings.AuthMethod = "hook"
+
+const (
+	hookAuthOutputLimit = 64 * 1024
+	hookAuthTimeout     = 30 * time.Second
+)
+
+type limitedBuffer struct {
+	bytes.Buffer
+	limit int
+}
+
+func (b *limitedBuffer) Write(p []byte) (int, error) {
+	if b.Buffer.Len()+len(p) > b.limit {
+		return 0, fmt.Errorf("hook auth output exceeds %d bytes", b.limit)
+	}
+	return b.Buffer.Write(p)
+}
 
 type hookCred struct {
 	Password string `json:"password"`
@@ -87,15 +107,20 @@ func (a *HookAuth) LoginPage() bool {
 func (a *HookAuth) RunCommand() (string, error) {
 	command := strings.Split(a.Command, " ")
 
-	cmd := exec.Command(command[0], command[1:]...)
+	ctx, cancel := context.WithTimeout(context.Background(), hookAuthTimeout)
+	defer cancel()
+
+	cmd := exec.CommandContext(ctx, command[0], command[1:]...)
 	cmd.Env = append(os.Environ(), fmt.Sprintf("USERNAME=%s", a.Cred.Username))
 	cmd.Env = append(cmd.Env, fmt.Sprintf("PASSWORD=%s", a.Cred.Password))
-	out, err := cmd.Output()
+	out := &limitedBuffer{limit: hookAuthOutputLimit}
+	cmd.Stdout = out
+	err := cmd.Run()
 	if err != nil {
 		return "", err
 	}
 
-	a.GetValues(string(out))
+	a.GetValues(out.String())
 
 	return a.Fields.Values["hook.action"], nil
 }

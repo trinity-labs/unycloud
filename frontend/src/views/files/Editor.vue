@@ -28,11 +28,10 @@
         icon="preview"
         :label="t('buttons.preview')"
         @action="preview()"
-        v-show="isMarkdownFile"
+        v-if="isMarkdownFile"
       />
     </header-bar>
 
-    <!-- preview container -->
     <div class="loading delayed" v-if="layoutStore.loading">
       <div class="spinner">
         <div class="bounce1"></div>
@@ -52,53 +51,72 @@
             <span><i class="material-icons">content_copy</i></span>
           </button>
           <button
-            :disabled="isSelectionEmpty"
+            :disabled="isSelectionEmpty || isReadOnly"
             @click="executeEditorCommand('cut')"
           >
             <span><i class="material-icons">content_cut</i></span>
           </button>
-          <button @click="executeEditorCommand('paste')">
+          <button :disabled="isReadOnly" @click="executeEditorCommand('paste')">
             <span><i class="material-icons">content_paste</i></span>
           </button>
-          <button @click="executeEditorCommand('openCommandPalette')">
-            <span><i class="material-icons">more_vert</i></span>
+          <button @click="executeEditorCommand('selectAll')">
+            <span><i class="material-icons">select_all</i></span>
           </button>
         </div>
       </div>
 
       <div
-        v-show="isPreview && isMarkdownFile"
+        :hidden="!isPreview || !isMarkdownFile"
         id="preview-container"
         class="md_preview"
         v-html="previewContent"
       ></div>
-      <form v-show="!isPreview || !isMarkdownFile" id="editor"></form>
+      <textarea
+        :hidden="isPreview && isMarkdownFile"
+        id="editor"
+        ref="editorArea"
+        v-model="content"
+        :class="editorClass"
+        :readonly="isReadOnly"
+        spellcheck="false"
+        autocapitalize="off"
+        autocomplete="off"
+        autocorrect="off"
+        @select="refreshSelection"
+        @keyup="refreshSelection"
+        @click="refreshSelection"
+        @input="refreshSelection"
+      ></textarea>
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import { files as api } from "@/api";
-import buttons from "@/utils/buttons";
-import url from "@/utils/url";
-import ace, { Ace, version as ace_version } from "ace-builds";
-import "ace-builds/src-noconflict/ext-language_tools";
-import modelist from "ace-builds/src-noconflict/ext-modelist";
-import DOMPurify from "dompurify";
-
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import Action from "@/components/header/Action.vue";
 import HeaderBar from "@/components/header/HeaderBar.vue";
 import { useAuthStore } from "@/stores/auth";
 import { useFileStore } from "@/stores/file";
 import { useLayoutStore } from "@/stores/layout";
-import { getEditorTheme } from "@/utils/theme";
+import { read, copy } from "@/utils/clipboard";
+import { cssPx, getDynamicClass, upsertRule } from "@/utils/cspStyle";
+import buttons from "@/utils/buttons";
+import url from "@/utils/url";
+import DOMPurify from "dompurify";
 import { marked } from "marked";
 import markedKatex from "marked-katex-extension";
-import { inject, onBeforeUnmount, onMounted, ref, watchEffect } from "vue";
+import {
+  computed,
+  inject,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watchEffect,
+} from "vue";
 import { useI18n } from "vue-i18n";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
-import { read, copy } from "@/utils/clipboard";
 
 const $showError = inject<IToastError>("$showError")!;
 
@@ -111,11 +129,16 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const editor = ref<Ace.Editor | null>(null);
+const editorArea = ref<HTMLTextAreaElement | null>(null);
+const editorClass = getDynamicClass("native-editor");
 const fontSize = ref(parseInt(localStorage.getItem("editorFontSize") || "14"));
-
+const content = ref(fileStore.req?.content || "");
+const savedContent = ref(content.value);
 const isPreview = ref(false);
 const previewContent = ref("");
+const isSelectionEmpty = ref(true);
+const isReadOnly = computed(() => fileStore.req?.type === "textImmutable");
+
 const isMarkdownFile =
   fileStore.req?.name.endsWith(".md") ||
   fileStore.req?.name.endsWith(".markdown");
@@ -123,48 +146,97 @@ const katexOptions = {
   output: "mathml" as const,
   throwOnError: false,
 };
+const markdownURIPattern =
+  /^(?:(?:https?|mailto):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i;
 marked.use(markedKatex(katexOptions));
 
-const isSelectionEmpty = ref(true);
+watchEffect(() => {
+  upsertRule(`.${editorClass}`, {
+    "font-size": cssPx(fontSize.value, 8, 72),
+  });
+});
 
-const executeEditorCommand = (name: string) => {
-  if (name == "paste") {
-    read()
-      .then((data) => {
-        editor.value?.execCommand("paste", {
-          text: data,
-        });
-      })
-      .catch((e) => {
-        if (
-          document.queryCommandSupported &&
-          document.queryCommandSupported("paste")
-        ) {
-          document.execCommand("paste");
-        } else {
-          console.warn("the clipboard api is not supported", e);
-        }
-      });
+const dirty = computed(() => content.value !== savedContent.value);
+
+const refreshSelection = () => {
+  const area = editorArea.value;
+  isSelectionEmpty.value =
+    area === null || area.selectionStart === area.selectionEnd;
+};
+
+const focusEditor = async () => {
+  await nextTick();
+  editorArea.value?.focus();
+  refreshSelection();
+};
+
+const replaceSelection = (replacement: string) => {
+  const area = editorArea.value;
+  if (!area || isReadOnly.value) {
     return;
   }
-  if (name == "copy" || name == "cut") {
-    const selectedText = editor.value?.getCopyText();
-    copy({ text: selectedText });
+
+  const start = area.selectionStart;
+  const end = area.selectionEnd;
+  content.value =
+    content.value.slice(0, start) + replacement + content.value.slice(end);
+
+  nextTick(() => {
+    area.selectionStart = start + replacement.length;
+    area.selectionEnd = start + replacement.length;
+    refreshSelection();
+  });
+};
+
+const executeEditorCommand = (name: string) => {
+  const area = editorArea.value;
+  if (!area) {
+    return;
   }
-  editor.value?.execCommand(name);
+
+  const selectedText = content.value.slice(
+    area.selectionStart,
+    area.selectionEnd
+  );
+
+  if (name === "selectAll") {
+    area.select();
+    refreshSelection();
+    return;
+  }
+
+  if (name === "copy") {
+    copy({ text: selectedText });
+    return;
+  }
+
+  if (name === "cut") {
+    copy({ text: selectedText });
+    replaceSelection("");
+    return;
+  }
+
+  if (name === "paste") {
+    read()
+      .then((data) => replaceSelection(data))
+      .catch((e) => {
+        console.warn("the clipboard api is not supported", e);
+      });
+  }
 };
 
 onMounted(() => {
   window.addEventListener("keydown", keyEvent);
   window.addEventListener("beforeunload", handlePageChange);
 
-  const fileContent = fileStore.req?.content || "";
-
   watchEffect(async () => {
     if (isMarkdownFile && isPreview.value) {
-      const new_value = editor.value?.getValue() || "";
       try {
-        previewContent.value = DOMPurify.sanitize(await marked(new_value));
+        previewContent.value = DOMPurify.sanitize(await marked(content.value), {
+          FORBID_ATTR: ["style"],
+          FORBID_TAGS: ["style"],
+          ALLOWED_URI_REGEXP: markdownURIPattern,
+        });
       } catch (error) {
         console.error("Failed to convert content to HTML:", error);
         previewContent.value = "";
@@ -172,21 +244,13 @@ onMounted(() => {
     }
   });
 
-  ace.config.set(
-    "basePath",
-    `https://cdn.jsdelivr.net/npm/ace-builds@${ace_version}/src-min-noconflict/`
-  );
-
   if (!layoutStore.loading) {
-    initEditor(fileContent);
+    focusEditor();
   } else {
     const unwatch = watchEffect(() => {
-      // Initialize editor when layout is loaded
       if (!layoutStore.loading) {
-        setTimeout(() => {
-          initEditor(fileContent);
-          unwatch();
-        }, 50);
+        focusEditor();
+        unwatch();
       }
     });
   }
@@ -195,11 +259,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener("keydown", keyEvent);
   window.removeEventListener("beforeunload", handlePageChange);
-  editor.value?.destroy();
 });
 
 onBeforeRouteUpdate((to, from, next) => {
-  if (editor.value?.session.getUndoManager().isClean()) {
+  if (!dirty.value) {
     next();
 
     return;
@@ -217,28 +280,6 @@ onBeforeRouteUpdate((to, from, next) => {
     },
   });
 });
-
-const initEditor = (fileContent: string) => {
-  editor.value = ace.edit("editor", {
-    value: fileContent,
-    showPrintMargin: false,
-    readOnly: fileStore.req?.type === "textImmutable",
-    theme: getEditorTheme(authStore.user?.aceEditorTheme ?? ""),
-    mode: modelist.getModeForPath(fileStore.req!.name).mode,
-    wrap: true,
-    enableBasicAutocompletion: true,
-    enableLiveAutocompletion: true,
-    enableSnippets: true,
-  });
-
-  editor.value.setFontSize(fontSize.value);
-  editor.value.focus();
-
-  const selection = editor.value?.getSelection();
-  selection.on("changeSelection", function () {
-    isSelectionEmpty.value = selection.isEmpty();
-  });
-};
 
 const keyEvent = (event: KeyboardEvent) => {
   if (event.code === "Escape") {
@@ -258,10 +299,8 @@ const keyEvent = (event: KeyboardEvent) => {
 };
 
 const handlePageChange = (event: BeforeUnloadEvent) => {
-  if (!editor.value?.session.getUndoManager().isClean()) {
+  if (dirty.value) {
     event.preventDefault();
-    // returnValue is now depecrated, though keeping in for legacy browser support
-    // https://developer.mozilla.org/en-US/docs/Web/API/BeforeUnloadEvent/returnValue
     event.returnValue = true;
   }
 };
@@ -271,8 +310,8 @@ const save = async (throwError?: boolean) => {
   buttons.loading("save");
 
   try {
-    await api.put(route.path, editor.value?.getValue());
-    editor.value?.session.getUndoManager().markClean();
+    await api.put(route.path, content.value);
+    savedContent.value = content.value;
     buttons.success(button);
   } catch (e: any) {
     buttons.done(button);
@@ -283,25 +322,23 @@ const save = async (throwError?: boolean) => {
 
 const increaseFontSize = () => {
   fontSize.value += 1;
-  editor.value?.setFontSize(fontSize.value);
   localStorage.setItem("editorFontSize", fontSize.value.toString());
 };
 
 const decreaseFontSize = () => {
-  if (fontSize.value > 1) {
+  if (fontSize.value > 8) {
     fontSize.value -= 1;
-    editor.value?.setFontSize(fontSize.value);
     localStorage.setItem("editorFontSize", fontSize.value.toString());
   }
 };
 
 const close = () => {
-  if (!editor.value?.session.getUndoManager().isClean()) {
+  if (dirty.value) {
     layoutStore.showHover({
       prompt: "discardEditorChanges",
       confirm: (event: Event) => {
         event.preventDefault();
-        editor.value?.session.getUndoManager().reset();
+        savedContent.value = content.value;
         finishClose();
       },
       saveAction: async () => {

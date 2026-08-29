@@ -22,13 +22,8 @@
         :aria-label="$t('search.search')"
         :placeholder="$t('search.search')"
       />
-      <i
-        v-show="ongoing"
-        class="material-icons spin"
-        style="display: inline-block"
-        >autorenew
-      </i>
-      <span style="margin-top: 5px" v-show="results.length > 0">
+      <i v-if="ongoing" class="material-icons spin">autorenew </i>
+      <span class="search-result-count" v-if="results.length > 0">
         {{ results.length }}
       </span>
     </div>
@@ -57,7 +52,7 @@
             </div>
           </template>
         </template>
-        <ul v-show="results.length > 0">
+        <ul v-if="results.length > 0">
           <li v-for="(s, k) in filteredResults" :key="k">
             <router-link v-on:click="close" :to="s.url">
               <i v-if="s.dir" class="material-icons">folder</i>
@@ -120,7 +115,7 @@ watch(currentPromptName, (newVal, oldVal) => {
       fileStore.reload = true;
     }
 
-    document.body.style.overflow = "auto";
+    document.body.classList.remove("search-active");
     reset();
     prompt.value = "";
     active.value = false;
@@ -128,7 +123,7 @@ watch(currentPromptName, (newVal, oldVal) => {
   } else if (active.value) {
     reload.value = false;
     input.value?.focus();
-    document.body.style.overflow = "hidden";
+    document.body.classList.add("search-active");
   }
 });
 
@@ -177,6 +172,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   abortLastSearch();
+  document.body.classList.remove("search-active");
 });
 
 const open = () => {
@@ -249,3 +245,13 @@ const submit = async (event: Event) => {
   ongoing.value = false;
 };
 </script>
+
+<style scoped>
+.search-result-count {
+  margin-top: 5px;
+}
+
+:global(body.search-active) {
+  overflow: hidden;
+}
+</style>

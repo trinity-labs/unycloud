@@ -8,18 +8,18 @@ function loading(button: string) {
     return;
   }
 
-  if (el.innerHTML == "autorenew" || el.innerHTML == "done") {
+  const icon = el.textContent?.trim() || "";
+
+  if (icon == "autorenew" || icon == "done") {
     return;
   }
 
-  el.dataset.icon = el.innerHTML;
-  el.style.opacity = "0";
+  el.dataset.icon = icon;
 
   setTimeout(() => {
     if (el) {
       el.classList.add("spin");
-      el.innerHTML = "autorenew";
-      el.style.opacity = "1";
+      el.textContent = "autorenew";
     }
   }, 100);
 }
@@ -34,13 +34,10 @@ function done(button: string) {
     return;
   }
 
-  el.style.opacity = "0";
-
   setTimeout(() => {
     if (el !== null) {
       el.classList.remove("spin");
-      el.innerHTML = el?.dataset?.icon || "";
-      el.style.opacity = "1";
+      el.textContent = el?.dataset?.icon || "";
     }
   }, 100);
 }
@@ -55,21 +52,15 @@ function success(button: string) {
     return;
   }
 
-  el.style.opacity = "0";
-
   setTimeout(() => {
     if (el !== null) {
       el.classList.remove("spin");
-      el.innerHTML = "done";
-      el.style.opacity = "1";
+      el.textContent = "done";
     }
     setTimeout(() => {
-      if (el) el.style.opacity = "0";
-
       setTimeout(() => {
         if (el !== null) {
-          el.innerHTML = el?.dataset?.icon || "";
-          el.style.opacity = "1";
+          el.textContent = el?.dataset?.icon || "";
         }
       }, 100);
     }, 500);

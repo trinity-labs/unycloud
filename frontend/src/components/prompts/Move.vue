@@ -14,17 +14,13 @@
       />
     </div>
 
-    <div
-      class="card-action"
-      style="display: flex; align-items: center; justify-content: space-between"
-    >
+    <div class="card-action prompt-action-row">
       <template v-if="user.perm.create">
         <button
           class="button button--flat"
           @click="$refs.fileList.createDir()"
           :aria-label="$t('sidebar.newFolder')"
           :title="$t('sidebar.newFolder')"
-          style="justify-self: left"
         >
           <span>{{ $t("sidebar.newFolder") }}</span>
         </button>
@@ -162,3 +158,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.prompt-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+</style>

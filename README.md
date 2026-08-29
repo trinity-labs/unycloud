@@ -1,36 +1,180 @@
-> [!WARNING]
-> 
-> **File Browser is archived on 2026-09-01**. The last planned release has already shipped. There will be no further releases, bug fixes, or security fixes.   
+# UnyCloud
 
 <p align="center">
-  <img src="./branding/banner.png" width="550"/>
+  <img src="./branding/banner.png" width="720" alt="UnyCloud"/>
 </p>
 
-File Browser provides a file managing interface within a specified directory and it can be used to upload, delete, preview and edit your files. It is a **create-your-own-cloud**-kind of software where you can just install it on your server, direct it to a path and access your files through a nice web interface.
+UnyCloud is a maintained fork of File Browser, derived from
+[`filebrowser/filebrowser`](https://github.com/filebrowser/filebrowser) under
+Apache-2.0.
 
-**Background:** [Goodbye File Browser, for Real This Time](https://hacdias.com/2026/07/28/filebrowser/), July 2026.
+The goal is deliberately conservative: keep the native File Browser feature set
+alive, patch it, harden it, and preserve compatibility for existing users.
+UnyCloud is not a rewrite and does not try to become a different cloud product.
+
+## Project Position
+
+File Browser upstream announced the end of active maintenance and repository
+archival for 2026-09-01. UnyCloud exists to keep that codebase maintainable for
+operators who need the original File Browser behavior to remain stable.
+
+UnyCloud takes over from that point as a maintenance fork focused on:
+
+- security fixes and dependency updates;
+- preserving the existing File Browser UX;
+- preserving existing database, CLI, flags, config files, and environment
+  variables;
+- keeping native features available instead of replacing the product model;
+- avoiding configuration migrations unless a security fix makes one impossible.
+
+## Compatibility Contract
+
+Compatibility is the main design constraint.
+
+Existing File Browser deployments should keep working with the same operational
+model:
+
+- same installed binary path/name for existing services: `filebrowser`;
+- same default database format and path behavior;
+- same CLI commands and flags;
+- same `FB_*` environment variables;
+- same JSON/TOML/YAML config behavior;
+- same user, share, rule, branding, and settings model;
+- same HTTP/API behavior unless a security patch requires a targeted change.
+
+When a breaking change is unavoidable, it must be documented, justified by a
+security or correctness requirement, and shipped with the smallest practical
+migration path.
+
+## Difference From Quantum
+
+FileBrowser Quantum is a separate fork with a broader product direction.
+
+UnyCloud's direction is different:
+
+- keep the original File Browser architecture familiar;
+- keep old deployments and users compatible;
+- patch and harden the native feature set;
+- avoid forcing a new configuration model;
+- prefer maintenance discipline over new platform features.
+
+That makes UnyCloud a conservative continuation path for installations that
+need File Browser behavior to remain stable.
 
 ## Security
 
-Published advisories are listed under [security advisories](https://github.com/filebrowser/filebrowser/security/advisories),
-and reporting instructions are in [SECURITY.md](SECURITY.md). Two known issue classes
-remain unaddressed and will not be fixed:
+UnyCloud treats exposed file-management software as high-risk software.
 
-- **Command execution, runner, and hooks.** This feature is plagued with vulnerabilities across many published advisories, and would need a full rewrite to be made safe. It is disabled by default; if you re-enable it with `--disable-exec=false`, treat the ability to run commands as equivalent to shell access on the host. Background: [#5199](https://github.com/filebrowser/filebrowser/issues/5199).
-- **Session and JWT handling.** Sessions are self-contained JWTs rather than server-side identifiers, so they cannot be revoked, which means that logout, password changes, and renewal leave previously issued tokens valid until they expire, and the same refresh token can be redeemed repeatedly. Assume a leaked token is valid until expiry. Background: [#5216](https://github.com/filebrowser/filebrowser/issues/5216).
+Security priorities:
 
-If you keep running File Browser, treat it as unmaintained software:
+- patch published vulnerabilities where practical;
+- keep dependencies current and auditable;
+- keep command execution disabled by default;
+- harden authentication/session behavior without breaking existing installs;
+- preserve safe defaults such as localhost binding and disabled command runner;
+- document any risky feature clearly.
 
-- **Do not expose it directly to the internet.** Put it behind a reverse proxy that terminates TLS and performs its own authentication.
-- **Keep the command runner disabled.** It is off by default, so leave it off. See [#5199](https://github.com/filebrowser/filebrowser/issues/5199) and [`docs/command-execution.md`](docs/command-execution.md).
-- **Run it unprivileged, inside a container**, with only the directory you intend to serve mounted into it.
+Operational recommendations still apply:
+
+- put UnyCloud behind a TLS reverse proxy;
+- use external rate limiting and access controls for public exposure;
+- run the process as an unprivileged user;
+- mount only the directories that must be served;
+- do not mount `/`, `/root`, `/etc`, or full host homes unless intentionally
+  accepting that risk;
+- keep backups of the database, config, and served files.
+
+Known upstream issue classes remain important audit targets:
+
+- command execution, runner, and hooks;
+- session and JWT revocation behavior;
+- upload and archive handling;
+- path traversal and symlink boundaries;
+- public sharing permissions.
+
+Published upstream advisories remain relevant background:
+https://github.com/filebrowser/filebrowser/security/advisories
+
+## UnyCloud v0.0.1
+
+The first UnyCloud release establishes the fork and applies the first
+maintenance hardening set:
+
+- CSP hardened without inline-script/style escape hatches and without per-build
+  CSP hashes;
+- runtime bootstrap moved out of inline HTML into static JavaScript;
+- loading screen moved out of inline HTML into static CSS;
+- Vue legacy bundle generation removed;
+- Ace editor runtime removed from the application bundle and replaced with a
+  native CSP-safe editor while keeping the stored `aceEditorTheme` field for
+  compatibility;
+- EPUB embedded reader disabled until it can comply with the strict CSP;
+- PDF preview moved from `<object>` to a sandboxed iframe;
+- PWA manifest served as same-origin JSON instead of a blob URL;
+- login form attributes fixed for browser password managers;
+- style-injecting number input dependency replaced by a local component;
+- toast notifications replaced by a local CSP-safe host;
+- video preview moved to a native CSP-safe player;
+- public share and login failure rate limits added using the non-spoofable
+  socket peer address;
+- security event logs and admin-only `/api/security/*` endpoints added for
+  fail2ban/server monitoring integration;
+- auth cookies are issued server-side with `HttpOnly`, `SameSite=Strict`, and
+  `Secure` on HTTPS;
+- unsafe cross-origin write requests are rejected when an `Origin` header is
+  present;
+- security headers applied globally;
+- ReCaptcha CSP sources kept compatible when configured;
+- JSON body limits added to admin/share mutation endpoints;
+- hook authentication output and runtime are bounded;
+- interactive shell execution tightened when shell mode is configured;
+- interactive commands bounded by an internal timeout;
+- build artifact renamed to `dist/unycloud`.
+
+See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
+[`docs/MAINTENANCE.md`](docs/MAINTENANCE.md) for maintenance/deployment notes.
+
+## Build
+
+Build locally:
+
+```sh
+scripts/build.sh
+```
+
+Run security checks:
+
+```sh
+scripts/security-scan.sh
+```
+
+The build artifact is `dist/unycloud`.
+
+Container builds are local in `v0.0.1`:
+
+```sh
+scripts/build.sh
+docker build -t unycloud:local .
+```
+
+Existing deployments can keep their service configured for the legacy
+`filebrowser` executable name:
+
+```sh
+UNYCLOUD_INSTALL_ROOT=/mnt/server-root scripts/install-legacy-filebrowser.sh
+```
+
+This installs `dist/unycloud` to `/usr/local/bin/filebrowser` inside the target
+root and keeps a timestamped backup of the previous executable. The script does
+not restart services.
 
 ## Documentation
 
-Documentation on how to install, configure, and build this project lives in [`docs`](docs) in this repository.
-
-[CONTRIBUTING.md](CONTRIBUTING.md) documents how to build and develop the project, which remains useful to anyone forking it.
+Original File Browser documentation remains in [`docs`](docs). It is retained
+because compatibility with existing File Browser behavior is part of this fork's
+contract.
 
 ## License
 
-[Apache License 2.0](LICENSE) © File Browser Contributors
+[Apache License 2.0](LICENSE) © File Browser Contributors and UnyCloud
+contributors.

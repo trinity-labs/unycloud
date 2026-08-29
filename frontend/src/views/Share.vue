@@ -29,7 +29,7 @@
     <breadcrumbs :base="'/share/' + hash" />
 
     <div v-if="layoutStore.loading">
-      <h2 class="message delayed" style="padding-top: 3em !important">
+      <h2 class="message delayed share__loading">
         <div class="spinner">
           <div class="bounce1"></div>
           <div class="bounce2"></div>
@@ -40,7 +40,7 @@
     </div>
     <div v-else-if="error">
       <div v-if="error.status === 401">
-        <div class="card floating" id="password" style="z-index: 9999999">
+        <div class="card floating share__password" id="password">
           <div v-if="attemptedPasswordLogin" class="share__wrong__password">
             {{ t("login.wrongCredentials") }}
           </div>
@@ -75,16 +75,8 @@
     </div>
     <div v-else-if="req !== null">
       <div class="share">
-        <div
-          class="share__box share__box__info"
-          style="
-            position: -webkit-sticky;
-            position: sticky;
-            top: -20.6em;
-            z-index: 999;
-          "
-        >
-          <div class="share__box__header" style="height: 3em">
+        <div class="share__box share__box__info">
+          <div class="share__box__header share__box__element--short">
             {{
               req.isDir
                 ? t("download.downloadFolder")
@@ -97,21 +89,21 @@
           >
             <i class="material-icons">{{ icon }}</i>
           </div>
-          <div class="share__box__element" style="height: 3em">
+          <div class="share__box__element share__box__element--short">
             <strong>{{ $t("prompts.displayName") }}</strong> {{ req.name }}
           </div>
           <div v-if="!req.isDir" class="share__box__element" :title="modTime">
             <strong>{{ $t("prompts.lastModified") }}:</strong> {{ humanTime }}
           </div>
-          <div class="share__box__element" style="height: 3em">
+          <div class="share__box__element share__box__element--short">
             <strong>{{ $t("prompts.size") }}:</strong> {{ humanSize }}
           </div>
           <div class="share__box__element share__box__center">
             <a
               target="_blank"
+              rel="noopener noreferrer"
               :href="link"
-              class="button button--flat"
-              style="height: 4em"
+              class="button button--flat share__download"
             >
               <div>
                 <i class="material-icons">file_download</i
@@ -120,6 +112,7 @@
             </a>
             <a
               target="_blank"
+              rel="noopener noreferrer"
               :href="inlineLink"
               class="button button--flat"
               v-if="!req.isDir"
@@ -134,25 +127,30 @@
               :value="link"
               :size="100"
               level="M"
+              render-as="svg"
             ></qrcode-vue>
           </div>
           <div v-if="!req.isDir" class="share__box__element share__box__center">
-            <qrcode-vue :value="link" :size="200" level="M"></qrcode-vue>
+            <qrcode-vue
+              :value="link"
+              :size="200"
+              level="M"
+              render-as="svg"
+            ></qrcode-vue>
           </div>
           <div
             v-if="req.isDir"
-            class="share__box__element share__box__header"
-            style="height: 3em"
+            class="share__box__element share__box__header share__box__element--short"
           >
             {{ $t("sidebar.preview") }}
           </div>
           <div
             v-if="req.isDir"
-            class="share__box__element share__box__center share__box__icon"
-            style="padding: 0em !important; height: 12em !important"
+            class="share__box__element share__box__center share__box__icon share__preview"
           >
             <a
               target="_blank"
+              rel="noopener noreferrer"
               :href="raw"
               class="button button--flat"
               v-if="
@@ -160,10 +158,9 @@
                 fileStore.selectedCount === 1 &&
                 req.items[fileStore.selected[0]].type === 'image'
               "
-              style="height: 12em; padding: 0; margin: 0"
             >
               <img
-                style="height: 12em"
+                class="share__preview-media"
                 :src="raw"
                 :alt="req.items[fileStore.selected[0]].name"
               />
@@ -174,31 +171,19 @@
                 fileStore.selectedCount === 1 &&
                 req.items[fileStore.selected[0]].type === 'audio'
               "
-              style="height: 12em; padding-top: 1em; margin: 0"
+              class="share__preview-audio"
             >
               <button
                 @click="play"
                 v-if="!tag"
-                style="
-                  font-size: 6em !important;
-                  border: 0px;
-                  outline: none;
-                  background: white;
-                "
-                class="material-icons"
+                class="material-icons share__preview-play"
               >
                 play_circle_filled
               </button>
               <button
                 @click="play"
                 v-if="tag"
-                style="
-                  font-size: 6em !important;
-                  border: 0px;
-                  outline: none;
-                  background: white;
-                "
-                class="material-icons"
+                class="material-icons share__preview-play"
               >
                 pause_circle_filled
               </button>
@@ -216,7 +201,7 @@
                 fileStore.selectedCount === 1 &&
                 req.items[fileStore.selected[0]].type === 'video'
               "
-              style="height: 12em; padding: 0; margin: 0"
+              class="share__preview-media"
               :src="raw"
               controls
             >

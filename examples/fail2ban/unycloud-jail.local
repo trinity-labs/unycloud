@@ -1,0 +1,7 @@
+[unycloud]
+enabled = true
+filter = unycloud
+logpath = /var/log/unycloud/*.log
+maxretry = 5
+findtime = 10m
+bantime = 1h

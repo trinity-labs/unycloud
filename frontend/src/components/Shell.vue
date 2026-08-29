@@ -1,14 +1,10 @@
 <template>
-  <div
-    class="shell"
-    :class="{ ['shell--hidden']: !showShell }"
-    :style="{ height: `${this.shellHeight}em`, direction: 'ltr' }"
-  >
+  <div class="shell" :class="[shellClass, { ['shell--hidden']: !showShell }]">
     <div
       @pointerdown="startDrag()"
       @pointerup="stopDrag()"
       class="shell__divider"
-      :style="this.shellDrag ? { background: `${checkTheme()}` } : ''"
+      :class="{ 'shell__divider--dragging': shellDrag }"
     ></div>
     <div @click="focus" class="shell__content" ref="scrollable">
       <div v-for="(c, index) in content" :key="index" class="shell__result">
@@ -39,7 +35,7 @@
     <div
       @pointerup="stopDrag()"
       class="shell__overlay"
-      v-show="this.shellDrag"
+      v-if="this.shellDrag"
     ></div>
   </div>
 </template>
@@ -51,7 +47,7 @@ import { useLayoutStore } from "@/stores/layout";
 
 import { commands } from "@/api";
 import { throttle } from "lodash-es";
-import { theme } from "@/utils/constants";
+import { cssEm, getDynamicClass, upsertRule } from "@/utils/cspStyle";
 
 export default {
   name: "shell",
@@ -73,9 +69,11 @@ export default {
     canInput: true,
     shellDrag: false,
     shellHeight: 25,
+    shellClass: getDynamicClass("shell-height"),
     fontsize: parseFloat(getComputedStyle(document.documentElement).fontSize),
   }),
   mounted() {
+    this.updateShellHeightRule();
     window.addEventListener("resize", this.resize);
   },
   beforeUnmount() {
@@ -83,11 +81,10 @@ export default {
   },
   methods: {
     ...mapActions(useLayoutStore, ["toggleShell"]),
-    checkTheme() {
-      if (theme == "dark") {
-        return "rgba(255, 255, 255, 0.4)";
-      }
-      return "rgba(127, 127, 127, 0.4)";
+    updateShellHeightRule() {
+      upsertRule(`.${this.shellClass}`, {
+        height: cssEm(this.shellHeight, 2, 100),
+      });
     },
     startDrag() {
       document.addEventListener("pointermove", this.handleDrag);
@@ -106,6 +103,7 @@ export default {
 
       if (userPos <= top && userPos >= bottom) {
         this.shellHeight = userPos.toFixed(2);
+        this.updateShellHeightRule();
       }
     }, 32),
     resize: throttle(function () {
@@ -119,6 +117,7 @@ export default {
       } else if (this.shellHeight < bottom) {
         this.shellHeight = bottom;
       }
+      this.updateShellHeightRule();
     }, 32),
     scroll: function () {
       this.$refs.scrollable.scrollTop = this.$refs.scrollable.scrollHeight;
@@ -150,18 +149,18 @@ export default {
 
       if (cmd === "clear") {
         this.content = [];
-        event.target.innerHTML = "";
+        event.target.textContent = "";
         return;
       }
 
       if (cmd === "exit") {
-        event.target.innerHTML = "";
+        event.target.textContent = "";
         this.toggleShell();
         return;
       }
 
       this.canInput = false;
-      event.target.innerHTML = "";
+      event.target.textContent = "";
 
       const results = {
         text: `${cmd}\n\n`,

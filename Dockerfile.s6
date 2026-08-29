@@ -7,8 +7,8 @@ RUN apk update && \
 RUN mkdir -p /config /database /srv && \
   chown -R abc:abc /config /database /srv
 
-# Copy files and set permissions
-COPY filebrowser /bin/filebrowser
+# Copy files and set permissions while keeping the legacy executable path.
+COPY dist/unycloud /bin/filebrowser
 COPY docker/common/ /
 COPY docker/s6/ /
 

@@ -21,7 +21,12 @@
 
             <tr v-for="link in links" :key="link.hash">
               <td>
-                <a :href="buildLink(link)" target="_blank">{{ link.path }}</a>
+                <a
+                  :href="buildLink(link)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >{{ link.path }}</a
+                >
               </td>
               <td>
                 <template v-if="link.expire !== 0">{{

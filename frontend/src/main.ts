@@ -1,17 +1,12 @@
 import { disableExternal } from "@/utils/constants";
 import { createApp } from "vue";
-import VueNumberInput from "@chenfengyuan/vue-number-input";
 import VueLazyload from "vue-lazyload";
-import Toast, { POSITION, useToast } from "vue-toastification";
-import type {
-  ToastOptions,
-  PluginOptions,
-} from "vue-toastification/dist/types/types";
 import createPinia from "@/stores";
 import router from "@/router";
 import i18n, { isRtl } from "@/i18n";
 import App from "@/App.vue";
-import CustomToast from "@/components/CustomToast.vue";
+import VueNumberInput from "@/components/VueNumberInput.vue";
+import { showToast } from "@/utils/toast";
 
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
@@ -31,11 +26,6 @@ const app = createApp(App);
 
 app.component(VueNumberInput.name || "vue-number-input", VueNumberInput);
 app.use(VueLazyload);
-app.use(Toast, {
-  transition: "Vue-Toastification__bounce",
-  maxToasts: 10,
-  newestOnTop: true,
-} satisfies PluginOptions);
 
 app.use(i18n);
 app.use(pinia);
@@ -56,51 +46,26 @@ app.directive("focus", {
   },
 });
 
-const toastConfig = {
-  position: POSITION.BOTTOM_CENTER,
-  timeout: 4000,
-  closeOnClick: true,
-  pauseOnFocusLoss: true,
-  pauseOnHover: true,
-  draggable: true,
-  draggablePercent: 0.6,
-  showCloseButtonOnHover: false,
-  hideProgressBar: false,
-  closeButton: "button",
-  icon: true,
-} satisfies ToastOptions;
-
 app.provide("$showSuccess", (message: string) => {
-  const $toast = useToast();
-  $toast.success(
-    {
-      component: CustomToast,
-      props: {
-        message: message,
-      },
-    },
-    { ...toastConfig, rtl: isRtl() }
-  );
+  showToast({
+    kind: "success",
+    message,
+    isReport: false,
+    reportText: "",
+    timeout: 4000,
+    rtl: isRtl(),
+  });
 });
 
 app.provide("$showError", (error: Error | string, displayReport = true) => {
-  const $toast = useToast();
-  $toast.error(
-    {
-      component: CustomToast,
-      props: {
-        message: (error as Error).message || error,
-        isReport: !disableExternal && displayReport,
-        // TODO: could you add this to the component itself?
-        reportText: i18n.global.t("buttons.reportIssue"),
-      },
-    },
-    {
-      ...toastConfig,
-      timeout: 0,
-      rtl: isRtl(),
-    }
-  );
+  showToast({
+    kind: "error",
+    message: (error as Error).message || String(error),
+    isReport: !disableExternal && displayReport,
+    reportText: i18n.global.t("buttons.reportIssue"),
+    timeout: 0,
+    rtl: isRtl(),
+  });
 });
 
 router.isReady().then(() => app.mount("#app"));

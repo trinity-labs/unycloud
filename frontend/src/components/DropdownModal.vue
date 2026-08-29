@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onBeforeUnmount } from "vue";
 import { vClickOutside } from "@/utils/index";
+import { cssPx, getDynamicClass, upsertRule } from "@/utils/cspStyle";
 
 const props = withDefaults(
   defineProps<{
@@ -17,24 +18,22 @@ const isOpen = defineModel<boolean>();
 
 const triggerRef = ref<HTMLElement | null>(null);
 const listRef = ref<HTMLElement | null>(null);
-const dropdownStyle = ref<Record<string, string>>({});
+const listClass = getDynamicClass("dropdown-modal-position");
 
 const updatePosition = () => {
   if (!isOpen.value || !triggerRef.value) return;
 
   const rect = triggerRef.value.getBoundingClientRect();
 
-  dropdownStyle.value = {
-    position: "fixed",
+  upsertRule(`.${listClass}`, {
     top: props.position.includes("bottom")
-      ? `${rect.bottom + 2}px`
-      : `${rect.top}px`,
-    left: props.position.includes("left") ? `${rect.left}px` : "auto",
+      ? cssPx(rect.bottom + 2)
+      : cssPx(rect.top),
+    left: props.position.includes("left") ? cssPx(rect.left) : "auto",
     right: props.position.includes("right")
-      ? `${window.innerWidth - rect.right}px`
+      ? cssPx(window.innerWidth - rect.right)
       : "auto",
-    zIndex: "11000",
-  };
+  });
 };
 
 watch(isOpen, (open) => {
@@ -92,8 +91,7 @@ export default {
       <div
         ref="listRef"
         class="dropdown-modal-list"
-        :class="{ 'dropdown-modal-open': isOpen }"
-        :style="dropdownStyle"
+        :class="[listClass, { 'dropdown-modal-open': isOpen }]"
       >
         <div>
           <slot name="list"></slot>
@@ -123,6 +121,9 @@ export default {
 }
 
 .dropdown-modal-list {
+  position: fixed;
+  z-index: 11000;
+  top: 0;
   padding: 0.25rem;
   background-color: var(--surfacePrimary);
   color: var(--textSecondary);

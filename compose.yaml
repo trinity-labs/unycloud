@@ -1,32 +1,38 @@
 services:
-  filebrowser:
-    container_name: filebrowser
-    image: filebrowser/filebrowser:latest
+  unycloud:
+    container_name: unycloud
+    image: unycloud:local
+    build:
+      context: .
     networks:
-      - filebrowser
+      - unycloud
     ports:
       - 8000:80
     volumes:
-      - filebrowser:/flux/vault
+      - unycloud-data:/srv
+      - unycloud-config:/config
+      - unycloud-database:/database
     environment:
-      - FB_REDIS_CACHE_URL=redis://default:filebrowser@redis:6379 # Use rediss:// for ssl
+      - FB_REDIS_CACHE_URL=redis://default:unycloud@redis:6379 # Use rediss:// for ssl
 
   redis:
     container_name: redis
     image: redis:latest
     networks:
-      - filebrowser
+      - unycloud
     command:
       - sh
       - -c
       - |
         cat > /tmp/users.acl <<EOF
-        user default on >filebrowser ~* +@all
+        user default on >unycloud ~* +@all
         EOF
         redis-server --aclfile /tmp/users.acl
 
 networks:
-  filebrowser:
+  unycloud:
 
 volumes:
-  filebrowser:
+  unycloud-data:
+  unycloud-config:
+  unycloud-database:

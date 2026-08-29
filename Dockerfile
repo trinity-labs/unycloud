@@ -17,8 +17,9 @@ ENV GID=1000
 RUN addgroup -g $GID user && \
     adduser -D -u $UID -G user user
 
-# Copy binary, scripts, and configurations into image with proper ownership
-COPY --chown=user:user filebrowser /bin/filebrowser
+# Copy the locally built UnyCloud binary while keeping the legacy File Browser
+# executable path inside the container.
+COPY --chown=user:user dist/unycloud /bin/filebrowser
 COPY --chown=user:user docker/common/ /
 COPY --chown=user:user docker/alpine/ /
 COPY --chown=user:user --from=fetcher /sbin/tini-static /bin/tini

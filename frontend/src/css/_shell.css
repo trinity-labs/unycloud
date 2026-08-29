@@ -12,6 +12,7 @@
   touch-action: none;
   user-select: none;
   width: 100%;
+  direction: ltr;
 }
 
 .shell__divider {
@@ -22,6 +23,10 @@
 
 .shell__divider:hover {
   background: rgba(127, 127, 127, 0.9);
+}
+
+.shell__divider--dragging {
+  background: var(--dividerPrimary);
 }
 
 .shell__content {

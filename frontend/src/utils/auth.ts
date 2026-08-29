@@ -10,8 +10,6 @@ export function parseToken(token: string) {
   // falsy or malformed jwt will throw InvalidTokenError
   const data = jwtDecode<JwtPayload & { user: IUser }>(token);
 
-  document.cookie = `auth=${token}; Path=/; SameSite=Strict;`;
-
   localStorage.setItem("jwt", token);
 
   const authStore = useAuthStore();
@@ -57,6 +55,9 @@ export async function login(
 
   const res = await fetch(`${baseURL}/api/login`, {
     method: "POST",
+    credentials: "same-origin",
+    cache: "no-store",
+    redirect: "error",
     headers: {
       "Content-Type": "application/json",
     },
@@ -78,6 +79,9 @@ export async function login(
 export async function renew(jwt: string) {
   const res = await fetch(`${baseURL}/api/renew`, {
     method: "POST",
+    credentials: "same-origin",
+    cache: "no-store",
+    redirect: "error",
     headers: {
       "X-Auth": jwt,
     },
@@ -100,6 +104,9 @@ export async function signup(username: string, password: string) {
 
   const res = await fetch(`${baseURL}/api/signup`, {
     method: "POST",
+    credentials: "same-origin",
+    cache: "no-store",
+    redirect: "error",
     headers: {
       "Content-Type": "application/json",
     },
@@ -116,7 +123,13 @@ export async function signup(username: string, password: string) {
 }
 
 export function logout(reason?: string) {
-  document.cookie = "auth=; Max-Age=0; Path=/; SameSite=Strict;";
+  fetch(`${baseURL}/api/logout`, {
+    method: "POST",
+    credentials: "same-origin",
+    cache: "no-store",
+    redirect: "error",
+    keepalive: true,
+  }).catch(() => {});
 
   const authStore = useAuthStore();
   authStore.clearUser();

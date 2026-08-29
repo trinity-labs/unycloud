@@ -46,9 +46,15 @@ You can do this by adding them in Settings > User Management > (edit user) > Com
 
 > [!NOTE]
 > 
-> If using Docker and you want to add a new command that is not in the base image then you will need to build a custom Docker image using `filebrowser/filebrowser` as a base image.  For example to add 7z:
+> If using Docker and you want to add a new command that is not in the base
+> image, build a local image first with `scripts/build.sh && docker build -t
+> unycloud:local .`, then extend that local image or build your own runtime
+> image with the required tools installed. For example:
 > 
 > ```docker
-> FROM filebrowser/filebrowser
-> RUN sudo apt install p7zip-full
+> FROM unycloud:local
+> USER root
+> # Install additional tools here using the package manager available in your
+> # chosen base image, then switch back to the unprivileged runtime user.
+> USER user
 > ```

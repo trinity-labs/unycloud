@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug in FileBrowser.
+description: Report a bug in UnyCloud.
 labels: [bug, 'waiting: triage']
 body:
   - type: checkboxes
@@ -9,9 +9,9 @@ body:
       options:
         - label: This is a bug report, not a question.
           required: true
-        - label: I have searched on the [issue tracker](https://github.com/filebrowser/filebrowser/issues?q=is%3Aissue) for my bug.
+        - label: I have searched on the [issue tracker](https://github.com/trinity-labs/unycloud/issues?q=is%3Aissue) for my bug.
           required: true
-        - label: I am running the latest [FileBrowser version](https://github.com/filebrowser/filebrowser/releases) or have an issue updating.
+        - label: I am running the latest [UnyCloud version](https://github.com/trinity-labs/unycloud/releases) or have an issue updating.
           required: true
   - type: textarea
     id: version
@@ -19,7 +19,7 @@ body:
       label: Version
       render: Text
       description: |
-        Enter the version of FileBrowser you are using.
+        Enter the version of UnyCloud you are using.
     validations:
       required: true
   - type: textarea

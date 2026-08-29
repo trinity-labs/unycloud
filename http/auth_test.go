@@ -149,3 +149,37 @@ func TestExpiredTokenNeedsProxyAssertion(t *testing.T) {
 		}
 	})
 }
+
+func TestPrintTokenSetsHttpOnlyCookie(t *testing.T) {
+	req := httptest.NewRequest(http.MethodPost, "http://cloud.example.test/api/login", nil)
+	req.Header.Set("X-Forwarded-Proto", "https")
+	rec := httptest.NewRecorder()
+
+	d := &data{settings: &settings.Settings{Key: []byte("test-signing-key")}}
+	user := &users.User{ID: 1, Username: "u", Perm: users.Permissions{Download: true}}
+
+	status, err := printToken(rec, req, d, user, time.Hour)
+	if err != nil || status != 0 {
+		t.Fatalf("printToken() status=%d err=%v", status, err)
+	}
+
+	var authCookie *http.Cookie
+	for _, cookie := range rec.Result().Cookies() {
+		if cookie.Name == "auth" {
+			authCookie = cookie
+			break
+		}
+	}
+	if authCookie == nil {
+		t.Fatal("missing auth cookie")
+	}
+	if !authCookie.HttpOnly {
+		t.Fatal("auth cookie must be HttpOnly")
+	}
+	if !authCookie.Secure {
+		t.Fatal("auth cookie must be Secure behind HTTPS proxy")
+	}
+	if authCookie.SameSite != http.SameSiteStrictMode {
+		t.Fatalf("auth cookie SameSite = %v, want Strict", authCookie.SameSite)
+	}
+}

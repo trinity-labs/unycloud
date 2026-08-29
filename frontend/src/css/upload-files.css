@@ -27,10 +27,28 @@
   height: 5px;
 }
 
-.upload-files .file .file-progress div {
+.upload-files .file .file-progress progress {
+  appearance: none;
+  border: 0;
   height: 100%;
+  width: 100%;
+  display: block;
+  background: transparent;
+  border-radius: 10px;
+}
+
+.upload-files .file .file-progress progress::-webkit-progress-bar {
+  background: transparent;
+}
+
+.upload-files .file .file-progress progress::-webkit-progress-value {
   background-color: #40c4ff;
-  width: 0;
+  transition: 0.2s ease width;
+  border-radius: 10px;
+}
+
+.upload-files .file .file-progress progress::-moz-progress-bar {
+  background-color: #40c4ff;
   transition: 0.2s ease width;
   border-radius: 10px;
 }

@@ -11,18 +11,25 @@ tasks:
   build:backend:
     desc: Build backend binary
     cmds:
-      - go build -ldflags='-s -w -X "github.com/filebrowser/filebrowser/v2/version.Version={{.VERSION}}" -X "github.com/filebrowser/filebrowser/v2/version.CommitSHA={{.GIT_COMMIT}}"' -o filebrowser .
+      - mkdir -p dist
+      - GOTOOLCHAIN=go1.26.6 CGO_ENABLED=0 go build -trimpath -ldflags='-s -w -X "github.com/filebrowser/filebrowser/v2/version.Version={{.VERSION}}" -X "github.com/filebrowser/filebrowser/v2/version.CommitSHA={{.GIT_COMMIT}}"' -o dist/unycloud .
     vars:
       GIT_COMMIT:
         sh: git log -n 1 --format=%h
       VERSION:
-        sh: git describe --tags --abbrev=0 --match=v* | cut -c 2-
+        sh: git describe --tags --abbrev=0 --match=v* 2>/dev/null | cut -c 2- || printf '0.0.1'
 
   build:
     desc: Build both frontend and backend
     cmds:
+      - ./scripts/csp-audit.sh
       - task: build:frontend
       - task: build:backend
+
+  security:
+    desc: Run security checks
+    cmds:
+      - ./scripts/security-scan.sh
 
   release:make:
     internal: true
@@ -54,4 +61,3 @@ tasks:
       - go run . docs
     generates:
       - docs/cli
-

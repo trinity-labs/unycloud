@@ -301,3 +301,30 @@ func ExampleSplitCommandAndArgs() {
 	// Windows: mkdir /P "C:\Program Files": mkdir [/P,C:\Program Files]
 	// Linux: mkdir -p /path/with\ space: mkdir [-p,/path/with space]
 }
+
+func TestHasShellControlOperator(t *testing.T) {
+	runtimeGoos = osLinux
+	defer func() {
+		runtimeGoos = runtime.GOOS
+	}()
+
+	tests := []struct {
+		input string
+		want  bool
+	}{
+		{input: "ls -la", want: false},
+		{input: "ls /tmp/file-name", want: false},
+		{input: "ls ; rm -rf /", want: true},
+		{input: "ls && rm -rf /", want: true},
+		{input: "ls | cat", want: true},
+		{input: "echo $(id)", want: true},
+		{input: "echo ${HOME}", want: true},
+		{input: "echo `id`", want: true},
+	}
+
+	for _, test := range tests {
+		if got := HasShellControlOperator(test.input); got != test.want {
+			t.Fatalf("HasShellControlOperator(%q) = %v, want %v", test.input, got, test.want)
+		}
+	}
+}

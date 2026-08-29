@@ -144,14 +144,14 @@
           <span>{{ t("files.lonely") }}</span>
         </h2>
         <input
-          style="display: none"
+          class="upload-input-hidden"
           type="file"
           id="upload-input"
           @change="uploadInput($event)"
           multiple
         />
         <input
-          style="display: none"
+          class="upload-input-hidden"
           type="file"
           id="upload-folder-input"
           @change="uploadInput($event)"
@@ -306,14 +306,14 @@
         </context-menu>
 
         <input
-          style="display: none"
+          class="upload-input-hidden"
           type="file"
           id="upload-input"
           @change="uploadInput($event)"
           multiple
         />
         <input
-          style="display: none"
+          class="upload-input-hidden"
           type="file"
           id="upload-folder-input"
           @change="uploadInput($event)"
@@ -349,7 +349,6 @@ import { users, files as api } from "@/api";
 import { enableExec } from "@/utils/constants";
 import * as upload from "@/utils/upload";
 import buttons from "@/utils/buttons";
-import css from "@/utils/css";
 import { throttle } from "lodash-es";
 import { Base64 } from "js-base64";
 
@@ -373,7 +372,6 @@ import { storeToRefs } from "pinia";
 import { removePrefix } from "@/api/utils";
 
 const showLimit = ref<number>(50);
-const columnWidth = ref<number>(280);
 const dragCounter = ref<number>(0);
 const width = ref<number>(window.innerWidth);
 const itemWeight = ref<number>(0);
@@ -512,9 +510,6 @@ watch(req, () => {
 });
 
 onMounted(() => {
-  // Check the columns size for the first time.
-  columnsResize();
-
   // How much every listing item affects the window height
   setItemWeight();
 
@@ -733,18 +728,6 @@ const paste = async (event: Event) => {
   action(false, false);
 };
 
-const columnsResize = () => {
-  // Update the columns size based on the window width.
-  const items_ = css(["#listing.mosaic .item", ".mosaic#listing .item"]);
-  if (items_ === null) return;
-
-  let columns = Math.floor(
-    (document.querySelector("main")?.offsetWidth ?? 0) / columnWidth.value
-  );
-  if (columns === 0) columns = 1;
-  items_.style.width = `calc(${100 / columns}% - 1em)`;
-};
-
 const scrollEvent = throttle(() => {
   const totalItems =
     (fileStore.req?.numDirs ?? 0) + (fileStore.req?.numFiles ?? 0);
@@ -774,7 +757,7 @@ const dragEnter = () => {
   const items = document.getElementsByClassName("item");
 
   Array.from(items).forEach((file: Element) => {
-    (file as HTMLElement).style.opacity = "0.5";
+    file.classList.add("item--drop-muted");
   });
 };
 
@@ -927,7 +910,7 @@ const resetOpacity = () => {
   const items = document.getElementsByClassName("item");
 
   Array.from(items).forEach((file: Element) => {
-    (file as HTMLElement).style.opacity = "1";
+    file.classList.remove("item--drop-muted", "item--drop-target");
   });
 };
 
@@ -971,7 +954,6 @@ const toggleMultipleSelection = () => {
 };
 
 const windowsResize = throttle(() => {
-  columnsResize();
   width.value = window.innerWidth;
 
   // Listing element is not displayed

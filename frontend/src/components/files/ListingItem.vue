@@ -154,7 +154,7 @@ const dragOver = (event: Event) => {
       }
     }
 
-    if (el !== null) el.style.opacity = "1";
+    if (el !== null) el.classList.add("item--drop-target");
   }
 };
 

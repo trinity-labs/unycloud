@@ -88,6 +88,15 @@ nav .action > * {
   vertical-align: middle;
 }
 
+nav .credits {
+  width: 90%;
+  margin: 2em 2.5em 3em;
+}
+
+[hidden] {
+  display: none !important;
+}
+
 main {
   min-height: 1em;
   margin: 0 1em 1em auto;
@@ -143,10 +152,26 @@ html[dir="rtl"] .breadcrumbs a {
   z-index: 9999999999;
 }
 
-.progress div {
+.progress progress {
+  appearance: none;
+  border: 0;
   height: 100%;
+  width: 100%;
+  display: block;
+  background: transparent;
+}
+
+.progress progress::-webkit-progress-bar {
+  background: transparent;
+}
+
+.progress progress::-webkit-progress-value {
   background-color: #40c4ff;
-  width: 0;
+  transition: 0.2s ease width;
+}
+
+.progress progress::-moz-progress-bar {
+  background-color: #40c4ff;
   transition: 0.2s ease width;
 }
 
@@ -182,10 +207,6 @@ html[dir="rtl"] .breadcrumbs a {
 .vue-number-input__button::before,
 .vue-number-input__button::after {
   background: var(--textSecondary) !important;
-}
-
-body > div[style*="z-index: 9990"] {
-  z-index: 10000 !important;
 }
 
 #modal-background .button:focus {

@@ -158,6 +158,11 @@ func loginHandler(tokenExpireTime time.Duration) handleFunc {
 		if r.Body != nil {
 			r.Body = http.MaxBytesReader(w, r.Body, maxAuthBodySize)
 		}
+		rateLimitKey := requestRateLimitKey("login", r)
+		if !loginFailureLimiter.allow(rateLimitKey) {
+			recordSecurityEvent(r, "login_throttled", http.StatusTooManyRequests, "")
+			return http.StatusTooManyRequests, nil
+		}
 
 		auther, err := d.store.Auth.Get(d.settings.AuthMethod)
 		if err != nil {
@@ -167,11 +172,15 @@ func loginHandler(tokenExpireTime time.Duration) handleFunc {
 		user, err := auther.Auth(r, d.store.Users, d.settings, d.server)
 		switch {
 		case errors.Is(err, os.ErrPermission):
+			loginFailureLimiter.fail(rateLimitKey)
+			recordSecurityEvent(r, "login_failure", http.StatusForbidden, "")
 			return http.StatusForbidden, nil
 		case err != nil:
+			recordSecurityEvent(r, "login_error", http.StatusInternalServerError, "")
 			return http.StatusInternalServerError, err
 		}
 
+		loginFailureLimiter.reset(rateLimitKey)
 		return printToken(w, r, d, user, tokenExpireTime)
 	}
 }
@@ -242,6 +251,12 @@ var signupHandler = func(w http.ResponseWriter, r *http.Request, d *data) (int, 
 	return http.StatusOK, nil
 }
 
+var logoutHandler = func(w http.ResponseWriter, r *http.Request, _ *data) (int, error) {
+	clearAuthCookie(w, r)
+	w.WriteHeader(http.StatusNoContent)
+	return 0, nil
+}
+
 func renewHandler(tokenExpireTime time.Duration) handleFunc {
 	return withUser(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
 		w.Header().Set("X-Renew-Token", "false")
@@ -249,7 +264,7 @@ func renewHandler(tokenExpireTime time.Duration) handleFunc {
 	})
 }
 
-func printToken(w http.ResponseWriter, _ *http.Request, d *data, user *users.User, tokenExpirationTime time.Duration) (int, error) {
+func printToken(w http.ResponseWriter, r *http.Request, d *data, user *users.User, tokenExpirationTime time.Duration) (int, error) {
 	claims := &authToken{
 		User: userInfo{
 			ID:                    user.ID,
@@ -268,7 +283,7 @@ func printToken(w http.ResponseWriter, _ *http.Request, d *data, user *users.Use
 		RegisteredClaims: jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(tokenExpirationTime)),
-			Issuer:    "File Browser",
+			Issuer:    "UnyCloud",
 		},
 	}
 
@@ -278,9 +293,36 @@ func printToken(w http.ResponseWriter, _ *http.Request, d *data, user *users.Use
 		return http.StatusInternalServerError, err
 	}
 
+	setAuthCookie(w, r, signed, tokenExpirationTime)
 	w.Header().Set("Content-Type", "text/plain")
 	if _, err := w.Write([]byte(signed)); err != nil {
 		return http.StatusInternalServerError, err
 	}
 	return 0, nil
+}
+
+func setAuthCookie(w http.ResponseWriter, r *http.Request, token string, expiresIn time.Duration) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "auth",
+		Value:    token,
+		Path:     "/",
+		MaxAge:   int(expiresIn.Seconds()),
+		Expires:  time.Now().Add(expiresIn),
+		HttpOnly: true,
+		Secure:   requestIsHTTPS(r),
+		SameSite: http.SameSiteStrictMode,
+	})
+}
+
+func clearAuthCookie(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "auth",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   -1,
+		Expires:  time.Unix(0, 0),
+		HttpOnly: true,
+		Secure:   requestIsHTTPS(r),
+		SameSite: http.SameSiteStrictMode,
+	})
 }

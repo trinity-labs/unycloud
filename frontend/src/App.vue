@@ -2,6 +2,7 @@
   <div>
     <h1 class="sr-only">{{ name }}</h1>
     <router-view></router-view>
+    <toast-host />
   </div>
 </template>
 
@@ -11,6 +12,7 @@ import { useI18n } from "vue-i18n";
 import { setHtmlLocale } from "./i18n";
 import { getMediaPreference, getTheme, setTheme } from "./utils/theme";
 import { name } from "./utils/constants";
+import ToastHost from "@/components/ToastHost.vue";
 
 const { locale } = useI18n();
 

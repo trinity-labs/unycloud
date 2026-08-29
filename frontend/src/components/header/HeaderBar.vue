@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img v-if="showLogo" :src="logoURL" alt="File Browser" />
+    <img v-if="showLogo" :src="logoURL" alt="UnyCloud" />
     <Action
       v-if="showMenu"
       class="menu-button"
@@ -28,7 +28,7 @@
 
     <div
       class="overlay"
-      v-show="layoutStore.currentPromptName == 'more'"
+      v-if="layoutStore.currentPromptName == 'more'"
       @click="layoutStore.closeHovers"
     />
   </header>

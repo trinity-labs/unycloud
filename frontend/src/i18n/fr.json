@@ -264,9 +264,9 @@
     "shareManagement": "Gestion des partages",
     "shareDeleted": "Partage supprimé !",
     "singleClick": "Utiliser un simple clic pour ouvrir les fichiers et les dossiers",
-    "sunsetBody": "This project is being wound down. It is archived on 2026-09-01, after which there will be no further releases, bug fixes, or security fixes. Existing releases and Docker images stay online. Do not expose this instance directly to the internet without authentication in front of it.",
-    "sunsetLink": "Read the project status, known unfixed security issues, and hardening guidance",
-    "sunsetTitle": "File Browser is being archived",
+    "sunsetBody": "UnyCloud est un fork maintenu de File Browser. Cette instance garde l'UX et la configuration compatibles File Browser tout en recevant des patchs de maintenance orientes securite.",
+    "sunsetLink": "Lire les notes de securite et de maintenance UnyCloud",
+    "sunsetTitle": "Maintenance UnyCloud",
     "themes": {
       "default": "Par défaut du système",
       "dark": "Sombre",

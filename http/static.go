@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"html/template"
+	htmltemplate "html/template"
 	"io"
 	"io/fs"
 	"log"
@@ -14,6 +14,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	texttemplate "text/template"
 
 	"github.com/filebrowser/filebrowser/v2/auth"
 	"github.com/filebrowser/filebrowser/v2/settings"
@@ -85,7 +86,7 @@ func handleWithStaticData(w http.ResponseWriter, _ *http.Request, d *data, fSys 
 		return http.StatusInternalServerError, err
 	}
 
-	data["Json"] = template.JS(strings.ReplaceAll(string(b), `'`, `\'`))
+	data["Json"] = htmltemplate.JS(strings.ReplaceAll(string(b), `'`, `\'`))
 
 	fileContents, err := fs.ReadFile(fSys, file)
 	if err != nil {
@@ -94,8 +95,13 @@ func handleWithStaticData(w http.ResponseWriter, _ *http.Request, d *data, fSys 
 		}
 		return http.StatusInternalServerError, err
 	}
-	index := template.Must(template.New("index").Delims("[{[", "]}]").Parse(string(fileContents)))
-	err = index.Execute(w, data)
+	if strings.HasPrefix(contentType, "application/javascript") {
+		tpl := texttemplate.Must(texttemplate.New(file).Delims("[{[", "]}]").Parse(string(fileContents)))
+		err = tpl.Execute(w, data)
+	} else {
+		tpl := htmltemplate.Must(htmltemplate.New(file).Delims("[{[", "]}]").Parse(string(fileContents)))
+		err = tpl.Execute(w, data)
+	}
 	if err != nil {
 		return http.StatusInternalServerError, err
 	}
@@ -127,6 +133,16 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 		w.Header().Set("Cache-Control", fmt.Sprintf("public, max-age=%v", maxAge))
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 
+		if r.URL.Path == "runtime.js" {
+			w.Header().Set("Cache-Control", "no-store")
+			return handleWithStaticData(w, r, d, assetsFs, "runtime.js", "application/javascript; charset=utf-8")
+		}
+
+		if r.URL.Path == "manifest.json" {
+			w.Header().Set("Cache-Control", "no-store")
+			return handleManifest(w, d)
+		}
+
 		if d.settings.Branding.Files != "" {
 			if strings.HasPrefix(r.URL.Path, "img/") {
 				fPath := filepath.Join(d.settings.Branding.Files, r.URL.Path)
@@ -138,6 +154,7 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 					return 0, nil
 				}
 			} else if r.URL.Path == "custom.css" && d.settings.Branding.Files != "" {
+				w.Header().Set("Cache-Control", "no-store")
 				http.ServeFile(w, r, filepath.Join(d.settings.Branding.Files, "custom.css"))
 				return 0, nil
 			}
@@ -180,4 +197,55 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 	}, "/static/", store, server)
 
 	return index, static
+}
+
+func handleManifest(w http.ResponseWriter, d *data) (int, error) {
+	name := d.settings.Branding.Name
+	if name == "" {
+		name = "UnyCloud"
+	}
+
+	themeColor := d.settings.Branding.Color
+	if themeColor == "" {
+		themeColor = "#5a52c8"
+	}
+
+	startURL := d.server.BaseURL
+	if startURL == "" {
+		startURL = "/"
+	}
+
+	staticURL := path.Join(d.server.BaseURL, "/static")
+	manifest := map[string]interface{}{
+		"name":       name,
+		"short_name": name,
+		"icons": []map[string]string{
+			{
+				"src":   path.Join(staticURL, "/img/icons/android-chrome-192x192.png"),
+				"sizes": "192x192",
+				"type":  "image/png",
+			},
+			{
+				"src":   path.Join(staticURL, "/img/icons/android-chrome-512x512.png"),
+				"sizes": "512x512",
+				"type":  "image/png",
+			},
+		},
+		"start_url":        startURL,
+		"display":          "standalone",
+		"background_color": "#ffffff",
+		"theme_color":      themeColor,
+	}
+
+	body, err := json.Marshal(manifest)
+	if err != nil {
+		return http.StatusInternalServerError, err
+	}
+
+	w.Header().Set("Content-Type", "application/manifest+json; charset=utf-8")
+	if _, err := w.Write(body); err != nil {
+		return http.StatusInternalServerError, err
+	}
+
+	return 0, nil
 }

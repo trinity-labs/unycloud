@@ -42,7 +42,11 @@ var settingsGetHandler = withAdmin(func(w http.ResponseWriter, r *http.Request, 
 	return renderJSON(w, r, data)
 })
 
-var settingsPutHandler = withAdmin(func(_ http.ResponseWriter, r *http.Request, d *data) (int, error) {
+var settingsPutHandler = withAdmin(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
+	if r.Body != nil {
+		r.Body = http.MaxBytesReader(w, r.Body, maxAuthBodySize)
+	}
+
 	req := &settingsData{}
 	err := json.NewDecoder(r.Body).Decode(req)
 	if err != nil {

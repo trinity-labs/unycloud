@@ -2,6 +2,7 @@ package fbhttp
 
 import (
 	"bufio"
+	"context"
 	"io"
 	"log"
 	"net/http"
@@ -17,6 +18,7 @@ import (
 
 const (
 	WSWriteDeadline = 10 * time.Second
+	CommandTimeout  = 1 * time.Hour
 )
 
 var upgrader = websocket.Upgrader{
@@ -85,7 +87,23 @@ var commandsHandler = withUser(func(w http.ResponseWriter, r *http.Request, d *d
 		return 0, nil
 	}
 
-	cmd := exec.Command(command[0], command[1:]...)
+	if len(d.settings.Shell) > 0 && d.settings.Shell[0] != "" && runner.HasShellControlOperator(raw) {
+		if err := conn.WriteMessage(websocket.TextMessage, cmdNotAllowed); err != nil {
+			wsErr(conn, r, http.StatusInternalServerError, err)
+		}
+
+		return 0, nil
+	}
+
+	if _, err := d.user.Fs.Stat(r.URL.Path); err != nil {
+		wsErr(conn, r, errToStatus(err), err)
+		return 0, nil
+	}
+
+	ctx, cancel := context.WithTimeout(r.Context(), CommandTimeout)
+	defer cancel()
+
+	cmd := exec.CommandContext(ctx, command[0], command[1:]...)
 	cmd.Dir = d.user.FullPath(r.URL.Path)
 
 	stdout, err := cmd.StdoutPipe()

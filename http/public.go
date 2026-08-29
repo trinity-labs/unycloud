@@ -142,7 +142,14 @@ func authenticateShareRequest(r *http.Request, l *share.Link) (int, error) {
 		return 0, nil
 	}
 
+	rateLimitKey := requestRateLimitKey("share", r, l.Hash)
+	if !shareFailureLimiter.allow(rateLimitKey) {
+		recordSecurityEvent(r, "share_throttled", http.StatusTooManyRequests, "")
+		return http.StatusTooManyRequests, nil
+	}
+
 	if subtle.ConstantTimeCompare([]byte(r.URL.Query().Get("token")), []byte(l.Token)) == 1 {
+		shareFailureLimiter.reset(rateLimitKey)
 		return 0, nil
 	}
 
@@ -156,15 +163,19 @@ func authenticateShareRequest(r *http.Request, l *share.Link) (int, error) {
 	}
 	if err := bcrypt.CompareHashAndPassword([]byte(l.PasswordHash), []byte(password)); err != nil {
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			shareFailureLimiter.fail(rateLimitKey)
+			recordSecurityEvent(r, "share_failure", http.StatusUnauthorized, "")
 			return http.StatusUnauthorized, nil
 		}
 		return 0, err
 	}
 
+	shareFailureLimiter.reset(rateLimitKey)
 	return 0, nil
 }
 
 func healthHandler(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write([]byte(`{"status":"OK"}`))
 }

@@ -55,11 +55,10 @@
             <i class="material-icons"></i> {{ upload.name }}
           </div>
           <div class="file-progress">
-            <div
-              v-bind:style="{
-                width: (upload.sentBytes / upload.totalBytes) * 100 + '%',
-              }"
-            ></div>
+            <progress
+              :value="upload.sentBytes"
+              :max="upload.totalBytes || 1"
+            ></progress>
           </div>
         </div>
       </div>

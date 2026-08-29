@@ -1,6 +1,8 @@
 package runner
 
 import (
+	"strings"
+
 	"github.com/filebrowser/filebrowser/v2/settings"
 )
 
@@ -22,4 +24,32 @@ func ParseCommand(s *settings.Settings, raw string) (command []string, name stri
 	}
 
 	return command, name, nil
+}
+
+// HasShellControlOperator reports whether a user-provided command contains
+// shell metacharacters that would make a first-token allowlist ineffective.
+func HasShellControlOperator(raw string) bool {
+	name, args, err := SplitCommandAndArgs(raw)
+	if err != nil {
+		return true
+	}
+
+	return hasShellControl(name) || slicesContainControl(args)
+}
+
+func slicesContainControl(args []string) bool {
+	for _, arg := range args {
+		if hasShellControl(arg) {
+			return true
+		}
+	}
+	return false
+}
+
+func hasShellControl(arg string) bool {
+	if strings.ContainsAny(arg, ";&|<>`\n\r") {
+		return true
+	}
+
+	return strings.Contains(arg, "$(") || strings.Contains(arg, "${")
 }

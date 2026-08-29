@@ -32,10 +32,11 @@ func NewHandler(
 	r := mux.NewRouter()
 	r.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Security-Policy", `default-src 'self'; style-src 'unsafe-inline';`)
+			setSecurityHeaders(w, r, store)
 			next.ServeHTTP(w, r)
 		})
 	})
+	r.Use(enforceSameOriginRequests)
 	index, static := getStaticHandlers(store, server, assetsFs)
 
 	monkey := func(fn handleFunc, prefix string) http.Handler {
@@ -49,9 +50,13 @@ func NewHandler(
 	api := r.PathPrefix("/api").Subrouter()
 
 	tokenExpirationTime := server.GetTokenExpirationTime(DefaultTokenExpirationTime)
-	api.Handle("/login", monkey(loginHandler(tokenExpirationTime), ""))
-	api.Handle("/signup", monkey(signupHandler, ""))
-	api.Handle("/renew", monkey(renewHandler(tokenExpirationTime), ""))
+	api.Handle("/login", monkey(loginHandler(tokenExpirationTime), "")).Methods("POST")
+	api.Handle("/signup", monkey(signupHandler, "")).Methods("POST")
+	api.Handle("/renew", monkey(renewHandler(tokenExpirationTime), "")).Methods("POST")
+	api.Handle("/logout", monkey(logoutHandler, "")).Methods("POST")
+	api.Handle("/security/status", monkey(securityStatusHandler, "")).Methods("GET")
+	api.Handle("/security/events", monkey(securityEventsHandler, "")).Methods("GET")
+	api.Handle("/security/fail2ban", monkey(securityFail2BanHandler, "")).Methods("GET")
 
 	users := api.PathPrefix("/users").Subrouter()
 	users.Handle("", monkey(usersGetHandler, "")).Methods("GET")

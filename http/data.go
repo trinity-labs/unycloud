@@ -6,8 +6,6 @@ import (
 	gopath "path"
 	"strconv"
 
-	"github.com/tomasen/realip"
-
 	"github.com/filebrowser/filebrowser/v2/rules"
 	"github.com/filebrowser/filebrowser/v2/runner"
 	"github.com/filebrowser/filebrowser/v2/settings"
@@ -104,8 +102,7 @@ func handle(fn handleFunc, prefix string, store *storage.Storage, server *settin
 		})
 
 		if status >= 400 || err != nil {
-			clientIP := realip.FromRequest(r)
-			log.Printf("%s: %v %s %v", r.URL.Path, status, clientIP, err)
+			log.Printf("%s: %v %s %v", r.URL.Path, status, requestPeerAddr(r), err)
 		}
 
 		if status != 0 {
