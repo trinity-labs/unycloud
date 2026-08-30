@@ -718,14 +718,13 @@ p.credits > span:nth-child(2n) {
 
 @media (max-width: 736px) {
     main {
-        width: -webkit-fill-available;
+        width: 100%;
+        margin: 0;
+        padding: 0 1rem;
     }
 }
 
 @media (max-width: 800px) {
-	main {
-    width: calc(100% - 12em);
-	}
 	#login img {
     top: -40%;
 	}
