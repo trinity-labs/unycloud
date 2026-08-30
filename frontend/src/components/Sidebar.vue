@@ -261,8 +261,8 @@ export default {
 }
 
 .credits__version small {
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.55rem;
+  font-weight: 500;
   line-height: 1.1;
 }
 
