@@ -11,6 +11,7 @@ UNYCLOUD_GIT_SYNC_PUSH=${UNYCLOUD_GIT_SYNC_PUSH:-1}
 UNYCLOUD_GIT_BRANCH=${UNYCLOUD_GIT_BRANCH:-master}
 UNYCLOUD_GIT_RELEASE_VERSION=${UNYCLOUD_GIT_RELEASE_VERSION:-}
 UNYCLOUD_GIT_RELEASE_PUSH_TAGS=${UNYCLOUD_GIT_RELEASE_PUSH_TAGS:-1}
+UNYCLOUD_GIT_AUTO_RELEASE=${UNYCLOUD_GIT_AUTO_RELEASE:-1}
 UNYCLOUD_GIT_RELEASE_KIND=${UNYCLOUD_GIT_RELEASE_KIND:-auto}
 UNYCLOUD_GIT_AUTO_BUMP=${UNYCLOUD_GIT_AUTO_BUMP:-1}
 UNYCLOUD_GIT_COMMIT_FILE_LIMIT=${UNYCLOUD_GIT_COMMIT_FILE_LIMIT:-80}
@@ -181,6 +182,66 @@ create_release_tag() {
   fi
 }
 
+release_body() {
+  version=$(release_version)
+  tag="v$version"
+  printf 'Automated UnyCloud release %s.\n\n' "$tag"
+  printf 'This release was built and tested by the UnyCloud watcher before commit, tag, and publication.\n\n'
+  printf 'Compatibility target:\n'
+  printf -- '- File Browser-compatible CLI, configuration, storage, API, and legacy service path.\n\n'
+  printf 'Security target:\n'
+  printf -- '- Strict CSP without unsafe-inline.\n'
+  printf -- '- Same-origin runtime assets.\n'
+  printf -- '- Hardened login, API calls, rate limiting, and fail2ban/server observability.\n\n'
+  printf 'Commit: %s\n' "$(git -C "$ROOT_DIR" rev-parse --short HEAD)"
+}
+
+publish_github_release() {
+  [ "$UNYCLOUD_GIT_AUTO_RELEASE" = "1" ] || { log "publication release desactivee"; return 0; }
+  [ "$UNYCLOUD_GIT_SYNC_PUSH" = "1" ] || { log "push desactive: publication release ignoree"; return 0; }
+  [ -f "$GH_TOKEN_FILE" ] || { log "token GitHub absent: publication release ignoree"; return 0; }
+
+  token=$(tr -d '\r\n' < "$GH_TOKEN_FILE")
+  [ -n "$token" ] || { log "token GitHub vide: publication release ignoree"; return 0; }
+
+  version=$(release_version)
+  tag="v$version"
+  repo="trinity-labs/unycloud"
+  api="https://api.github.com/repos/$repo/releases"
+  body=$(release_body)
+
+  status=$(curl -fsS -o /tmp/unycloud-release.json -w '%{http_code}' \
+    -H "Authorization: Bearer $token" \
+    -H "Accept: application/vnd.github+json" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    "$api/tags/$tag" || true)
+
+  payload=$(jq -n \
+    --arg tag_name "$tag" \
+    --arg name "UnyCloud $tag" \
+    --arg body "$body" \
+    '{tag_name:$tag_name,name:$name,body:$body,draft:false,prerelease:false}')
+
+  if [ "$status" = "200" ]; then
+    release_id=$(jq -r '.id' /tmp/unycloud-release.json)
+    curl -fsS -X PATCH \
+      -H "Authorization: Bearer $token" \
+      -H "Accept: application/vnd.github+json" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      "$api/$release_id" \
+      -d "$payload" >/dev/null
+    log "release $tag mise a jour"
+  else
+    curl -fsS -X POST \
+      -H "Authorization: Bearer $token" \
+      -H "Accept: application/vnd.github+json" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      "$api" \
+      -d "$payload" >/dev/null
+    log "release $tag publiee"
+  fi
+}
+
 run_sync() {
   load_env
   [ "$UNYCLOUD_GIT_SYNC_ENABLED" = "1" ] || { log "sync git desactive"; return 0; }
@@ -191,6 +252,8 @@ run_sync() {
   fi
   git_auth fetch origin --prune >/dev/null 2>&1 || true
   commit_and_push
+  create_release_tag
+  publish_github_release
 }
 
 case "${1:-sync}" in
@@ -207,7 +270,6 @@ case "${1:-sync}" in
     UNYCLOUD_GIT_SYNC_ENABLED=1
     export UNYCLOUD_GIT_SYNC_ENABLED
     run_sync
-    create_release_tag
     ;;
   status)
     load_env
