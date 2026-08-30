@@ -1,10 +1,8 @@
 package fbhttp
 
 import (
-	"compress/gzip"
 	"encoding/json"
 	"errors"
-	"fmt"
 	htmltemplate "html/template"
 	"io"
 	"io/fs"
@@ -129,8 +127,7 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 			return http.StatusNotFound, nil
 		}
 
-		const maxAge = 86400 // 1 day
-		w.Header().Set("Cache-Control", fmt.Sprintf("public, max-age=%v", maxAge))
+		w.Header().Set("Cache-Control", staticCacheControl(r.URL.Path))
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 
 		if r.URL.Path == "runtime.js" {
@@ -165,38 +162,54 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 			return 0, nil
 		}
 
-		f, err := assetsFs.Open(r.URL.Path + ".gz")
+		filePath, encoding := encodedStaticPath(r, assetsFs)
+		f, err := assetsFs.Open(filePath)
 		if err != nil {
 			return http.StatusNotFound, err
 		}
 		defer f.Close()
 
-		acceptEncoding := r.Header.Get("Accept-Encoding")
-		if strings.Contains(acceptEncoding, "gzip") {
-			w.Header().Set("Content-Encoding", "gzip")
-			w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
-
-			if _, err := io.Copy(w, f); err != nil {
-				return http.StatusInternalServerError, err
-			}
-		} else {
-			gzReader, err := gzip.NewReader(f)
-			if err != nil {
-				return http.StatusInternalServerError, err
-			}
-			defer gzReader.Close()
-
-			w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
-
-			if _, err := io.Copy(w, gzReader); err != nil {
-				return http.StatusInternalServerError, err
-			}
+		w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+		if encoding != "" {
+			w.Header().Set("Content-Encoding", encoding)
+			w.Header().Add("Vary", "Accept-Encoding")
+		}
+		if _, err := io.Copy(w, f); err != nil {
+			return http.StatusInternalServerError, err
 		}
 
 		return 0, nil
 	}, "/static/", store, server)
 
 	return index, static
+}
+
+func staticCacheControl(file string) string {
+	if strings.HasPrefix(file, "assets/") {
+		return "public, max-age=31536000, immutable"
+	}
+
+	return "public, max-age=86400"
+}
+
+func encodedStaticPath(r *http.Request, assetsFs fs.FS) (string, string) {
+	acceptEncoding := r.Header.Get("Accept-Encoding")
+	if strings.Contains(acceptEncoding, "br") && staticExists(assetsFs, r.URL.Path+".br") {
+		return r.URL.Path + ".br", "br"
+	}
+	if strings.Contains(acceptEncoding, "gzip") && staticExists(assetsFs, r.URL.Path+".gz") {
+		return r.URL.Path + ".gz", "gzip"
+	}
+	return r.URL.Path, ""
+}
+
+func staticExists(assetsFs fs.FS, file string) bool {
+	f, err := assetsFs.Open(file)
+	if err != nil {
+		return false
+	}
+	_ = f.Close()
+	return true
 }
 
 func customStylesheetHandler(store *storage.Storage, server *settings.Server) http.Handler {

@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { createI18n } from "vue-i18n";
+import enMessages from "./en.json";
 
 import("dayjs/locale/ar");
 import("dayjs/locale/bg");
@@ -34,9 +35,14 @@ import("dayjs/locale/vi");
 import("dayjs/locale/zh-cn");
 import("dayjs/locale/zh-tw");
 
-// All i18n resources specified in the plugin `include` option can be loaded
-// at once using the import syntax
-import messages from "@intlify/unplugin-vue-i18n/messages";
+const messageLoaders = import.meta.glob<Record<string, any>>(
+  ["./*.json", "!./en.json"],
+  {
+    import: "default",
+  }
+);
+
+const loadedLocales = new Set(["en"]);
 
 export function detectLocale() {
   // locale is an RFC 5646 language tag
@@ -163,10 +169,14 @@ export function detectLocale() {
 
 export const rtlLanguages = ["he", "ar"];
 
+const initialLocale = detectLocale();
+
 export const i18n = createI18n({
-  locale: detectLocale(),
+  locale: initialLocale,
   fallbackLocale: "en",
-  messages,
+  messages: {
+    en: enMessages,
+  },
   // expose i18n.global for outside components
   legacy: true,
 });
@@ -179,10 +189,30 @@ export const isRtl = (locale?: string) => {
 
 export function setLocale(locale: string) {
   dayjs.locale(locale);
+  void loadLocale(locale);
   // according to doc u only need .value if legacy: false but they lied
   // https://vue-i18n.intlify.dev/guide/essentials/scope.html#local-scope-1
   // @ts-expect-error incorrect type when legacy
   i18n.global.locale.value = locale;
+}
+
+async function loadLocale(locale: string) {
+  if (loadedLocales.has(locale)) {
+    return;
+  }
+
+  const loader = messageLoaders[`./${locale}.json`];
+  if (!loader) {
+    return;
+  }
+
+  const messages = await loader();
+  i18n.global.setLocaleMessage(locale, messages as typeof enMessages);
+  loadedLocales.add(locale);
+}
+
+if (initialLocale !== "en") {
+  void loadLocale(initialLocale);
 }
 
 export function setHtmlLocale(locale: string) {

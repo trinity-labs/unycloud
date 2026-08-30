@@ -250,6 +250,7 @@ user created with the credentials from options "username" and "password".`,
 		srv := &http.Server{
 			Handler:           handler,
 			ReadHeaderTimeout: 60 * time.Second,
+			IdleTimeout:       120 * time.Second,
 		}
 
 		go func() {

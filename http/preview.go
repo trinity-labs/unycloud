@@ -106,7 +106,8 @@ func handleImagePreview(
 		}
 	}
 
-	w.Header().Set("Cache-Control", "private")
+	w.Header().Set("Cache-Control", "private, max-age=86400")
+	w.Header().Set("ETag", previewETag(file, previewSize))
 	http.ServeContent(w, r, file.Name, file.ModTime, bytes.NewReader(resizedImage))
 
 	return 0, nil
@@ -156,4 +157,8 @@ func createPreview(imgSvc ImgService, fileCache FileCache,
 
 func previewCacheKey(f *files.FileInfo, previewSize PreviewSize) string {
 	return fmt.Sprintf("%x%x%x", f.RealPath(), f.ModTime.Unix(), previewSize)
+}
+
+func previewETag(f *files.FileInfo, previewSize PreviewSize) string {
+	return fmt.Sprintf(`"%x%x%x"`, f.ModTime.UnixNano(), f.Size, previewSize)
 }
