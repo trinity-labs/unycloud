@@ -126,6 +126,11 @@ commit_body() {
   limit=$UNYCLOUD_GIT_COMMIT_FILE_LIMIT
   count=$(git -C "$ROOT_DIR" diff --cached --name-status | wc -l | tr -d '[:space:]')
   printf 'Automated UnyCloud git sync.\n\n'
+  if [ -f "$ROOT_DIR/RELEASE_NOTES.md" ]; then
+    printf 'Release notes:\n\n'
+    cat "$ROOT_DIR/RELEASE_NOTES.md"
+    printf '\n\n'
+  fi
   printf 'Path: %s\n' "$ROOT_DIR"
   printf 'Timestamp UTC: %s\n' "$(timestamp_utc)"
   printf 'Changed file(s): %s\n' "$count"
