@@ -135,9 +135,9 @@ format_change_list() {
       code=substr($1, 1, 1)
       label=(code in labels) ? labels[code] : "Changed"
       if (code == "R" || code == "C") {
-        printf "- %s `%s` -> `%s`\n", label, $2, $3
+        printf "✅%s `%s` -> `%s`\n", label, $2, $3
       } else {
-        printf "- %s `%s`\n", label, $2
+        printf "✅%s `%s`\n", label, $2
       }
     }'
 }
