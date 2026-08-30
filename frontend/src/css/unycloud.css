@@ -317,6 +317,10 @@ nav i.material-icons {
     top: 0 !important;
 }
 
+#logout:hover {
+    color: #5a52c8 !important;
+}
+
 .action .counter {
     background: #e8e7f7;
     color: #5a52c8;
