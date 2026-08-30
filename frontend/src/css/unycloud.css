@@ -312,8 +312,9 @@ nav > .action:first-child:hover i {
 }
 
 nav i.material-icons {
-    font-size: 1.66rem;
     padding: 0.4em 0.4em 0.4em 0.2em;
+    font-size: 1.33rem;
+    top: 0 !important;
 }
 
 .action .counter {
