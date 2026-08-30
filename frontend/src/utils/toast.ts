@@ -18,34 +18,19 @@ let nextToastID = 0;
 export const toasts = reactive<ToastMessage[]>([]);
 
 export function showToast(toast: Omit<ToastMessage, "id">) {
-  const existing = toasts.find(
-    (item) =>
-      item.kind === toast.kind &&
-      item.message === toast.message &&
-      item.isReport === toast.isReport &&
-      item.reportText === toast.reportText
-  );
-
-  if (existing) {
-    existing.timeout = toast.timeout;
-    existing.rtl = toast.rtl;
+  for (const existing of toasts) {
     if (existing.timer !== undefined) {
       window.clearTimeout(existing.timer);
-      existing.timer = undefined;
     }
-    if (toast.timeout > 0) {
-      existing.timer = window.setTimeout(() => removeToast(existing.id), toast.timeout);
-    }
-    return;
   }
+  toasts.splice(0);
 
   nextToastID += 1;
   const id = nextToastID;
-  const entry: ToastMessage = { ...toast, id };
+  const timeout = 5000;
+  const entry: ToastMessage = { ...toast, id, timeout };
 
-  if (toast.timeout > 0) {
-    entry.timer = window.setTimeout(() => removeToast(id), toast.timeout);
-  }
+  entry.timer = window.setTimeout(() => removeToast(id), timeout);
   toasts.push(entry);
 }
 
