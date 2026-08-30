@@ -99,7 +99,7 @@
           v-else-if="isPdf"
           class="pdf"
           :src="previewUrl"
-          sandbox="allow-downloads allow-same-origin allow-scripts"
+          referrerpolicy="same-origin"
         ></iframe>
         <div v-else-if="fileStore.req?.type == 'blob'" class="info">
           <div class="title">
