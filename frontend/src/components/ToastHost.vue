@@ -39,7 +39,7 @@ import { removeToast, toasts } from "@/utils/toast";
   left: 50%;
   top: 1em;
   z-index: 10000;
-  width: min(32em, calc(100vw - 2em));
+  width: min(24rem, calc(100vw - 2rem));
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
