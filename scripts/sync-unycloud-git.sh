@@ -183,16 +183,15 @@ create_release_tag() {
 }
 
 release_body() {
-  version=$(release_version)
-  tag="v$version"
-  printf 'Automated UnyCloud release %s.\n\n' "$tag"
-  printf 'This release was built and tested by the UnyCloud watcher before commit, tag, and publication.\n\n'
-  printf 'Compatibility target:\n'
-  printf -- '- File Browser-compatible CLI, configuration, storage, API, and legacy service path.\n\n'
-  printf 'Security target:\n'
-  printf -- '- Strict CSP without unsafe-inline.\n'
-  printf -- '- Same-origin runtime assets.\n'
-  printf -- '- Hardened login, API calls, rate limiting, and fail2ban/server observability.\n\n'
+  if [ -f "$ROOT_DIR/RELEASE_NOTES.md" ]; then
+    cat "$ROOT_DIR/RELEASE_NOTES.md"
+    printf '\n\n'
+  else
+    version=$(release_version)
+    tag="v$version"
+    printf 'Automated UnyCloud release %s.\n\n' "$tag"
+    printf 'This release was built and tested by the UnyCloud watcher before commit, tag, and publication.\n\n'
+  fi
   printf 'Commit: %s\n' "$(git -C "$ROOT_DIR" rev-parse --short HEAD)"
 }
 
