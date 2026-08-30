@@ -10,11 +10,7 @@
       <img :src="logoURL" alt="UnyCloud" />
       <h1>
         <template v-if="loginBrandLink">
-          <a
-            :href="repositoryURL"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a :href="repositoryURL" target="_blank" rel="noopener noreferrer">
             UnyCloud
           </a>
           <span>{{ loginBrandSuffix }}</span>
@@ -114,9 +110,7 @@ const reason = route.query["logout-reason"] ?? null;
 const repositoryURL = "https://github.com/trinity-labs/unycloud";
 const loginBrandPrefix = "UnyCloud - ";
 const loginBrandLink = name.startsWith(loginBrandPrefix);
-const loginBrandSuffix = loginBrandLink
-  ? name.slice("UnyCloud".length)
-  : "";
+const loginBrandSuffix = loginBrandLink ? name.slice("UnyCloud".length) : "";
 
 const safeRedirect = (value: unknown): string => {
   if (typeof value !== "string") return "/files/";
