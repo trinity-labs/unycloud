@@ -37,7 +37,7 @@ import { removeToast, toasts } from "@/utils/toast";
 .toast-host {
   position: fixed;
   left: 50%;
-  bottom: 1em;
+  top: 1em;
   z-index: 10000;
   width: min(32em, calc(100vw - 2em));
   transform: translateX(-50%);
