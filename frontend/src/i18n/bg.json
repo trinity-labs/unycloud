@@ -121,6 +121,7 @@
     "username": "Потребителско име",
     "usernameTaken": "Потребителското име вече се използва",
     "wrongCredentials": "Грешни потребителско име и/или парола",
+    "emptyCredentials": "Въведете потребителско име и парола",
     "passwordTooShort": "Password must be at least {min} characters",
     "logout_reasons": {
       "inactivity": "Бяхте разлогнати поради неактивност"

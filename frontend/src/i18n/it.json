@@ -121,6 +121,7 @@
     "username": "Nome utente",
     "usernameTaken": "Username già usato",
     "wrongCredentials": "Credenziali errate",
+    "emptyCredentials": "Inserisci nome utente e password",
     "passwordTooShort": "Password must be at least {min} characters",
     "logout_reasons": {
       "inactivity": "You have been logged out due to inactivity."

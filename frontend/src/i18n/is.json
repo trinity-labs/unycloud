@@ -121,6 +121,7 @@
     "username": "Notendanafn",
     "usernameTaken": "Þetta norendanafn er þegar í notkun",
     "wrongCredentials": "Rangar notendaupplýsingar",
+    "emptyCredentials": "Sláðu inn notandanafn og lykilorð",
     "passwordTooShort": "Password must be at least {min} characters",
     "logout_reasons": {
       "inactivity": "You have been logged out due to inactivity."

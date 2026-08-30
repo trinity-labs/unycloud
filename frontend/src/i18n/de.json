@@ -123,6 +123,7 @@
     "username": "Benutzername",
     "usernameTaken": "Benutzername bereits vergeben",
     "wrongCredentials": "Falsche Anmeldedaten",
+    "emptyCredentials": "Benutzername und Passwort eingeben",
     "passwordTooShort": "Passwort muss mindestens {min} Zeichen lang sein",
     "logout_reasons": {
       "inactivity": "Du wurdest wegen Inaktivität abgemeldet."

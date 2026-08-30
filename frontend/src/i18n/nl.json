@@ -123,6 +123,7 @@
     "username": "Gebruikersnaam",
     "usernameTaken": "Gebruikersnaam reeds in gebruik",
     "wrongCredentials": "Inloggegevens zijn incorrect",
+    "emptyCredentials": "Vul gebruikersnaam en wachtwoord in",
     "passwordTooShort": "Wachtwoord moet minstens {min} tekens bevatten",
     "logout_reasons": {
       "inactivity": "U bent uitgelogd vanwege inactiviteit."

@@ -121,6 +121,7 @@
     "username": "إسم المستخدم",
     "usernameTaken": "إسم المستخدم غير متاح",
     "wrongCredentials": "بيانات دخول خاطئة",
+    "emptyCredentials": "يرجى إدخال اسم المستخدم وكلمة المرور",
     "passwordTooShort": "Password must be at least {min} characters",
     "logout_reasons": {
       "inactivity": "You have been logged out due to inactivity."

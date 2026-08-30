@@ -123,6 +123,7 @@
     "username": "Korisničko ime",
     "usernameTaken": "Korisničko ime zauzeto",
     "wrongCredentials": "Neispravno korisničko ime/lozinka",
+    "emptyCredentials": "Unesite korisničko ime i lozinku",
     "passwordTooShort": "Lozinka mora sadržavati minimalno {min} znakova",
     "logout_reasons": {
       "inactivity": "Odjavljeni ste zbog neaktivnosti."

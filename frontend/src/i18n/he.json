@@ -121,6 +121,7 @@
     "username": "שם משתמש",
     "usernameTaken": "שם המשתמש כבר קיים",
     "wrongCredentials": "פרטי התחברות שגויים",
+    "emptyCredentials": "יש להזין שם משתמש וסיסמה",
     "passwordTooShort": "Password must be at least {min} characters",
     "logout_reasons": {
       "inactivity": "You have been logged out due to inactivity."

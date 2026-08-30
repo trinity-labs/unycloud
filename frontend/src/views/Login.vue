@@ -132,7 +132,7 @@ const submit = async (event: Event) => {
   const redirect = safeRedirect(route.query.redirect);
 
   if (username.value.trim() === "" || password.value === "") {
-    $showError(t("login.wrongCredentials"), false);
+    $showError(t("login.emptyCredentials"), false);
     return;
   }
 

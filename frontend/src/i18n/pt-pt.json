@@ -123,6 +123,7 @@
     "username": "Nome de utilizador",
     "usernameTaken": "O nome de utilizador já existe",
     "wrongCredentials": "Credenciais erradas",
+    "emptyCredentials": "Introduza utilizador e palavra-passe",
     "passwordTooShort": "A palavra-passe tem de ter pelo menos {min} caracteres",
     "logout_reasons": {
       "inactivity": "Foi terminada a sessão por inactividade."

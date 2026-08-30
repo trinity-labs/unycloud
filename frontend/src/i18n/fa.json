@@ -121,6 +121,7 @@
     "username": "نام کاربری",
     "usernameTaken": "نام کاربری تکراری",
     "wrongCredentials": "خطا در اعتبارسنجی",
+    "emptyCredentials": "نام کاربری و رمز عبور را وارد کنید",
     "passwordTooShort": "Password must be at least {min} characters",
     "logout_reasons": {
       "inactivity": "You have been logged out due to inactivity."

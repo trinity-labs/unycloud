@@ -123,6 +123,7 @@
     "username": "Lietotājvārds",
     "usernameTaken": "Lietotājvārds jau aizņemts",
     "wrongCredentials": "Nepareizi akreditācijas dati",
+    "emptyCredentials": "Ievadiet lietotājvārdu un paroli",
     "passwordTooShort": "Parolei jābūt vismaz {min} rakstzīmju garai",
     "logout_reasons": {
       "inactivity": "Jūs esat atteicies no sistēmas neaktivitātes dēļ."

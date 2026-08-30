@@ -123,6 +123,7 @@
     "username": "用户名",
     "usernameTaken": "用户名已经被使用",
     "wrongCredentials": "用户名或密码错误",
+    "emptyCredentials": "请输入用户名和密码",
     "passwordTooShort": "密码长度至少为 {min} 位字符",
     "logout_reasons": {
       "inactivity": "因长时间未操作，系统已自动登出."

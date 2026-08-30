@@ -121,6 +121,7 @@
     "username": "Usuari",
     "usernameTaken": "Nom d'usuari no disponible",
     "wrongCredentials": "Usuari i/o contrasenya incorrectes",
+    "emptyCredentials": "Introduïu l’usuari i la contrasenya",
     "passwordTooShort": "Password must be at least {min} characters",
     "logout_reasons": {
       "inactivity": "You have been logged out due to inactivity."

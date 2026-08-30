@@ -121,6 +121,7 @@
     "username": "Brukernavn",
     "usernameTaken": "Brukernavn er allerede i bruk",
     "wrongCredentials": "Feil legitimasjon",
+    "emptyCredentials": "Skriv inn brukernavn og passord",
     "passwordTooShort": "Password must be at least {min} characters",
     "logout_reasons": {
       "inactivity": "Du har blitt logget ut på grunn av inaktivitet"

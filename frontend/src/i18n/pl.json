@@ -123,6 +123,7 @@
     "username": "Nazwa użytkownika",
     "usernameTaken": "Ta nazwa użytkownika jest zajęta",
     "wrongCredentials": "Błędne dane logowania",
+    "emptyCredentials": "Podaj nazwę użytkownika i hasło",
     "passwordTooShort": "Wymagana minimalna liczba znaków hasła: {min}",
     "logout_reasons": {
       "inactivity": "Wylogowano z powodu braku aktywności."
