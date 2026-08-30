@@ -90,6 +90,10 @@ main {
     opacity: 0.66;
 }
 
+#login h1 a:hover {
+    opacity: 1 !important;
+}
+
 #login form {
     padding: 11rem 2rem 0;
     position: relative;
