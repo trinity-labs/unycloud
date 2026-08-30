@@ -42,6 +42,9 @@ export default defineConfig(({ command }) => {
       resolve,
       base: "",
       build: {
+        modulePreload: {
+          polyfill: false,
+        },
         rollupOptions: {
           input: {
             index: path.resolve(__dirname, "./public/index.html"),

@@ -164,6 +164,8 @@ const submit = async (event: Event) => {
         error.value = t("login.usernameTaken");
       } else if (e.status === 403) {
         error.value = t("login.wrongCredentials");
+      } else if (e.status === 429) {
+        $showError("429 Too Many Requests", false);
       } else if (e.status === 400) {
         const match = e.message.match(/minimum length is (\d+)/);
         if (match) {
