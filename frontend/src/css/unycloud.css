@@ -8,8 +8,7 @@
  *--------------------------------------------------------------------------------*/
 
 header {
-    background: url(/static/img/unycloud/unycloud-logo-simple.png) no-repeat 0.5rem center, #5a52c8;
-    background-size: 2.33rem, cover;
+    background: url(/static/img/unycloud/unycloud-logo-simple.png) 0.5rem / 2.33rem no-repeat, #000000 0 0 / cover;
     padding: 0.5rem 0.5rem 0.5rem 5rem;
 }
 
