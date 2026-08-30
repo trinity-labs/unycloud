@@ -153,11 +153,6 @@ main {
 	color: white;
 }
 
-#logout,
-#logout i {
-    color: #5a52c8 !important;
-}
-
 #login .logout-message {
     background: #f44336e0;
     color: #fff;
