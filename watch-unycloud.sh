@@ -8,6 +8,7 @@ GIT_SYNC_SCRIPT=${GIT_SYNC_SCRIPT:-"$ROOT_DIR/scripts/sync-unycloud-git.sh"}
 INSTALL_SCRIPT=${INSTALL_SCRIPT:-"$ROOT_DIR/scripts/install-legacy-filebrowser.sh"}
 POLL_INTERVAL=${POLL_INTERVAL:-30}
 WATCH_DEBOUNCE=${WATCH_DEBOUNCE:-6}
+WATCH_QUIET_CHECKS=${WATCH_QUIET_CHECKS:-3}
 PID_FILE=${PID_FILE:-/tmp/unycloud-watch.pid}
 LOG_FILE=${LOG_FILE:-/tmp/unycloud-watch.log}
 BUILD_LOCK_DIR=${BUILD_LOCK_DIR:-/tmp/unycloud-build.lock}
@@ -53,10 +54,18 @@ mark_clean() {
 }
 
 wait_for_quiet_tree() {
-  before=$(watch_fingerprint)
-  sleep "$WATCH_DEBOUNCE"
-  after=$(watch_fingerprint)
-  [ "$before" = "$after" ]
+  previous=$(watch_fingerprint)
+  quiet=0
+  while [ "$quiet" -lt "$WATCH_QUIET_CHECKS" ]; do
+    sleep "$WATCH_DEBOUNCE"
+    current=$(watch_fingerprint)
+    if [ "$previous" = "$current" ]; then
+      quiet=$((quiet + 1))
+    else
+      quiet=0
+      previous=$current
+    fi
+  done
 }
 
 pid_is_running() {
