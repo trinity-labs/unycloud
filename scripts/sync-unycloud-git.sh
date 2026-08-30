@@ -122,15 +122,44 @@ commit_summary() {
     END { printf "%sA %sM %sD %sR", a+0, m+0, d+0, r+0 }'
 }
 
+format_change_list() {
+  awk '
+    BEGIN {
+      labels["A"]="Added"
+      labels["M"]="Changed"
+      labels["D"]="Removed"
+      labels["R"]="Renamed"
+      labels["C"]="Copied"
+    }
+    NF {
+      code=substr($1, 1, 1)
+      label=(code in labels) ? labels[code] : "Changed"
+      if (code == "R" || code == "C") {
+        printf "- %s `%s` -> `%s`\n", label, $2, $3
+      } else {
+        printf "- %s `%s`\n", label, $2
+      }
+    }'
+}
+
+staged_change_notes() {
+  version=$(release_version)
+  printf 'Changes in UnyCloud v%s:\n\n' "$version"
+  git -C "$ROOT_DIR" diff --cached --name-status | format_change_list
+}
+
+head_change_notes() {
+  version=$(release_version)
+  printf 'Changes in UnyCloud v%s:\n\n' "$version"
+  git -C "$ROOT_DIR" show --format= --name-status HEAD | format_change_list
+}
+
 commit_body() {
   limit=$UNYCLOUD_GIT_COMMIT_FILE_LIMIT
   count=$(git -C "$ROOT_DIR" diff --cached --name-status | wc -l | tr -d '[:space:]')
   printf 'Automated UnyCloud git sync.\n\n'
-  if [ -f "$ROOT_DIR/RELEASE_NOTES.md" ]; then
-    printf 'Release notes:\n\n'
-    cat "$ROOT_DIR/RELEASE_NOTES.md"
-    printf '\n\n'
-  fi
+  staged_change_notes
+  printf '\n'
   printf 'Changed file(s): %s\n' "$count"
   printf 'Summary: %s\n\n' "$(commit_summary)"
   printf 'Stat:\n'
@@ -186,15 +215,8 @@ create_release_tag() {
 }
 
 release_body() {
-  if [ -f "$ROOT_DIR/RELEASE_NOTES.md" ]; then
-    cat "$ROOT_DIR/RELEASE_NOTES.md"
-    printf '\n\n'
-  else
-    version=$(release_version)
-    tag="v$version"
-    printf 'Automated UnyCloud release %s.\n\n' "$tag"
-    printf 'This release was built and tested by the UnyCloud watcher before commit, tag, and publication.\n\n'
-  fi
+  head_change_notes
+  printf '\n'
   printf 'Commit: %s\n' "$(git -C "$ROOT_DIR" rev-parse --short HEAD)"
 }
 
