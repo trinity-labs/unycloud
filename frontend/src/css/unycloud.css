@@ -95,25 +95,28 @@ main {
 }
 
 #login form {
+    -webkit-backdrop-filter: blur(8px);
+    background-color: #fff;
+    background-image: url(/static/img/unycloud/unycloud-logo-simple.png), none;
+    background-position: 50% 1.75rem;
+    background-repeat: no-repeat;
+    background-size: 8rem;
+    background-attachment: scroll;
+    background-origin: padding-box;
+    background-clip: border-box;
+    border: 1px solid #fff6;
+    border-radius: 7px;
+    width: 100%;
+    max-width: 24rem;
+    min-height: 24rem;
     padding: 11rem 2rem 0;
+    transition: box-shadow 0.3s;
     position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 20em;
-    width: 100%;
-    border-radius: 7px;
-    background: white;
-    min-height: 24rem;
-    background-image: url(/static/img/unycloud/unycloud-logo-simple.png), none;
-    background-repeat: no-repeat;
-    background-position: center 1.75rem;
-    background-size: 8rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 4px 10px rgba(0, 0, 0, 0.06);
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: box-shadow 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 #login form:hover {
