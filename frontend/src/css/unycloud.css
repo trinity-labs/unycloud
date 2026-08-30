@@ -26,15 +26,6 @@ nav {
     padding: 0 2rem 0 0;
 }
 
-nav > .action:first-child i {
-    border: 1.5px solid #6565652e;
-    border-radius: 4px;
-    margin: 0 0.5rem 0 0;
-    padding: 0.1rem 0.2rem;
-    font-size: 1rem;
-    color: #5a52c8 !important;
-}
-
 header img {
     display: none !important;
 }
@@ -315,7 +306,7 @@ nav > .action:first-child i {
     margin: 0 0.5rem 0 0;
     border-radius: 4px;
     padding: 0.1rem 0.2rem;
-    border: 2px solid #5a52c8;
+    border: 1.5px solid #6565652e;
     font-size: 1rem;
 }
 
