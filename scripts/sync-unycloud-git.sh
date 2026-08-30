@@ -131,8 +131,6 @@ commit_body() {
     cat "$ROOT_DIR/RELEASE_NOTES.md"
     printf '\n\n'
   fi
-  printf 'Path: %s\n' "$ROOT_DIR"
-  printf 'Timestamp UTC: %s\n' "$(timestamp_utc)"
   printf 'Changed file(s): %s\n' "$count"
   printf 'Summary: %s\n\n' "$(commit_summary)"
   printf 'Stat:\n'
@@ -160,7 +158,7 @@ commit_and_push() {
       git -C "$ROOT_DIR" add -A
     fi
     version=$(release_version)
-    subject="unycloud: ${kind} v${version} $(timestamp_utc)"
+    subject="unycloud: ${kind} v${version}"
     git -C "$ROOT_DIR" commit -m "$subject" -m "$(commit_body)"
   fi
 
