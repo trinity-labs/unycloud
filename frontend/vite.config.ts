@@ -1,4 +1,3 @@
-import path from "node:path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
@@ -7,7 +6,7 @@ import { compression } from "vite-plugin-compression2";
 const plugins = [
   vue(),
   VueI18nPlugin({
-    include: [path.resolve(__dirname, "./src/i18n/**/*.json")],
+    include: [`${import.meta.dirname}/src/i18n/**/*.json`],
   }),
   compression({ include: /\.js$/, deleteOriginalAssets: false }),
 ];
@@ -15,7 +14,7 @@ const plugins = [
 const resolve = {
   alias: {
     // vue: "@vue/compat",
-    "@/": `${path.resolve(__dirname, "src")}/`,
+    "@/": `${import.meta.dirname}/src/`,
   },
 };
 
@@ -47,7 +46,7 @@ export default defineConfig(({ command }) => {
         },
         rollupOptions: {
           input: {
-            index: path.resolve(__dirname, "./public/index.html"),
+            index: `${import.meta.dirname}/public/index.html`,
           },
           output: {
             manualChunks: (id) => {

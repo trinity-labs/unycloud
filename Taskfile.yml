@@ -12,7 +12,7 @@ tasks:
     desc: Build backend binary
     cmds:
       - mkdir -p dist
-      - GOTOOLCHAIN=go1.26.6 CGO_ENABLED=0 go build -trimpath -ldflags='-s -w -X "github.com/filebrowser/filebrowser/v2/version.Version={{.VERSION}}" -X "github.com/filebrowser/filebrowser/v2/version.CommitSHA={{.GIT_COMMIT}}"' -o dist/unycloud .
+      - GOTOOLCHAIN=go1.27.0 CGO_ENABLED=0 go build -trimpath -ldflags='-s -w -X "github.com/filebrowser/filebrowser/v2/version.Version={{.VERSION}}" -X "github.com/filebrowser/filebrowser/v2/version.CommitSHA={{.GIT_COMMIT}}"' -o dist/unycloud .
     vars:
       GIT_COMMIT:
         sh: git log -n 1 --format=%h

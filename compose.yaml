@@ -13,19 +13,21 @@ services:
       - unycloud-config:/config
       - unycloud-database:/database
     environment:
-      - FB_REDIS_CACHE_URL=redis://default:unycloud@redis:6379 # Use rediss:// for ssl
+      - FB_REDIS_CACHE_URL=redis://default:${UNYCLOUD_REDIS_PASSWORD:?set UNYCLOUD_REDIS_PASSWORD in .env}@redis:6379 # Use rediss:// for ssl
 
   redis:
     container_name: redis
-    image: redis:latest
+    image: redis:8.4-alpine
     networks:
       - unycloud
+    environment:
+      - UNYCLOUD_REDIS_PASSWORD=${UNYCLOUD_REDIS_PASSWORD:?set UNYCLOUD_REDIS_PASSWORD in .env}
     command:
       - sh
       - -c
       - |
         cat > /tmp/users.acl <<EOF
-        user default on >unycloud ~* +@all
+        user default on >$$UNYCLOUD_REDIS_PASSWORD ~* +@all
         EOF
         redis-server --aclfile /tmp/users.acl
 

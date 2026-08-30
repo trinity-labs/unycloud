@@ -12,6 +12,7 @@ rice-box.go
 node_modules
 
 # local env files
+.env
 .env.local
 .env.*.local
 unycloud-git-sync.env
