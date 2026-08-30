@@ -24,8 +24,6 @@
       <p v-if="reason != null" class="logout-message">
         {{ t(`login.logout_reasons.${reason}`) }}
       </p>
-      <div v-if="error !== ''" class="wrong">{{ error }}</div>
-
       <label class="sr-only" for="username">{{ t("login.username") }}</label>
       <input
         autofocus
@@ -138,7 +136,7 @@ const submit = async (event: Event) => {
     captcha = window.grecaptcha.getResponse();
 
     if (captcha === "") {
-      error.value = t("login.wrongCredentials");
+      $showError(t("login.wrongCredentials"), false);
       return;
     }
   }
@@ -161,17 +159,17 @@ const submit = async (event: Event) => {
     // console.error(e);
     if (e instanceof StatusError) {
       if (e.status === 409) {
-        error.value = t("login.usernameTaken");
+        $showError(t("login.usernameTaken"), false);
       } else if (e.status === 403) {
-        error.value = t("login.wrongCredentials");
+        $showError(t("login.wrongCredentials"), false);
       } else if (e.status === 429) {
         $showError("429 Too Many Requests", false);
       } else if (e.status === 400) {
         const match = e.message.match(/minimum length is (\d+)/);
         if (match) {
-          error.value = t("login.passwordTooShort", { min: match[1] });
+          $showError(t("login.passwordTooShort", { min: match[1] }), false);
         } else {
-          error.value = e.message;
+          $showError(e.message, false);
         }
       } else {
         $showError(e);
