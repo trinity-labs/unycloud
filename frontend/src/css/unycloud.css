@@ -75,7 +75,7 @@ main {
     color: #c4c4c4;
     font-weight: 500;
     text-align: center;
-    font-size: 0.66rem !important;
+    font-size: 0.66rem;
     justify-content: space-between;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -130,16 +130,16 @@ main {
 #login .button {
     margin: 1.5rem auto 0;
     padding: 0.75rem 0 0.66rem;
-    border: 2px solid #5a52c8e0 !important;
+    border: 2px solid #5a52c8e0;
     font-weight: bold;
     font-size: 0.75rem;
-    background: none !important;
+    background: none;
     color: #5a52c8e0;
 }
 
 #login .button:hover {
-	background: #5a52c8 !important;
-	color: white !important;
+	background: #5a52c8;
+	color: white;
 }
 
 #logout,
@@ -236,7 +236,7 @@ button .material-icons:hover {
 }
 
 #previewer header {
-	background-image: none !important;
+	background-image: none;
 }
 
 #editor-container title {
@@ -565,7 +565,7 @@ p.credits > span:nth-child(2n) {
 }
 
 #listing .item[aria-selected=true]:hover {
-    opacity: 0.85 !important;
+    opacity: 0.85;
 }
 
 #listing.list .item:hover {
@@ -708,7 +708,7 @@ p.credits > span:nth-child(2n) {
 
 @media (max-width: 736px) {
     main {
-        width: -webkit-fill-available !important;
+        width: -webkit-fill-available;
     }
 }
 
