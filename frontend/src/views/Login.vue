@@ -8,7 +8,19 @@
       @submit="submit"
     >
       <img :src="logoURL" alt="UnyCloud" />
-      <h1>{{ name }}</h1>
+      <h1>
+        <template v-if="loginBrandLink">
+          <a
+            :href="repositoryURL"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            UnyCloud
+          </a>
+          <span>{{ loginBrandSuffix }}</span>
+        </template>
+        <template v-else>{{ name }}</template>
+      </h1>
       <p v-if="reason != null" class="logout-message">
         {{ t(`login.logout_reasons.${reason}`) }}
       </p>
@@ -101,6 +113,12 @@ const toggleMode = () => (createMode.value = !createMode.value);
 const $showError = inject<IToastError>("$showError")!;
 
 const reason = route.query["logout-reason"] ?? null;
+const repositoryURL = "https://github.com/trinity-labs/unycloud";
+const loginBrandPrefix = "UnyCloud - ";
+const loginBrandLink = name.startsWith(loginBrandPrefix);
+const loginBrandSuffix = loginBrandLink
+  ? name.slice("UnyCloud".length)
+  : "";
 
 const safeRedirect = (value: unknown): string => {
   if (typeof value !== "string") return "/files/";
