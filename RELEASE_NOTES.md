@@ -1,4 +1,4 @@
-# UnyCloud v0.6.15
+# UnyCloud v0.6.16
 
 UnyCloud starts as a maintained fork of File Browser
 (`filebrowser/filebrowser`) under Apache-2.0.
@@ -39,5 +39,5 @@ remain the compatibility target.
 The release artifact is named `unycloud`. Existing services may still install
 that artifact at `/usr/local/bin/filebrowser` to preserve service compatibility.
 
-Container images are not published as part of `v0.6.15`; the repository includes
+Container images are not published as part of `v0.6.16`; the repository includes
 a generic local Docker/Compose setup that builds from `dist/unycloud`.
