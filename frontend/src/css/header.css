@@ -275,6 +275,10 @@ html[dir="rtl"] #search .boxes h3 {
   flex-direction: column;
 }
 
+#search .boxes > div > div:hover {
+  opacity: 0.95;
+}
+
 #search .boxes p {
   margin: 1em 0 0;
 }
