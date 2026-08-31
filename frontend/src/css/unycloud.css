@@ -153,10 +153,6 @@ main {
 	color: white;
 }
 
-#logout i {
-    color: #3e3aab;
-}
-
 /*----------------------------------------------------------------------------------
  *BUTTON & NAV
  *--------------------------------------------------------------------------------*/
@@ -638,10 +634,6 @@ p.credits > span:nth-child(2n) {
     background: var(--surfacePrimary);
     margin: 1em 0;
     padding: 1rem 0.9rem 2rem;
-}
-
-#search .boxes>div>div {
-    background: #5a52c8;
 }
 
 #search input {

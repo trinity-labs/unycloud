@@ -258,15 +258,21 @@ html[dir="rtl"] #search .boxes h3 {
 }
 
 #search .boxes > div > div {
-  background: var(--blue);
+  background: #5a52c8;
+  display: flex;
   color: #fff;
   text-align: center;
-  width: 10em;
-  padding: 1em;
   cursor: pointer;
+  flex-grow: 1;
+  width: 10em;
+  height: 10em;
   margin-bottom: 1em;
   margin-right: 1em;
-  flex-grow: 1;
+  padding: 1em;
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 #search .boxes p {
