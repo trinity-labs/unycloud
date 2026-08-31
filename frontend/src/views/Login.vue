@@ -17,9 +17,6 @@
         </template>
         <template v-else>{{ name }}</template>
       </h1>
-      <p v-if="reason != null" class="logout-message">
-        {{ t(`login.logout_reasons.${reason}`) }}
-      </p>
       <label class="sr-only" for="username">{{ t("login.username") }}</label>
       <input
         autofocus
@@ -100,13 +97,13 @@ const passwordConfirm = ref<string>("");
 
 const route = useRoute();
 const router = useRouter();
-const { t } = useI18n({});
+const { t, te } = useI18n({});
 // Define functions
 const toggleMode = () => (createMode.value = !createMode.value);
 
 const $showError = inject<IToastError>("$showError")!;
 
-const reason = route.query["logout-reason"] ?? null;
+const reason = route.query["logout-reason"];
 const repositoryURL = "https://github.com/trinity-labs/unycloud";
 const loginBrandPrefix = "UnyCloud - ";
 const loginBrandLink = name.startsWith(loginBrandPrefix);
@@ -179,6 +176,13 @@ const submit = async (event: Event) => {
 
 // Run hooks
 onMounted(() => {
+  if (typeof reason === "string") {
+    const reasonKey = `login.logout_reasons.${reason}`;
+    if (te(reasonKey)) {
+      $showError(t(reasonKey), false);
+    }
+  }
+
   if (!recaptcha) return;
 
   window.grecaptcha.ready(function () {
