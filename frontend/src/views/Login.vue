@@ -107,7 +107,7 @@ const reason = route.query["logout-reason"];
 const repositoryURL = "https://github.com/trinity-labs/unycloud";
 const loginBrandPrefix = "UnyCloud - ";
 const loginBrandLink = name.startsWith(loginBrandPrefix);
-const loginBrandSuffix = loginBrandLink ? name.slice("UnyCloud".length) : "";
+const loginBrandSuffix = loginBrandLink ? " - Open Source Secure Cloud" : "";
 
 const safeRedirect = (value: unknown): string => {
   if (typeof value !== "string") return "/files/";
