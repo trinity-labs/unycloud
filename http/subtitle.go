@@ -66,8 +66,7 @@ func subtitleFileHandler(w http.ResponseWriter, r *http.Request, file *files.Fil
 	}
 
 	setContentDisposition(w, r, file)
-	w.Header().Add("Content-Security-Policy", `script-src 'none';`)
-	w.Header().Set("Cache-Control", "private")
+	setIsolatedContentHeaders(w)
 	// force type to text/vtt
 	w.Header().Set("Content-Type", "text/vtt")
 

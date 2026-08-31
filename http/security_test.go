@@ -61,6 +61,37 @@ func TestSameOriginViolation(t *testing.T) {
 	}
 }
 
+func TestSetIsolatedContentHeaders(t *testing.T) {
+	rec := httptest.NewRecorder()
+
+	setIsolatedContentHeaders(rec)
+
+	csp := rec.Header().Get("Content-Security-Policy")
+	for _, directive := range []string{
+		"default-src 'none'",
+		"base-uri 'none'",
+		"form-action 'none'",
+		"frame-ancestors 'self'",
+		"object-src 'none'",
+		"script-src 'none'",
+		"style-src 'none'",
+	} {
+		if !strings.Contains(csp, directive) {
+			t.Fatalf("Content-Security-Policy = %q, missing %q", csp, directive)
+		}
+	}
+
+	if got := rec.Header().Get("X-Content-Type-Options"); got != "nosniff" {
+		t.Fatalf("X-Content-Type-Options = %q, want nosniff", got)
+	}
+	if got := rec.Header().Get("Referrer-Policy"); got != "no-referrer" {
+		t.Fatalf("Referrer-Policy = %q, want no-referrer", got)
+	}
+	if got := rec.Header().Get("Cache-Control"); got != "private" {
+		t.Fatalf("Cache-Control = %q, want private", got)
+	}
+}
+
 func TestSameOriginViolationAllowsMatchingOrigin(t *testing.T) {
 	req := httptest.NewRequest("POST", "https://cloud.example.test/api/login", nil)
 	req.Host = "cloud.example.test"

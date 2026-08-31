@@ -27,6 +27,21 @@ func setSecurityHeaders(w http.ResponseWriter, r *http.Request, store *storage.S
 	}
 }
 
+func setIsolatedContentHeaders(w http.ResponseWriter) {
+	w.Header().Set("Content-Security-Policy", strings.Join([]string{
+		"default-src 'none'",
+		"base-uri 'none'",
+		"form-action 'none'",
+		"frame-ancestors 'self'",
+		"object-src 'none'",
+		"script-src 'none'",
+		"style-src 'none'",
+	}, "; ")+";")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.Header().Set("Referrer-Policy", "no-referrer")
+	w.Header().Set("Cache-Control", "private")
+}
+
 func contentSecurityPolicy(r *http.Request, store *storage.Storage) string {
 	recaptchaSources := recaptchaCSPSources(store)
 	scriptSources := sourceSuffix(recaptchaSources.script)

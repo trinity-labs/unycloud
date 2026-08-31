@@ -59,4 +59,9 @@ func TestSubtitleFileHandlerConvertsSRTBreakTags(t *testing.T) {
 	if !strings.Contains(body, "First\nSecond\nThird\nFourth") {
 		t.Fatalf("WebVTT output = %q, want converted SRT <br> tags as line breaks", body)
 	}
+
+	csp := rec.Header().Get("Content-Security-Policy")
+	if !strings.Contains(csp, "default-src 'none'") || !strings.Contains(csp, "style-src 'none'") {
+		t.Fatalf("subtitle CSP = %q, want isolated content policy", csp)
+	}
 }
