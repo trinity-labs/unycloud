@@ -16,9 +16,16 @@ package runner
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/filebrowser/filebrowser/v2/files"
+	"github.com/filebrowser/filebrowser/v2/settings"
+	"github.com/filebrowser/filebrowser/v2/users"
+	"github.com/spf13/afero"
 )
 
 func TestParseUnixCommand(t *testing.T) {
@@ -326,5 +333,37 @@ func TestHasShellControlOperator(t *testing.T) {
 		if got := HasShellControlOperator(test.input); got != test.want {
 			t.Fatalf("HasShellControlOperator(%q) = %v, want %v", test.input, got, test.want)
 		}
+	}
+}
+
+func TestRunHookShellModeDoesNotPreExpandEnvironment(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("shell injection semantics are platform-specific")
+	}
+
+	scope := t.TempDir()
+	marker := filepath.Join(t.TempDir(), "marker")
+	user := &users.User{
+		Username: "test-user",
+		Scope:    scope,
+		Fs:       files.NewFs(afero.NewOsFs(), scope, false),
+	}
+	runner := &Runner{
+		Enabled: true,
+		Settings: &settings.Settings{
+			Shell: []string{"/bin/sh", "-c"},
+			Commands: map[string][]string{
+				"after_save": {"printf '%s\\n' $FILE >/dev/null"},
+			},
+		},
+	}
+
+	err := runner.RunHook(func() error { return nil }, "save", "payload; touch "+marker, "", user)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := os.Stat(marker); !os.IsNotExist(err) {
+		t.Fatalf("shell hook pre-expanded FILE and executed injected command; marker stat err=%v", err)
 	}
 }

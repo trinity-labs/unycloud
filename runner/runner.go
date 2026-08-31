@@ -1,11 +1,13 @@
 package runner
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/filebrowser/filebrowser/v2/settings"
 	"github.com/filebrowser/filebrowser/v2/users"
@@ -16,6 +18,8 @@ type Runner struct {
 	Enabled bool
 	*settings.Settings
 }
+
+const HookTimeout = time.Hour
 
 // RunHook runs the hooks for the before and after event.
 func (r *Runner) RunHook(fn func() error, evt, path, dst string, user *users.User) error {
@@ -81,15 +85,18 @@ func (r *Runner) exec(raw, evt, path, dst string, user *users.User) error {
 			return os.Getenv(key)
 		}
 	}
-	for i, arg := range command {
-		if i == 0 {
-			continue
-		}
+	if !usesShell(r.Settings) {
+		for i, arg := range command {
+			if i == 0 {
+				continue
+			}
 
-		command[i] = os.Expand(arg, envMapping)
+			command[i] = os.Expand(arg, envMapping)
+		}
 	}
 
-	cmd := exec.Command(command[0], command[1:]...)
+	ctx, cancel := context.WithTimeout(context.Background(), HookTimeout)
+	cmd := exec.CommandContext(ctx, command[0], command[1:]...)
 	cmd.Env = append(os.Environ(), fmt.Sprintf("FILE=%s", path))
 	cmd.Env = append(cmd.Env, fmt.Sprintf("SCOPE=%s", user.Scope))
 	cmd.Env = append(cmd.Env, fmt.Sprintf("TRIGGER=%s", evt))
@@ -102,17 +109,33 @@ func (r *Runner) exec(raw, evt, path, dst string, user *users.User) error {
 
 	if !blocking {
 		log.Printf("[INFO] Nonblocking Command: \"%s\"", strings.Join(command, " "))
-		defer func() {
-			go func() {
-				err := cmd.Wait()
-				if err != nil {
-					log.Printf("[INFO] Nonblocking Command \"%s\" failed: %s", strings.Join(command, " "), err)
-				}
-			}()
+		if err := cmd.Start(); err != nil {
+			cancel()
+			return err
+		}
+		go func() {
+			defer cancel()
+			err := cmd.Wait()
+			if ctx.Err() == context.DeadlineExceeded {
+				log.Printf("[INFO] Nonblocking Command \"%s\" timed out after %s", strings.Join(command, " "), HookTimeout)
+				return
+			}
+			if err != nil {
+				log.Printf("[INFO] Nonblocking Command \"%s\" failed: %s", strings.Join(command, " "), err)
+			}
 		}()
-		return cmd.Start()
+		return nil
 	}
 
+	defer cancel()
 	log.Printf("[INFO] Blocking Command: \"%s\"", strings.Join(command, " "))
-	return cmd.Run()
+	err = cmd.Run()
+	if ctx.Err() == context.DeadlineExceeded {
+		return fmt.Errorf("command timed out after %s", HookTimeout)
+	}
+	return err
+}
+
+func usesShell(s *settings.Settings) bool {
+	return s != nil && len(s.Shell) > 0 && s.Shell[0] != ""
 }
