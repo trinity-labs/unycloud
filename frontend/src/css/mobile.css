@@ -78,6 +78,9 @@
     display: inline-block;
     padding: 0.4em;
   }
+  .card.floating {
+    border-radius: 4px;
+  }
   #dropdown .counter {
     left: 2.25em;
   }

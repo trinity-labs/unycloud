@@ -95,7 +95,7 @@ Known upstream issue classes remain important audit targets:
 Published upstream advisories remain relevant background:
 https://github.com/filebrowser/filebrowser/security/advisories
 
-## UnyCloud v0.17.0
+## UnyCloud change
 
 The first UnyCloud release establishes the fork and applies the first
 maintenance hardening set:
@@ -131,6 +131,30 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
+## UnyCloud vX.X.X
+
+- Updated `README.md`;
+- updated `RELEASE_NOTES.md`;
+- updated `UNYCLOUD_VERSION`;
+- updated `docs/MAINTENANCE.md`;
+- updated `docs/installation.md`;
+- updated `frontend/package.json`;
+- updated `http/http.go`;
+- updated `http/static.go`;
+- updated favicon assets:
+  - `frontend/public/img/icons/favicon.ico`;
+  - `frontend/public/img/icons/favicon-16x16.png`;
+  - `frontend/public/img/icons/favicon-32x32.png`;
+  - `frontend/public/img/icons/apple-touch-icon.png`;
+  - `frontend/public/img/icons/android-chrome-192x192.png`;
+  - `frontend/public/img/icons/android-chrome-512x512.png`;
+  - `frontend/public/img/logo.png`;
+  - `frontend/public/img/unycloud/unycloud-logo.png`;
+  - `frontend/public/img/unycloud/unycloud-logo-simple.png`;
+  - `frontend/public/img/unycloud/unycloud-full-white-logo.png`;
+  - `frontend/public/img/unycloud/unycloud-white-logo.png`;
+  - `branding/banner.png`.
+
 See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
 [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md) for maintenance/deployment notes.
 
@@ -150,7 +174,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.17.0`:
+Container builds are local in `v0.17.1`:
 
 ```sh
 scripts/build.sh

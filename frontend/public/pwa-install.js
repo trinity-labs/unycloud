@@ -1,19 +1,14 @@
+// Auto-install prompt (mobile & desktop)
 let promptDisplayed = false;
 
-window.addEventListener("beforeinstallprompt", function (event) {
-  if (promptDisplayed) {
-    return;
-  }
-
+window.addEventListener("beforeinstallprompt", (e) => {
+  if (promptDisplayed) return;
   promptDisplayed = true;
-  event.preventDefault();
 
-  window.setTimeout(function () {
-    event.prompt();
-    event.userChoice.catch(function () {});
-  }, 500);
-});
+  e.preventDefault();
 
-window.addEventListener("appinstalled", function () {
-  promptDisplayed = true;
+  setTimeout(() => {
+    e.prompt();
+    e.userChoice.catch(() => {});
+  }, 5000);
 });
