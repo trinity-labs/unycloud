@@ -98,6 +98,19 @@ export function cssScale(value: unknown, min = 0.1, max = 20) {
   return `scale(${clampNumber(value, min, max).toFixed(4)})`;
 }
 
+export function cssTranslateScale(
+  x: unknown,
+  y: unknown,
+  scale: unknown,
+  min = -100000,
+  max = 100000
+) {
+  const safeX = clampNumber(x, min, max).toFixed(2);
+  const safeY = clampNumber(y, min, max).toFixed(2);
+  const safeScale = clampNumber(scale, 0.1, 20).toFixed(4);
+  return `translate(${safeX}px, ${safeY}px) scale(${safeScale})`;
+}
+
 export function safeCssColor(value: string, fallback: string) {
   if (typeof CSS !== "undefined" && CSS.supports("color", value)) {
     return value;

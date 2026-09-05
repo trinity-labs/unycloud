@@ -27,7 +27,7 @@
 import { throttle } from "lodash-es";
 import UTIF from "utif";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { cssPx, cssScale, getDynamicClass, upsertRule } from "@/utils/cspStyle";
+import { cssTranslateScale, getDynamicClass, upsertRule } from "@/utils/cspStyle";
 
 interface IProps {
   src: string;
@@ -307,9 +307,11 @@ const updateImageRule = () => {
     return;
   }
   upsertRule(`.${imageClass}`, {
-    left: cssPx(position.value.current.x),
-    top: cssPx(position.value.current.y),
-    transform: cssScale(scale.value),
+    transform: cssTranslateScale(
+      position.value.current.x,
+      position.value.current.y,
+      scale.value
+    ),
   });
 };
 </script>
@@ -339,6 +341,7 @@ const updateImageRule = () => {
 .image-ex-img-ready {
   left: 0;
   top: 0;
+  transform-origin: top left;
   transition: transform 0.1s ease;
 }
 </style>
