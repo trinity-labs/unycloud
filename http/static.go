@@ -205,6 +205,19 @@ func serviceWorkerHandler(store *storage.Storage, server *settings.Server, asset
 	}, "", store, server)
 }
 
+func faviconHandler(store *storage.Storage, server *settings.Server, assetsFs fs.FS) http.Handler {
+	return handle(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
+		if r.Method != http.MethodGet && r.Method != http.MethodHead {
+			return http.StatusNotFound, nil
+		}
+
+		w.Header().Set("Cache-Control", "no-store")
+		w.Header().Set("Content-Type", "image/x-icon")
+		w.Header().Set("X-Content-Type-Options", "nosniff")
+		return handleWithStaticData(w, r, d, assetsFs, "img/icons/favicon.ico", "image/x-icon")
+	}, "", store, server)
+}
+
 func staticCacheControl(file string) string {
 	if strings.HasPrefix(file, "assets/") {
 		return "public, max-age=31536000, immutable"

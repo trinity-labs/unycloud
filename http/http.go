@@ -44,6 +44,7 @@ func NewHandler(
 	}
 
 	r.HandleFunc("/health", healthHandler)
+	r.Handle("/favicon.ico", faviconHandler(store, server, assetsFs))
 	r.Handle("/sw.js", serviceWorkerHandler(store, server, assetsFs))
 	r.Handle("/static/custom.css", customStylesheetHandler(store, server))
 	r.PathPrefix("/static").Handler(static)
