@@ -273,24 +273,30 @@ func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 	if startURL == "" {
 		startURL = "/"
 	}
+	scope := startURL
+	startURL = path.Join(startURL, "/files/")
 
 	staticURL := path.Join(d.server.BaseURL, "/static")
 	manifest := map[string]interface{}{
+		"id":         path.Join(scope, "/"),
 		"name":       name,
-		"short_name": name,
+		"short_name": "UnyCloud",
 		"icons": []map[string]string{
 			{
-				"src":   path.Join(staticURL, "/img/icons/android-chrome-192x192.png"),
-				"sizes": "192x192",
-				"type":  "image/png",
+				"src":     path.Join(staticURL, "/img/icons/android-chrome-192x192.png"),
+				"sizes":   "192x192",
+				"type":    "image/png",
+				"purpose": "any maskable",
 			},
 			{
-				"src":   path.Join(staticURL, "/img/icons/android-chrome-512x512.png"),
-				"sizes": "512x512",
-				"type":  "image/png",
+				"src":     path.Join(staticURL, "/img/icons/android-chrome-512x512.png"),
+				"sizes":   "512x512",
+				"type":    "image/png",
+				"purpose": "any maskable",
 			},
 		},
 		"start_url":        startURL,
+		"scope":            scope,
 		"display":          "standalone",
 		"background_color": "#ffffff",
 		"theme_color":      themeColor,
