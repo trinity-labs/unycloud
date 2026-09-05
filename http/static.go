@@ -164,7 +164,7 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 			*r2 = *r
 			r2.URL = new(url.URL)
 			*r2.URL = *r.URL
-			r2.URL.Path = staticPath
+			r2.URL.Path = "/" + staticPath
 			http.FileServer(http.FS(assetsFs)).ServeHTTP(w, r2)
 			return 0, nil
 		}
