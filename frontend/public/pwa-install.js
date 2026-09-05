@@ -11,7 +11,7 @@ window.addEventListener("beforeinstallprompt", function (event) {
   window.setTimeout(function () {
     event.prompt();
     event.userChoice.catch(function () {});
-  }, 100);
+  }, 500);
 });
 
 window.addEventListener("appinstalled", function () {
