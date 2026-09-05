@@ -110,7 +110,7 @@ func handleWithStaticData(w http.ResponseWriter, _ *http.Request, d *data, fSys 
 
 func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs fs.FS) (index, static http.Handler) {
 	index = handle(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
-		if r.Method != http.MethodGet {
+		if r.Method != http.MethodGet && r.Method != http.MethodHead {
 			return http.StatusNotFound, nil
 		}
 
@@ -120,7 +120,7 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 	}, "", store, server)
 
 	static = handle(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
-		if r.Method != http.MethodGet {
+		if r.Method != http.MethodGet && r.Method != http.MethodHead {
 			return http.StatusNotFound, nil
 		}
 
@@ -193,7 +193,7 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 
 func serviceWorkerHandler(store *storage.Storage, server *settings.Server, assetsFs fs.FS) http.Handler {
 	return handle(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
-		if r.Method != http.MethodGet {
+		if r.Method != http.MethodGet && r.Method != http.MethodHead {
 			return http.StatusNotFound, nil
 		}
 
@@ -234,7 +234,7 @@ func staticExists(assetsFs fs.FS, file string) bool {
 
 func customStylesheetHandler(store *storage.Storage, server *settings.Server) http.Handler {
 	return handle(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
-		if r.Method != http.MethodGet {
+		if r.Method != http.MethodGet && r.Method != http.MethodHead {
 			return http.StatusNotFound, nil
 		}
 
@@ -269,12 +269,14 @@ func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 		themeColor = "#5a52c8"
 	}
 
-	startURL := d.server.BaseURL
-	if startURL == "" {
-		startURL = "/"
+	scope := d.server.BaseURL
+	if scope == "" {
+		scope = "/"
 	}
-	scope := startURL
-	startURL = path.Join(startURL, "/files/")
+	if !strings.HasSuffix(scope, "/") {
+		scope += "/"
+	}
+	startURL := scope + "files/"
 
 	staticURL := path.Join(d.server.BaseURL, "/static")
 	manifest := map[string]interface{}{
