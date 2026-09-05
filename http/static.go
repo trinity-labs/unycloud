@@ -263,42 +263,35 @@ func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 	if name == "" {
 		name = "UnyCloud"
 	}
+	name = "UnyCloud"
 
 	themeColor := d.settings.Branding.Color
 	if themeColor == "" {
 		themeColor = "#5a52c8"
 	}
 
-	scope := d.server.BaseURL
-	if scope == "" {
-		scope = "/"
+	startURL := d.server.BaseURL
+	if startURL == "" {
+		startURL = "/"
 	}
-	if !strings.HasSuffix(scope, "/") {
-		scope += "/"
-	}
-	startURL := scope + "files/"
 
 	staticURL := path.Join(d.server.BaseURL, "/static")
 	manifest := map[string]interface{}{
-		"id":         path.Join(scope, "/"),
 		"name":       name,
-		"short_name": "UnyCloud",
+		"short_name": name,
 		"icons": []map[string]string{
 			{
-				"src":     path.Join(staticURL, "/img/icons/android-chrome-192x192.png"),
-				"sizes":   "192x192",
-				"type":    "image/png",
-				"purpose": "any maskable",
+				"src":   path.Join(staticURL, "/img/icons/android-chrome-192x192.png"),
+				"sizes": "192x192",
+				"type":  "image/png",
 			},
 			{
-				"src":     path.Join(staticURL, "/img/icons/android-chrome-512x512.png"),
-				"sizes":   "512x512",
-				"type":    "image/png",
-				"purpose": "any maskable",
+				"src":   path.Join(staticURL, "/img/icons/android-chrome-512x512.png"),
+				"sizes": "512x512",
+				"type":  "image/png",
 			},
 		},
 		"start_url":        startURL,
-		"scope":            scope,
 		"display":          "standalone",
 		"background_color": "#ffffff",
 		"theme_color":      themeColor,

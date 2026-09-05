@@ -8,7 +8,7 @@
  *--------------------------------------------------------------------------------*/
 
 header {
-    background: url(/static/img/unycloud/unycloud-logo-simple.png) 0.5rem / 2.33rem no-repeat, #000000 0 0 / cover;
+    background: url(/static/img/unycloud/unycloud-white-logo.png) 0.5rem / 2.33rem no-repeat, #000000 0 0 / cover;
     padding: 0.5rem 0.5rem 0.5rem 5rem;
 }
 
@@ -104,7 +104,7 @@ main {
     background-origin: padding-box;
     background-clip: border-box;
     border: 1px solid #fff6;
-    border-radius: 7px;
+    border-radius: 4px;
     width: 100%;
     max-width: 24rem;
     min-height: 24rem;
@@ -380,18 +380,18 @@ p.credits > span:nth-child(2n) {
 
 .vue-simple-progress {
     width: auto;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 
 .vue-simple-progress-bar {
     background: #d5d5d5 !important;
-    border-radius: 5px;
+    border-radius: 4px;
     height: 5px;
 }
 
 .vue-simple-progress-bar::-webkit-progress-bar {
     background: #d5d5d5 !important;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 
 .vue-simple-progress-bar::-webkit-progress-value {
