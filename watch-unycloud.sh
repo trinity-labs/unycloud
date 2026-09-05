@@ -104,6 +104,18 @@ install_after_build() {
   UNYCLOUD_INSTALL_ROOT=${UNYCLOUD_INSTALL_ROOT:-} "$INSTALL_SCRIPT"
 }
 
+publish_public_binary() {
+  [ -n "${UNYCLOUD_PUBLIC_BINARY_PATH:-}" ] || return 0
+
+  binary="$ROOT_DIR/dist/unycloud"
+  target="$UNYCLOUD_PUBLIC_BINARY_PATH"
+  [ -f "$binary" ] || { echo "[unycloud] binaire absent: $binary"; return 1; }
+  mkdir -p "$(dirname "$target")"
+  install -m 755 "$binary" "$target"
+  sha256sum "$target" > "$target.sha256"
+  echo "[unycloud] binaire public mis a jour: $target"
+}
+
 build_and_sync() {
   if ! acquire_build_lock; then
     echo "[unycloud] build deja en cours"
@@ -111,7 +123,7 @@ build_and_sync() {
   fi
   rc=0
   load_env
-  if scripts/csp-audit.sh && scripts/build.sh && sync_git && scripts/build.sh && install_after_build; then
+  if scripts/csp-audit.sh && scripts/build.sh && sync_git && scripts/build.sh && install_after_build && publish_public_binary; then
     mark_clean
   else
     rc=$?
