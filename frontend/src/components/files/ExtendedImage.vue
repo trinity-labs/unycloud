@@ -27,7 +27,11 @@
 import { throttle } from "lodash-es";
 import UTIF from "utif";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { cssTranslateScale, getDynamicClass, upsertRule } from "@/utils/cspStyle";
+import {
+  cssCenteredTranslateScale,
+  getDynamicClass,
+  upsertRule,
+} from "@/utils/cspStyle";
 
 interface IProps {
   src: string;
@@ -164,15 +168,12 @@ const setCenter = () => {
     return;
   }
 
-  position.value.center.x = Math.floor(
-    (container.value.clientWidth - imgex.value.clientWidth) / 2
-  );
-  position.value.center.y = Math.floor(
-    (container.value.clientHeight - imgex.value.clientHeight) / 2
-  );
-
-  position.value.current.x = position.value.center.x;
-  position.value.current.y = position.value.center.y;
+  position.value.center.x = 0;
+  position.value.center.y = 0;
+  position.value.current.x = 0;
+  position.value.current.y = 0;
+  position.value.relative.x = 0;
+  position.value.relative.y = 0;
   updateImageRule();
 };
 
@@ -279,18 +280,9 @@ const doMove = (x: number, y: number) => {
   const posY = position.value.current.y + y;
   position.value.current.x = posX;
   position.value.current.y = posY;
+  position.value.relative.x = posX;
+  position.value.relative.y = posY;
   updateImageRule();
-
-  position.value.relative.x = Math.abs(position.value.center.x - posX);
-  position.value.relative.y = Math.abs(position.value.center.y - posY);
-
-  if (posX < position.value.center.x) {
-    position.value.relative.x = position.value.relative.x * -1;
-  }
-
-  if (posY < position.value.center.y) {
-    position.value.relative.y = position.value.relative.y * -1;
-  }
 };
 const wheelMove = (event: WheelEvent) => {
   scale.value += -Math.sign(event.deltaY) * props.zoomStep;
@@ -307,7 +299,7 @@ const updateImageRule = () => {
     return;
   }
   upsertRule(`.${imageClass}`, {
-    transform: cssTranslateScale(
+    transform: cssCenteredTranslateScale(
       position.value.current.x,
       position.value.current.y,
       scale.value
@@ -339,9 +331,9 @@ const updateImageRule = () => {
 }
 
 .image-ex-img-ready {
-  left: 0;
-  top: 0;
-  transform-origin: top left;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
   transition: transform 0.1s ease;
 }
 </style>

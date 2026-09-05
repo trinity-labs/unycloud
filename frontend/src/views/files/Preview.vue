@@ -96,11 +96,41 @@
         >
         </VideoPlayer>
         <iframe
-          v-else-if="isPdf"
+          v-else-if="isPdf && !usePdfFallback"
           class="pdf"
           :src="previewUrl"
           referrerpolicy="same-origin"
         ></iframe>
+        <div v-else-if="isPdf" class="info">
+          <div class="title">
+            <i class="material-icons">picture_as_pdf</i>
+            {{ $t("files.noPreview") }}
+          </div>
+          <div>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              :href="previewUrl"
+              class="button button--flat"
+            >
+              <div>
+                <i class="material-icons">open_in_new</i
+                >{{ $t("buttons.openFile") }}
+              </div>
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              :href="downloadUrl"
+              class="button button--flat"
+            >
+              <div>
+                <i class="material-icons">file_download</i
+                >{{ $t("buttons.download") }}
+              </div>
+            </a>
+          </div>
+        </div>
         <div v-else-if="fileStore.req?.type == 'blob'" class="info">
           <div class="title">
             <i class="material-icons">feedback</i>
@@ -193,6 +223,7 @@ const showNav = ref<boolean>(true);
 const navTimeout = ref<null | number>(null);
 const hoverNav = ref<boolean>(false);
 const autoPlay = ref<boolean>(false);
+const usePdfFallback = ref<boolean>(false);
 const previousRaw = ref<string>("");
 const nextRaw = ref<string>("");
 const csvContent = ref<ArrayBuffer | string>("");
@@ -263,11 +294,22 @@ watch(route, () => {
 // Specify hooks
 onMounted(async () => {
   window.addEventListener("keydown", key);
+  window.addEventListener("resize", updatePdfFallback);
+  updatePdfFallback();
   listing.value = fileStore.oldReq?.items ?? null;
   updatePreview();
 });
 
-onBeforeUnmount(() => window.removeEventListener("keydown", key));
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", key);
+  window.removeEventListener("resize", updatePdfFallback);
+});
+
+const updatePdfFallback = () => {
+  usePdfFallback.value =
+    window.matchMedia?.("(pointer: coarse)")?.matches ||
+    window.innerWidth <= 736;
+};
 
 // Specify methods
 const deleteFile = () => {

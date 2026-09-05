@@ -111,6 +111,19 @@ export function cssTranslateScale(
   return `translate(${safeX}px, ${safeY}px) scale(${safeScale})`;
 }
 
+export function cssCenteredTranslateScale(
+  x: unknown,
+  y: unknown,
+  scale: unknown,
+  min = -100000,
+  max = 100000
+) {
+  const safeX = clampNumber(x, min, max).toFixed(2);
+  const safeY = clampNumber(y, min, max).toFixed(2);
+  const safeScale = clampNumber(scale, 0.1, 20).toFixed(4);
+  return `translate(-50%, -50%) translate(${safeX}px, ${safeY}px) scale(${safeScale})`;
+}
+
 export function safeCssColor(value: string, fallback: string) {
   if (typeof CSS !== "undefined" && CSS.supports("color", value)) {
     return value;
