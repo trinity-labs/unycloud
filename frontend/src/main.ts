@@ -16,6 +16,17 @@ import duration from "dayjs/plugin/duration";
 import "./css/styles.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+const registerServiceWorker = () => {
+  if (!("serviceWorker" in navigator)) {
+    return;
+  }
+
+  window.addEventListener("load", () => {
+    const baseURL = window.FileBrowser?.BaseURL || "";
+    navigator.serviceWorker.register(`${baseURL}/sw.js`);
+  });
+};
+
 // register dayjs plugins globally
 dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
@@ -68,5 +79,7 @@ app.provide("$showError", (error: Error | string, displayReport = true) => {
     rtl: isRtl(),
   });
 });
+
+registerServiceWorker();
 
 router.isReady().then(() => app.mount("#app"));

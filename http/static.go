@@ -8,6 +8,7 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -123,26 +124,27 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 			return http.StatusNotFound, nil
 		}
 
-		if strings.HasSuffix(r.URL.Path, "/") {
+		staticPath := strings.TrimPrefix(r.URL.Path, "/")
+		if strings.HasSuffix(staticPath, "/") {
 			return http.StatusNotFound, nil
 		}
 
-		w.Header().Set("Cache-Control", staticCacheControl(r.URL.Path))
+		w.Header().Set("Cache-Control", staticCacheControl(staticPath))
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 
-		if r.URL.Path == "runtime.js" {
+		if staticPath == "runtime.js" {
 			w.Header().Set("Cache-Control", "no-store")
 			return handleWithStaticData(w, r, d, assetsFs, "runtime.js", "application/javascript; charset=utf-8")
 		}
 
-		if r.URL.Path == "manifest.json" {
+		if staticPath == "manifest.json" {
 			w.Header().Set("Cache-Control", "no-store")
 			return handleManifest(w, d)
 		}
 
 		if d.settings.Branding.Files != "" {
-			if strings.HasPrefix(r.URL.Path, "img/") {
-				fPath := filepath.Join(d.settings.Branding.Files, r.URL.Path)
+			if strings.HasPrefix(staticPath, "img/") {
+				fPath := filepath.Join(d.settings.Branding.Files, staticPath)
 				_, err := os.Stat(fPath)
 				if err != nil && !os.IsNotExist(err) {
 					log.Printf("could not load branding file override: %v", err)
@@ -150,19 +152,24 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 					http.ServeFile(w, r, fPath)
 					return 0, nil
 				}
-			} else if r.URL.Path == "custom.css" && d.settings.Branding.Files != "" {
+			} else if staticPath == "custom.css" && d.settings.Branding.Files != "" {
 				w.Header().Set("Cache-Control", "no-store")
 				http.ServeFile(w, r, filepath.Join(d.settings.Branding.Files, "custom.css"))
 				return 0, nil
 			}
 		}
 
-		if !strings.HasSuffix(r.URL.Path, ".js") {
-			http.FileServer(http.FS(assetsFs)).ServeHTTP(w, r)
+		if !strings.HasSuffix(staticPath, ".js") {
+			r2 := new(http.Request)
+			*r2 = *r
+			r2.URL = new(url.URL)
+			*r2.URL = *r.URL
+			r2.URL.Path = staticPath
+			http.FileServer(http.FS(assetsFs)).ServeHTTP(w, r2)
 			return 0, nil
 		}
 
-		filePath, encoding := encodedStaticPath(r, assetsFs)
+		filePath, encoding := encodedStaticPath(staticPath, r.Header.Get("Accept-Encoding"), assetsFs)
 		f, err := assetsFs.Open(filePath)
 		if err != nil {
 			return http.StatusNotFound, err
@@ -184,6 +191,20 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 	return index, static
 }
 
+func serviceWorkerHandler(store *storage.Storage, server *settings.Server, assetsFs fs.FS) http.Handler {
+	return handle(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
+		if r.Method != http.MethodGet {
+			return http.StatusNotFound, nil
+		}
+
+		w.Header().Set("Cache-Control", "no-store")
+		w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+		w.Header().Set("Service-Worker-Allowed", path.Join(d.server.BaseURL, "/"))
+		w.Header().Set("X-Content-Type-Options", "nosniff")
+		return handleWithStaticData(w, r, d, assetsFs, "sw.js", "application/javascript; charset=utf-8")
+	}, "", store, server)
+}
+
 func staticCacheControl(file string) string {
 	if strings.HasPrefix(file, "assets/") {
 		return "public, max-age=31536000, immutable"
@@ -192,15 +213,14 @@ func staticCacheControl(file string) string {
 	return "public, max-age=86400"
 }
 
-func encodedStaticPath(r *http.Request, assetsFs fs.FS) (string, string) {
-	acceptEncoding := r.Header.Get("Accept-Encoding")
-	if strings.Contains(acceptEncoding, "br") && staticExists(assetsFs, r.URL.Path+".br") {
-		return r.URL.Path + ".br", "br"
+func encodedStaticPath(filePath, acceptEncoding string, assetsFs fs.FS) (string, string) {
+	if strings.Contains(acceptEncoding, "br") && staticExists(assetsFs, filePath+".br") {
+		return filePath + ".br", "br"
 	}
-	if strings.Contains(acceptEncoding, "gzip") && staticExists(assetsFs, r.URL.Path+".gz") {
-		return r.URL.Path + ".gz", "gzip"
+	if strings.Contains(acceptEncoding, "gzip") && staticExists(assetsFs, filePath+".gz") {
+		return filePath + ".gz", "gzip"
 	}
-	return r.URL.Path, ""
+	return filePath, ""
 }
 
 func staticExists(assetsFs fs.FS, file string) bool {
