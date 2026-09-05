@@ -324,6 +324,8 @@ const updateImageRule = () => {
 
 .image-ex-img {
   position: absolute;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .image-ex-img-center {

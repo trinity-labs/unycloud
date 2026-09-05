@@ -32,7 +32,7 @@ more information.
 
 ## Docker
 
-UnyCloud v0.17.2 is published as binary archives. The Docker setup in this
+UnyCloud v0.17.3 is published as binary archives. The Docker setup in this
 repository is intentionally local and generic: build the binary first, then
 build the image from this working tree.
 
