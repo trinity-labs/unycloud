@@ -856,7 +856,7 @@ header #dropdown .action:hover i,
 header #dropdown button:hover i,
 header #dropdown .action:focus i,
 header #dropdown button:focus i {
-    color: #3e3aab !important;
+    color: #ffffff !important;
     fill: #ffffff !important;
     opacity: 1 !important;
     background: 0 0 !important;
@@ -866,6 +866,20 @@ header #dropdown button:focus i {
     #dropdown.active {
         transform: scale(1);
         background: white !important;
+    }
+
+    header #dropdown.active .action i,
+    header #dropdown.active button i,
+    header #dropdown.active .material-icons,
+    header #dropdown.active svg,
+    header #dropdown.active .action:hover i,
+    header #dropdown.active button:hover i,
+    header #dropdown.active .action:focus i,
+    header #dropdown.active button:focus i {
+        color: #3e3aab !important;
+        fill: #ffffff !important;
+        opacity: 1 !important;
+        background: 0 0 !important;
     }
 
     header #dropdown .action span:not(.counter),
