@@ -887,5 +887,6 @@ header #dropdown button:focus i {
         padding: .4em;
         display: inline-block;
         color: #6a6a6a !important;
+        font-weight: 500;
     }
 }
