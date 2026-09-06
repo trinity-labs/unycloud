@@ -142,6 +142,53 @@ format_change_list() {
     }'
 }
 
+update_readme_release_block() {
+  version=$1
+  readme="$ROOT_DIR/README.md"
+  [ -f "$readme" ] || return 0
+
+  notes=$(mktemp)
+  tmp=$(mktemp)
+  git -C "$ROOT_DIR" diff --cached --name-status | awk '
+    BEGIN {
+      labels["A"]="Added"
+      labels["M"]="Changed"
+      labels["D"]="Removed"
+      labels["R"]="Renamed"
+      labels["C"]="Copied"
+    }
+    NF {
+      code=substr($1, 1, 1)
+      label=(code in labels) ? labels[code] : "Changed"
+      if (code == "R" || code == "C") {
+        printf "- ✅ %s `%s` -> `%s`;\n", label, $2, $3
+      } else {
+        printf "- ✅ %s `%s`;\n", label, $2
+      }
+    }' > "$notes"
+
+  awk -v version="$version" -v notes="$notes" '
+    /^## UnyCloud v[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/ {
+      print "## UnyCloud v" version
+      print ""
+      while ((getline line < notes) > 0) print line
+      close(notes)
+      skip = 1
+      next
+    }
+    skip && /^See \[/ {
+      skip = 0
+      print ""
+      print
+      next
+    }
+    !skip { print }
+  ' "$readme" > "$tmp"
+
+  mv "$tmp" "$readme"
+  rm "$notes"
+}
+
 staged_change_notes() {
   version=$(release_version)
   printf 'Changes in UnyCloud v%s:\n\n' "$version"
@@ -187,6 +234,8 @@ commit_and_push() {
       git -C "$ROOT_DIR" add -A
     fi
     version=$(release_version)
+    update_readme_release_block "$version"
+    git -C "$ROOT_DIR" add "$ROOT_DIR/README.md"
     subject="unycloud: ${kind} v${version}"
     git -C "$ROOT_DIR" commit -m "$subject" -m "$(commit_body)"
   fi
