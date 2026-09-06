@@ -5,7 +5,7 @@ set -eu
 repo_root="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 install_root="${UNYCLOUD_INSTALL_ROOT:-}"
 binary="${UNYCLOUD_BINARY:-$repo_root/dist/unycloud}"
-target="${UNYCLOUD_INSTALL_TARGET:-/usr/local/bin/filebrowser}"
+target="${UNYCLOUD_INSTALL_TARGET:-/usr/local/bin/unycloud}"
 backup="${UNYCLOUD_BACKUP_TARGET:-}"
 
 if [ -z "$install_root" ]; then
