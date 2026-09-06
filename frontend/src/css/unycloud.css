@@ -858,7 +858,7 @@ header #dropdown .action:focus i,
 header #dropdown button:focus i {
     color: #ffffff !important;
     fill: #ffffff !important;
-    opacity: 1 !important;
+    opacity: 0.66 !important;
     background: 0 0 !important;
 }
 
