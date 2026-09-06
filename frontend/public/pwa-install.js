@@ -1,16 +1,18 @@
 // Auto-install prompt (mobile & desktop)
 let promptDisplayed = false;
-const pwaDismissCookie = "unycloud_pwa_install_dismissed=true";
+const nativeDismissCookie = "unycloud_pwa_install_dismissed=true";
+const iosDismissCookie = "unycloud_ios_pwa_install_dismissed=true";
 const iosPromptId = "unycloud-ios-install-prompt";
 
-function hasDismissedInstallPrompt() {
+function hasCookie(cookieName) {
   return document.cookie
     .split(";")
-    .some((cookie) => cookie.trim() === pwaDismissCookie);
+    .some((cookie) => cookie.trim() === cookieName);
 }
 
-function rememberDismissedInstallPrompt() {
-  document.cookie = `${pwaDismissCookie}; Max-Age=31536000; Path=/; SameSite=Strict; Secure`;
+function setCookie(cookieName) {
+  const secure = window.location.protocol === "https:" ? "; Secure" : "";
+  document.cookie = `${cookieName}; Max-Age=31536000; Path=/; SameSite=Strict${secure}`;
 }
 
 function isIosDevice() {
@@ -32,7 +34,7 @@ function isStandaloneApp() {
 function showIosInstallPrompt() {
   if (
     promptDisplayed ||
-    hasDismissedInstallPrompt() ||
+    hasCookie(iosDismissCookie) ||
     !isIosDevice() ||
     isStandaloneApp() ||
     document.getElementById(iosPromptId)
@@ -74,7 +76,7 @@ function showIosInstallPrompt() {
   confirm.textContent = "OK";
 
   const dismiss = () => {
-    rememberDismissedInstallPrompt();
+    setCookie(iosDismissCookie);
     overlay.remove();
   };
 
@@ -90,7 +92,7 @@ function showIosInstallPrompt() {
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
 
-  if (promptDisplayed || hasDismissedInstallPrompt()) return;
+  if (promptDisplayed || hasCookie(nativeDismissCookie)) return;
   promptDisplayed = true;
 
   setTimeout(() => {
@@ -98,11 +100,15 @@ window.addEventListener("beforeinstallprompt", (e) => {
     e.userChoice
       .then(({ outcome }) => {
         if (outcome === "dismissed") {
-          rememberDismissedInstallPrompt();
+          setCookie(nativeDismissCookie);
         }
       })
       .catch(() => {});
   }, 5000);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(showIosInstallPrompt, 5000);
 });
 
 window.addEventListener("load", () => {
