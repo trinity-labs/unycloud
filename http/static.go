@@ -135,7 +135,10 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 		case "runtime.js", "pwa-install.js", "sw.js", "manifest.json",
 			"img/icons/favicon.ico", "img/icons/favicon-16x16.png", "img/icons/favicon-32x32.png",
 			"img/icons/apple-touch-icon.png", "img/icons/android-chrome-192x192.png",
-			"img/icons/android-chrome-512x512.png":
+			"img/icons/android-chrome-512x512.png", "img/icons/favicon-v2.ico",
+			"img/icons/favicon-16x16-v2.png", "img/icons/favicon-32x32-v2.png",
+			"img/icons/apple-touch-icon-v2.png", "img/icons/android-chrome-192x192-v2.png",
+			"img/icons/android-chrome-512x512-v2.png":
 			w.Header().Set("Cache-Control", "no-store")
 		}
 
@@ -336,7 +339,7 @@ func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 
 	themeColor := d.settings.Branding.Color
 	if themeColor == "" {
-		themeColor = "#5a52c8"
+		themeColor = "#3e3aab"
 	}
 
 	startURL := d.server.BaseURL
@@ -350,12 +353,12 @@ func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 		"short_name": name,
 		"icons": []map[string]string{
 			{
-				"src":   path.Join(staticURL, "/img/icons/android-chrome-192x192.png"),
+				"src":   path.Join(staticURL, "/img/icons/android-chrome-192x192-v2.png"),
 				"sizes": "192x192",
 				"type":  "image/png",
 			},
 			{
-				"src":   path.Join(staticURL, "/img/icons/android-chrome-512x512.png"),
+				"src":   path.Join(staticURL, "/img/icons/android-chrome-512x512-v2.png"),
 				"sizes": "512x512",
 				"type":  "image/png",
 			},
