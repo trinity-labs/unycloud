@@ -221,6 +221,10 @@ func faviconHandler(store *storage.Storage, server *settings.Server, assetsFs fs
 		w.Header().Set("Cache-Control", "no-store")
 		w.Header().Set("Content-Type", "image/x-icon")
 		w.Header().Set("X-Content-Type-Options", "nosniff")
+		if fPath, ok := brandingFilePath(d.settings.Branding.Files, "img/icons/favicon.ico"); ok {
+			http.ServeFile(w, r, fPath)
+			return 0, nil
+		}
 		return handleWithStaticData(w, r, d, assetsFs, "img/icons/favicon.ico", "image/x-icon")
 	}, "", store, server)
 }
