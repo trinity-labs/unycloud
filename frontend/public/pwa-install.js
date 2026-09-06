@@ -60,7 +60,7 @@ function showIosInstallPrompt() {
 
   const message = document.createElement("p");
   message.textContent =
-    "Sur iPhone ou iPad, touchez Partager puis Ajouter a l'ecran d'accueil.";
+    "Sur iPhone ou iPad, ouvrez cette page dans Safari, puis touchez Partager et Ajouter a l'ecran d'accueil.";
 
   const actions = document.createElement("div");
   actions.className = "pwa-ios-install__actions";
