@@ -131,8 +131,15 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 		w.Header().Set("Cache-Control", staticCacheControl(staticPath))
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 
-		if staticPath == "runtime.js" {
+		switch staticPath {
+		case "runtime.js", "pwa-install.js", "sw.js", "manifest.json",
+			"img/icons/favicon.ico", "img/icons/favicon-16x16.png", "img/icons/favicon-32x32.png",
+			"img/icons/apple-touch-icon.png", "img/icons/android-chrome-192x192.png",
+			"img/icons/android-chrome-512x512.png":
 			w.Header().Set("Cache-Control", "no-store")
+		}
+
+		if staticPath == "runtime.js" {
 			return handleWithStaticData(w, r, d, assetsFs, "runtime.js", "application/javascript; charset=utf-8")
 		}
 
