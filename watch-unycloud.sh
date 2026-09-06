@@ -127,11 +127,24 @@ publish_public_index() {
   version=${release%/*}
   commit=${release#*/}
   checksum=$(sha256sum "$target" | awk '{print $1}')
+  tmp="$index.tmp.$$"
 
-  sed -i \
-    -e "s|<strong>v[0-9][^<]*</strong>|<strong>$version / $commit</strong>|" \
-    -e "s|<code>[0-9a-f][0-9a-f]*</code>|<code>$checksum</code>|" \
-    "$index"
+  awk -v release="$version / $commit" -v checksum="$checksum" '
+    /<strong>v[0-9][^<]*<\/strong>/ {
+      sub(/<strong>v[0-9][^<]*<\/strong>/, "<strong>" release "</strong>")
+    }
+    /<span>SHA256<\/span>/ {
+      sha = 1
+      print
+      next
+    }
+    sha && /<code>[^<]*<\/code>/ {
+      sub(/<code>[^<]*<\/code>/, "<code>" checksum "</code>")
+      sha = 0
+    }
+    { print }
+  ' "$index" > "$tmp"
+  mv "$tmp" "$index"
 
   echo "[unycloud] index public mis a jour: $index"
 }
