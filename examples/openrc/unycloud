@@ -1,0 +1,17 @@
+#!/sbin/openrc-run
+
+name="UnyCloud"
+description="UnyCloud service"
+supervisor="supervise-daemon"
+command="/usr/local/bin/unycloud"
+command_user="unycloud:unycloud"
+command_args="--database /var/lib/unycloud/database.db --log /var/log/unycloud/unycloud.log --root /mnt"
+directory="/"
+pidfile="/run/unycloud.pid"
+respawn_delay=5
+respawn_max=0
+
+depend() {
+    need net
+    after firewall
+}
