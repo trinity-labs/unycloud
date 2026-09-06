@@ -52,8 +52,7 @@ func handleWithStaticData(w http.ResponseWriter, _ *http.Request, d *data, fSys 
 		"HideLoginButton":       d.settings.HideLoginButton,
 	}
 
-	if d.settings.Branding.Files != "" {
-		fPath := filepath.Join(d.settings.Branding.Files, "custom.css")
+	if fPath, ok := brandingFilePath(d.settings.Branding.Files, "custom.css"); ok {
 		_, err := os.Stat(fPath)
 
 		if err != nil && !os.IsNotExist(err) {
@@ -142,19 +141,15 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 			return handleManifest(w, d)
 		}
 
-		if d.settings.Branding.Files != "" {
-			if strings.HasPrefix(staticPath, "img/") {
-				fPath := filepath.Join(d.settings.Branding.Files, staticPath)
-				_, err := os.Stat(fPath)
-				if err != nil && !os.IsNotExist(err) {
-					log.Printf("could not load branding file override: %v", err)
-				} else if err == nil {
-					http.ServeFile(w, r, fPath)
-					return 0, nil
-				}
-			} else if staticPath == "custom.css" && d.settings.Branding.Files != "" {
+		if strings.HasPrefix(staticPath, "img/") {
+			if fPath, ok := brandingFilePath(d.settings.Branding.Files, staticPath); ok {
+				http.ServeFile(w, r, fPath)
+				return 0, nil
+			}
+		} else if staticPath == "custom.css" {
+			if fPath, ok := brandingFilePath(d.settings.Branding.Files, "custom.css"); ok {
 				w.Header().Set("Cache-Control", "no-store")
-				http.ServeFile(w, r, filepath.Join(d.settings.Branding.Files, "custom.css"))
+				http.ServeFile(w, r, fPath)
 				return 0, nil
 			}
 		}
@@ -251,15 +246,8 @@ func customStylesheetHandler(store *storage.Storage, server *settings.Server) ht
 			return http.StatusNotFound, nil
 		}
 
-		if d.settings.Branding.Files == "" {
-			return http.StatusNotFound, nil
-		}
-
-		fPath := filepath.Join(d.settings.Branding.Files, "custom.css")
-		if _, err := os.Stat(fPath); err != nil {
-			if !os.IsNotExist(err) {
-				log.Printf("could not load custom stylesheet: %v", err)
-			}
+		fPath, ok := brandingFilePath(d.settings.Branding.Files, "custom.css")
+		if !ok {
 			return http.StatusNotFound, nil
 		}
 
@@ -269,6 +257,51 @@ func customStylesheetHandler(store *storage.Storage, server *settings.Server) ht
 		http.ServeFile(w, r, fPath)
 		return 0, nil
 	}, "", store, server)
+}
+
+func brandingFilePath(root, name string) (string, bool) {
+	for _, candidateRoot := range brandingRoots(root) {
+		fPath := filepath.Join(candidateRoot, name)
+		if _, err := os.Stat(fPath); err != nil {
+			if !os.IsNotExist(err) {
+				log.Printf("could not load branding file override: %v", err)
+			}
+			continue
+		}
+		return fPath, true
+	}
+	return "", false
+}
+
+func brandingRoots(root string) []string {
+	if root == "" {
+		return nil
+	}
+
+	roots := []string{root}
+	add := func(candidate string) {
+		for _, existing := range roots {
+			if existing == candidate {
+				return
+			}
+		}
+		roots = append(roots, candidate)
+	}
+
+	if strings.Contains(root, "/unycloud/") {
+		add(strings.Replace(root, "/unycloud/", "/filebrowser/", 1))
+	}
+	if strings.Contains(root, "/filebrowser/") {
+		add(strings.Replace(root, "/filebrowser/", "/unycloud/", 1))
+	}
+	if strings.HasSuffix(root, "/unycloud") {
+		add(strings.TrimSuffix(root, "/unycloud") + "/filebrowser")
+	}
+	if strings.HasSuffix(root, "/filebrowser") {
+		add(strings.TrimSuffix(root, "/filebrowser") + "/unycloud")
+	}
+
+	return roots
 }
 
 func handleManifest(w http.ResponseWriter, d *data) (int, error) {
