@@ -13,6 +13,7 @@ PID_FILE=${PID_FILE:-/tmp/unycloud-watch.pid}
 LOG_FILE=${LOG_FILE:-/tmp/unycloud-watch.log}
 BUILD_LOCK_DIR=${BUILD_LOCK_DIR:-/tmp/unycloud-build.lock}
 WATCH_STATE_DIR=${WATCH_STATE_DIR:-/tmp/unycloud-watch-state}
+UNYCLOUD_NGINX_RELOAD_COMMAND=${UNYCLOUD_NGINX_RELOAD_COMMAND:-}
 MODE=${1:-watch}
 
 load_env() {
@@ -150,6 +151,17 @@ publish_public_index() {
 
   echo "[unycloud] index public mis a jour: $index"
   echo "[unycloud] version publique mise a jour: $version_json"
+  reload_public_nginx
+}
+
+reload_public_nginx() {
+  [ -n "${UNYCLOUD_NGINX_RELOAD_COMMAND:-}" ] || return 0
+
+  if sh -c "$UNYCLOUD_NGINX_RELOAD_COMMAND"; then
+    echo "[unycloud] nginx public recharge"
+  else
+    echo "[unycloud] reload nginx public echoue"
+  fi
 }
 
 build_and_sync() {
