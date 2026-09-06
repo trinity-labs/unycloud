@@ -490,3 +490,64 @@ html[dir="rtl"] .card.floating .card-content .file-list {
   direction: ltr;
   text-align: left;
 }
+
+/* iOS PWA install prompt */
+
+.pwa-ios-install {
+  position: fixed;
+  inset: 0;
+  z-index: 30000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1em;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.pwa-ios-install__dialog {
+  width: min(100%, 28em);
+  padding: 1.25em;
+  border-radius: 4px;
+  background: var(--surfacePrimary);
+  color: var(--textSecondary);
+  box-shadow: 0 0.75em 2em rgba(0, 0, 0, 0.25);
+}
+
+.pwa-ios-install__dialog h2 {
+  margin: 0 0 0.75em;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.pwa-ios-install__dialog p {
+  margin: 0;
+  color: var(--textPrimary);
+  line-height: 1.45;
+}
+
+.pwa-ios-install__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75em;
+  margin-top: 1.25em;
+}
+
+.pwa-ios-install__button {
+  min-width: 5.5em;
+  padding: 0.65em 1em;
+  border: 0;
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pwa-ios-install__button--primary {
+  background: var(--blue);
+  color: white;
+}
+
+.pwa-ios-install__button--secondary {
+  background: var(--surfaceSecondary);
+  color: var(--textSecondary);
+}
