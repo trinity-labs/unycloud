@@ -356,7 +356,6 @@ nav i.material-icons {
 p.credits:hover * {
     color: #3e3aab;
     opacity: 1;
-    font-weight: 900;
 }
 
 .credits span span {
