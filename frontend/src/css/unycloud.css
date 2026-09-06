@@ -862,6 +862,11 @@ header #dropdown button:focus i {
     background: 0 0 !important;
 }
 
+.action.search-button,
+.action#more {
+    opacity: 0.66 !important;
+}
+
 @media (width <= 736px) {
     #dropdown.active {
         transform: scale(1);
