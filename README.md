@@ -131,29 +131,29 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
-## UnyCloud v0.18.1
+## UnyCloud v0.18.2
 
-- Updated `README.md`;
-- updated `RELEASE_NOTES.md`;
-- updated `UNYCLOUD_VERSION`;
-- updated `docs/MAINTENANCE.md`;
-- updated `docs/installation.md`;
-- updated `frontend/package.json`;
-- updated `http/http.go`;
-- updated `http/static.go`;
-- updated favicon assets:
-  - `frontend/public/img/icons/favicon.ico`;
-  - `frontend/public/img/icons/favicon-16x16.png`;
-  - `frontend/public/img/icons/favicon-32x32.png`;
-  - `frontend/public/img/icons/apple-touch-icon.png`;
-  - `frontend/public/img/icons/android-chrome-192x192.png`;
-  - `frontend/public/img/icons/android-chrome-512x512.png`;
-  - `frontend/public/img/logo.png`;
-  - `frontend/public/img/unycloud/unycloud-logo.png`;
-  - `frontend/public/img/unycloud/unycloud-logo-simple.png`;
-  - `frontend/public/img/unycloud/unycloud-full-white-logo.png`;
-  - `frontend/public/img/unycloud/unycloud-white-logo.png`;
-  - `branding/banner.png`.
+✅ Changed `README.md`;
+✅ Changed `RELEASE_NOTES.md`;
+✅ Changed `UNYCLOUD_VERSION`;
+✅ Changed `docs/MAINTENANCE.md`;
+✅ Changed `docs/installation.md`;
+✅ Changed `frontend/package.json`;
+✅ Changed `http/http.go`;
+✅ Changed `http/static.go`;
+✅ Changed favicon and logo assets:
+➡️ `frontend/public/img/icons/favicon.ico`;
+➡️ `frontend/public/img/icons/favicon-16x16.png`;
+➡️ `frontend/public/img/icons/favicon-32x32.png`;
+➡️ `frontend/public/img/icons/apple-touch-icon.png`;
+➡️ `frontend/public/img/icons/android-chrome-192x192.png`;
+➡️ `frontend/public/img/icons/android-chrome-512x512.png`;
+➡️ `frontend/public/img/logo.png`;
+➡️ `frontend/public/img/unycloud/unycloud-logo.png`;
+➡️ `frontend/public/img/unycloud/unycloud-logo-simple.png`;
+➡️ `frontend/public/img/unycloud/unycloud-full-white-logo.png`;
+➡️ `frontend/public/img/unycloud/unycloud-white-logo.png`;
+➡️ `branding/banner.png`.
 
 See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
 [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md) for maintenance/deployment notes.
@@ -174,7 +174,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.18.1`:
+Container builds are local in `v0.18.2`:
 
 ```sh
 scripts/build.sh
