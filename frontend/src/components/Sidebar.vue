@@ -267,7 +267,7 @@ export default {
 }
 
 .credits__version--current {
-  color: #039e33;
+  color: #3e3aab;
 }
 
 .credits__version--outdated {
