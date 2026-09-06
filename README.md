@@ -131,7 +131,7 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
-## UnyCloud v0.18.10
+## UnyCloud v0.19.0
 
 - ✅ Changed `README.md`;
 - ✅ Changed `RELEASE_NOTES.md`;
@@ -139,13 +139,8 @@ maintenance hardening set:
 - ✅ Changed `docs/MAINTENANCE.md`;
 - ✅ Changed `docs/installation.md`;
 - ✅ Changed `frontend/package.json`;
-- ✅ Changed `frontend/public/img/icons/android-chrome-192x192.png`;
-- ✅ Changed `frontend/public/img/icons/android-chrome-512x512.png`;
-- ✅ Changed `frontend/public/img/icons/apple-touch-icon.png`;
-- ✅ Changed `frontend/public/img/icons/favicon-16x16.png`;
-- ✅ Changed `frontend/public/img/icons/favicon-32x32.png`;
-- ✅ Changed `frontend/public/img/icons/favicon.ico`;
-- ✅ Changed `frontend/public/img/logo.png`;
+- ✅ Changed `http/http.go`;
+- ✅ Changed `http/static.go`;
 
 See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
 [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md) for maintenance/deployment notes.
@@ -166,7 +161,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.18.10`:
+Container builds are local in `v0.19.0`:
 
 ```sh
 scripts/build.sh

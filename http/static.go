@@ -200,6 +200,18 @@ func serviceWorkerHandler(store *storage.Storage, server *settings.Server, asset
 	}, "", store, server)
 }
 
+func manifestHandler(store *storage.Storage, server *settings.Server) http.Handler {
+	return handle(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
+		if r.Method != http.MethodGet && r.Method != http.MethodHead {
+			return http.StatusNotFound, nil
+		}
+
+		w.Header().Set("Cache-Control", "no-store")
+		w.Header().Set("X-Content-Type-Options", "nosniff")
+		return handleManifest(w, d)
+	}, "", store, server)
+}
+
 func faviconHandler(store *storage.Storage, server *settings.Server, assetsFs fs.FS) http.Handler {
 	return handle(func(w http.ResponseWriter, r *http.Request, d *data) (int, error) {
 		if r.Method != http.MethodGet && r.Method != http.MethodHead {
