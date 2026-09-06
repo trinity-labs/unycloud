@@ -293,7 +293,7 @@ watch(selectedEncoding, () => {
   margin-top: 0.5rem;
   background-color: var(--surfaceSecondary);
   border-radius: 4px;
-  border-left: 3px solid var(--blue);
+  border-left: 3px solid var(--brandPrimary);
   color: var(--textSecondary);
   font-size: 0.875rem;
 }
@@ -329,7 +329,7 @@ watch(selectedEncoding, () => {
 
 .csv-info i {
   font-size: 1.2rem;
-  color: var(--blue);
+  color: var(--brandPrimary);
 }
 
 .encoding-list {

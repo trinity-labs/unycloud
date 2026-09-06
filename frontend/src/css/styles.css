@@ -24,7 +24,7 @@
 } */
 
 .link {
-  color: var(--blue);
+  color: var(--brandPrimary);
 }
 
 #loading {
@@ -152,7 +152,7 @@ main .spinner .bounce2 {
   position: absolute;
   bottom: 0;
   right: 0;
-  background: var(--blue);
+  background: var(--brandPrimary);
   color: var(--iconSecondary);
   border-radius: 50%;
   font-size: 0.75em;
@@ -543,7 +543,7 @@ html[dir="rtl"] .card.floating .card-content .file-list {
 }
 
 .pwa-ios-install__button--primary {
-  background: var(--blue);
+  background: var(--brandPrimary);
   color: white;
 }
 

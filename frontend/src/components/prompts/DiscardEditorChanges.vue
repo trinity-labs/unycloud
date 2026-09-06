@@ -16,7 +16,7 @@
         {{ $t("buttons.cancel") }}
       </button>
       <button
-        class="button button--flat button--blue"
+        class="button button--flat button--brand"
         @click="currentPrompt.saveAction"
         :aria-label="$t('buttons.saveChanges')"
         :title="$t('buttons.saveChanges')"

@@ -4,7 +4,7 @@
   padding: 0.5em 1em;
   border-radius: 0.1em;
   cursor: pointer;
-  background: var(--blue);
+  background: var(--brandPrimary);
   color: white;
   border: 1px solid var(--divider);
   box-shadow: 0 0 5px var(--divider);
@@ -12,7 +12,7 @@
 }
 
 .button:hover {
-  background-color: var(--dark-blue);
+  background-color: var(--brandPrimaryHover);
 }
 
 .button--block {
@@ -25,12 +25,12 @@
   background: var(--red);
 }
 
-.button--blue {
-  background: var(--blue);
+.button--brand {
+  background: var(--brandPrimary);
 }
 
 .button--flat {
-  color: var(--dark-blue);
+  color: var(--brandPrimary);
   background: transparent;
   box-shadow: 0 0 0;
   border: 0;

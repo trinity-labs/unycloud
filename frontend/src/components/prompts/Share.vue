@@ -70,7 +70,7 @@
         </button>
         <button
           id="focus-prompt"
-          class="button button--flat button--blue"
+          class="button button--flat button--brand"
           @click="() => switchListing()"
           :aria-label="$t('buttons.new')"
           :title="$t('buttons.new')"
@@ -128,7 +128,7 @@
         </button>
         <button
           id="focus-prompt"
-          class="button button--flat button--blue"
+          class="button button--flat button--brand"
           @click="submit"
           :aria-label="$t('buttons.share')"
           :title="$t('buttons.share')"

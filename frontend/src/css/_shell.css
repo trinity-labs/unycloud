@@ -79,7 +79,7 @@ body.rtl .shell-content {
 }
 
 .shell__prompt i {
-  color: var(--blue);
+  color: var(--brandPrimary);
 }
 
 .shell__text {
