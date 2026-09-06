@@ -114,6 +114,26 @@ publish_public_binary() {
   install -m 755 "$binary" "$target"
   sha256sum "$target" > "$target.sha256"
   echo "[unycloud] binaire public mis a jour: $target"
+  publish_public_index "$target"
+}
+
+publish_public_index() {
+  target=$1
+  index="${UNYCLOUD_PUBLIC_INDEX_PATH:-$(dirname "$(dirname "$target")")/index.html}"
+
+  [ -f "$index" ] || return 0
+
+  release=$("$target" version | awk '{print $2}')
+  version=${release%/*}
+  commit=${release#*/}
+  checksum=$(sha256sum "$target" | awk '{print $1}')
+
+  sed -i \
+    -e "s|<strong>v[0-9][^<]*</strong>|<strong>$version / $commit</strong>|" \
+    -e "s|<code>[0-9a-f][0-9a-f]*</code>|<code>$checksum</code>|" \
+    "$index"
+
+  echo "[unycloud] index public mis a jour: $index"
 }
 
 build_and_sync() {

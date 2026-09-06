@@ -1,6 +1,6 @@
 {
   "name": "unycloud-frontend",
-  "version": "0.17.11",
+  "version": "0.17.12",
   "private": true,
   "type": "module",
   "engines": {
