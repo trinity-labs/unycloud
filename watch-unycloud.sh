@@ -5,7 +5,7 @@ set -eu
 ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ENV_FILE=${UNYCLOUD_GIT_SYNC_ENV:-"$ROOT_DIR/unycloud-git-sync.env"}
 GIT_SYNC_SCRIPT=${GIT_SYNC_SCRIPT:-"$ROOT_DIR/scripts/sync-unycloud-git.sh"}
-INSTALL_SCRIPT=${INSTALL_SCRIPT:-"$ROOT_DIR/scripts/install-legacy-filebrowser.sh"}
+INSTALL_SCRIPT=${INSTALL_SCRIPT:-"$ROOT_DIR/scripts/install-unycloud.sh"}
 POLL_INTERVAL=${POLL_INTERVAL:-30}
 WATCH_DEBOUNCE=${WATCH_DEBOUNCE:-6}
 WATCH_QUIET_CHECKS=${WATCH_QUIET_CHECKS:-3}
