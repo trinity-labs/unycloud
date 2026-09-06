@@ -127,6 +127,7 @@ publish_public_index() {
   version=${release%/*}
   commit=${release#*/}
   checksum=$(sha256sum "$target" | awk '{print $1}')
+  version_json="$(dirname "$index")/version.json"
   tmp="$index.tmp.$$"
 
   awk -v release="$version / $commit" -v checksum="$checksum" '
@@ -145,8 +146,10 @@ publish_public_index() {
     { print }
   ' "$index" > "$tmp"
   mv "$tmp" "$index"
+  printf '{"release":"%s","version":"%s","commit":"%s","sha256":"%s"}\n' "$version / $commit" "$version" "$commit" "$checksum" > "$version_json"
 
   echo "[unycloud] index public mis a jour: $index"
+  echo "[unycloud] version publique mise a jour: $version_json"
 }
 
 build_and_sync() {
