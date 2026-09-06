@@ -6,7 +6,7 @@ repo_root="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 install_root="${UNYCLOUD_INSTALL_ROOT:-}"
 binary="${UNYCLOUD_BINARY:-$repo_root/dist/unycloud}"
 target="${UNYCLOUD_INSTALL_TARGET:-/usr/local/bin/filebrowser}"
-backup_suffix="${UNYCLOUD_BACKUP_SUFFIX:-$(date -u +%Y%m%dT%H%M%SZ)}"
+backup="${UNYCLOUD_BACKUP_TARGET:-}"
 
 if [ -z "$install_root" ]; then
 	echo "UNYCLOUD_INSTALL_ROOT is required, for example: /mnt/server-root" >&2
@@ -26,7 +26,11 @@ fi
 
 target_path="$install_root$target"
 target_dir="$(dirname -- "$target_path")"
-backup="$target_path.$backup_suffix.bak"
+if [ -z "$backup" ]; then
+	backup="$target_path.bak"
+else
+	backup="$install_root$backup"
+fi
 
 mkdir -p "$target_dir"
 
