@@ -131,24 +131,15 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
-## UnyCloud v0.22.0
+## UnyCloud v0.22.1
 
 - ✅ Changed `README.md`;
 - ✅ Changed `RELEASE_NOTES.md`;
 - ✅ Changed `UNYCLOUD_VERSION`;
 - ✅ Changed `docs/MAINTENANCE.md`;
 - ✅ Changed `docs/installation.md`;
-- ✅ Changed `frontend/index.html`;
 - ✅ Changed `frontend/package.json`;
-- ✅ Added `frontend/public/img/icons/android-chrome-192x192-v2.png`;
-- ✅ Added `frontend/public/img/icons/android-chrome-512x512-v2.png`;
-- ✅ Added `frontend/public/img/icons/apple-touch-icon-v2.png`;
-- ✅ Added `frontend/public/img/icons/favicon-16x16-v2.png`;
-- ✅ Added `frontend/public/img/icons/favicon-32x32-v2.png`;
-- ✅ Added `frontend/public/img/icons/favicon-v2.ico`;
-- ✅ Changed `frontend/public/index.html`;
-- ✅ Changed `frontend/public/manifest.json`;
-- ✅ Changed `http/static.go`;
+- ✅ Changed `frontend/src/views/Login.vue`;
 
 See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
 [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md) for maintenance/deployment notes.
@@ -169,7 +160,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.22.0`:
+Container builds are local in `v0.22.1`:
 
 ```sh
 scripts/build.sh
