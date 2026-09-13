@@ -337,10 +337,7 @@ func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 	}
 	name = "UnyCloud"
 
-	themeColor := d.settings.Branding.Color
-	if themeColor == "" {
-		themeColor = "#3e3aab"
-	}
+	themeColor := "#5a52c8"
 
 	startURL := d.server.BaseURL
 	if startURL == "" {
