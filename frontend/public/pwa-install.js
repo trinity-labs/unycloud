@@ -89,24 +89,6 @@ function showIosInstallPrompt() {
   document.body.append(overlay);
 }
 
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-
-  if (promptDisplayed || hasCookie(nativeDismissCookie)) return;
-  promptDisplayed = true;
-
-  setTimeout(() => {
-    e.prompt();
-    e.userChoice
-      .then(({ outcome }) => {
-        if (outcome === "dismissed") {
-          setCookie(nativeDismissCookie);
-        }
-      })
-      .catch(() => {});
-  }, 5000);
-});
-
 window.addEventListener("DOMContentLoaded", () => {
   setTimeout(showIosInstallPrompt, 5000);
 });

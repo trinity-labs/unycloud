@@ -48,6 +48,33 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   introduce runtime style/script injection.
 - Do not suppress vulnerability reports without code-path analysis.
 
+## Current Advancement
+
+### v0.29.0 Dependency And Security Maintenance
+
+- Frontend production dependencies were updated for maintenance and security:
+  `csv-parse`, `dompurify`, `filesize`, `js-base64`, `marked`,
+  `marked-katex-extension`, `pretty-bytes`, `qrcode.vue`, `vue`, `vue-i18n`,
+  and `vue-router`.
+- Frontend build/dev dependencies were updated: `@typescript-eslint/*`,
+  `@vitejs/plugin-vue`, `autoprefixer`, `eslint`, `eslint-plugin-vue`,
+  `postcss`, `prettier`, `vite`, and `vue-tsc`.
+- Security overrides were aligned for vulnerable transitive packages:
+  `brace-expansion`, `katex`, `postcss-selector-parser`, `source-map-js`,
+  `dompurify`, and `postcss`.
+- Go dependency check was run with `go get -u=patch ./... && go mod tidy`;
+  no Go module diff was produced in this pass.
+- `govulncheck ./...` reports no vulnerabilities called by application code.
+- `pnpm audit --prod` reports no known production vulnerabilities.
+- Full frontend/Go build and tests passed through the release automation path.
+- Release automation created commit `cb72aab2` with tag `v0.29.0`.
+- One development-only audit warning remains for `braces` through
+  `@intlify/unplugin-vue-i18n > fast-glob > micromatch`; npm currently reports
+  no patched version for that advisory.
+- PWA install handling now leaves Chromium's native `beforeinstallprompt`
+  event unmanaged to avoid the browser warning produced when `preventDefault()`
+  is called without a later user-gesture `prompt()`.
+
 ## Required Local Checks
 
 ```sh
