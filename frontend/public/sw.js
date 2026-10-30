@@ -21,19 +21,26 @@ self.addEventListener("fetch", (event) => {
   }
 
   const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin) {
+  const assetsURL = new URL("static/assets/", self.registration.scope);
+  if (
+    event.request.mode === "navigate" ||
+    url.origin !== assetsURL.origin ||
+    !url.pathname.startsWith(assetsURL.pathname)
+  ) {
     return;
   }
 
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        if (response.ok && (url.pathname.startsWith("/static/assets/") || url.pathname === "/static/manifest.json")) {
+        if (response.ok) {
           const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          event.waitUntil(
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {}),
+          );
         }
         return response;
       })
-      .catch(() => caches.match(event.request)),
+      .catch(async () => (await caches.match(event.request)) || Response.error()),
   );
 });

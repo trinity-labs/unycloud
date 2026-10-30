@@ -3,7 +3,7 @@
     <ul class="file-list">
       <li
         @click="itemClick"
-        @touchstart="touchstart"
+        @touchstart.passive="touchstart"
         @dblclick="next"
         role="button"
         tabindex="0"

@@ -41,7 +41,7 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## CVE And Dependency Hygiene
 
-- Use the pinned Go toolchain from `go.mod` (`go1.27.0` at v0.6.24).
+- Use the pinned Go toolchain from `go.mod` (`go1.27.3` since 2026-10-27).
 - Run `govulncheck` and production `pnpm audit` before release.
 - Keep Dependabot config active for Go modules and frontend packages.
 - When updating dependencies, verify that the replacement does not weaken CSP or
@@ -49,6 +49,44 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 - Do not suppress vulnerability reports without code-path analysis.
 
 ## Current Advancement
+
+### Maintenance Publication (2026-10-30)
+
+- Publish the pending PWA navigation, passive touch listener, Go toolchain and
+  dependency maintenance changes without changing the application version.
+- Go dependencies include `golang.org/x/net v0.62.0`; frontend dependencies and
+  the lockfile are aligned. The Docker fetcher uses Alpine 3.24.3.
+- Fresh validation passed: full build, CSP audit, lint, typecheck, 31 frontend
+  tests, 4 service-worker tests, Go tests, vet and targeted race tests.
+- Production package audit reports no known vulnerabilities. Go vulnerability
+  scanning reports no called vulnerabilities; one module-level advisory remains
+  outside imported packages.
+- Generated artifacts and the unrelated nested workspace are excluded from Git.
+
+### PWA Navigation And Touch Listeners
+
+- Service worker interception is limited to bundled static assets. Navigations,
+  authentication, API requests, and manifests use the browser network path.
+- Cache misses return a valid error response; cache write failures do not reject
+  successful asset requests. Asset matching respects the application scope.
+- Touch listeners that do not cancel scrolling are passive; image pan/zoom keeps
+  its existing gesture handling.
+- Regression checks: `node --test scripts/service-worker.test.mjs` (4 tests),
+  frontend tests (31), lint, typecheck, CSP audit, and Go tests passed.
+- The 12 called standard-library vulnerabilities reported against the previous
+  `go1.27.0` pin are resolved by the `go1.27.3` update below.
+
+### Go 1.27.3 Toolchain Update (2026-10-27)
+
+- Toolchain pins in CI, release configuration, Taskfile and build/security
+  scripts are aligned with `go.mod` on `go1.27.3`.
+- `golang.org/x/net` was raised to `v0.60.0` and `golang.org/x/crypto` to
+  `v0.58.0`; the module graph was tidied.
+- The update passed Go tests, vet, targeted race tests and the CSP audit.
+- The recorded vulnerability scan found no vulnerabilities called by application
+  code. The unimported `golang.org/x/crypto/openpgp` advisory `GO-2026-5932`
+  had no upstream fix and was not reachable from this code base.
+- The application binary was rebuilt with Go 1.27.3 and deployed successfully.
 
 ### v0.29.0 Dependency And Security Maintenance
 

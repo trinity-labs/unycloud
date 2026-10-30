@@ -4,7 +4,7 @@
     @touchmove.prevent.stop
     @wheel.prevent.stop
     @mousemove="toggleNavigation"
-    @touchstart="toggleNavigation"
+    @touchstart.passive="toggleNavigation"
   >
     <header-bar v-if="isPdf || isCsv || showNav">
       <action icon="close" :label="$t('buttons.close')" @action="close()" />
