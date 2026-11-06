@@ -43,6 +43,14 @@ ensure_watch_state() {
 }
 
 tree_changed() {
+  if [ "${UNYCLOUD_GIT_SYNC_ENABLED:-0}" = "1" ]; then
+    if [ -n "$(git -C "$ROOT_DIR" status --porcelain --untracked-files=normal)" ]; then
+      return 0
+    fi
+    # Retry publication after a failed push, even when the working tree is clean.
+    ahead=$(git -C "$ROOT_DIR" rev-list --count '@{upstream}..HEAD' 2>/dev/null || printf '0')
+    [ "$ahead" = "0" ] || return 0
+  fi
   ensure_watch_state
   old=$(cat "$WATCH_STATE_DIR/tree.fp")
   new=$(watch_fingerprint)

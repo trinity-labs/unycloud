@@ -28,6 +28,7 @@ mkdir -p "$dist_dir"
 
 cd "$repo_root/frontend"
 CI=true pnpm install --frozen-lockfile
+node --test "$repo_root/scripts/login-form.test.mjs"
 pnpm run build
 
 cd "$repo_root"

@@ -803,6 +803,8 @@ p.credits > span:nth-child(2n) {
 
 :root.dark nav .action {
     color: var(--textPrimary);
+    border-radius: 4px;
+    transition: background-color 0.15s, color 0.15s;
 }
 
 :root.dark nav .action i,
@@ -814,6 +816,12 @@ p.credits > span:nth-child(2n) {
 }
 
 :root.dark nav .action:hover,
+:root.dark nav .action:focus-visible {
+    background: rgb(129 124 255 / 14%) !important;
+    color: #ffffff !important;
+    font-weight: inherit !important;
+}
+
 :root.dark nav .action:hover i,
 :root.dark nav .action i:hover,
 :root.dark #logout:hover {
@@ -821,8 +829,9 @@ p.credits > span:nth-child(2n) {
 }
 
 :root.dark nav .action:hover i,
+:root.dark nav .action:focus-visible i,
 :root.dark nav > .action:first-child:hover i {
-    background: rgb(129 124 255 / 14%);
+    background: transparent;
     color: #ffffff !important;
 }
 

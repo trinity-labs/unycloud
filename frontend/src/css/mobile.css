@@ -178,23 +178,6 @@
   #search.active {
     display: block;
   }
-  #search .boxes > div > div {
-    background: #3e3aab;
-    display: flex;
-    color: #fff;
-    text-align: center;
-    cursor: pointer;
-    flex-grow: 1;
-    width: 10em;
-    height: 10em;
-    margin-bottom: 1em;
-    margin-right: 1em;
-    padding: 1em;
-    border-radius: 8px;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
 }
 
 @media (max-width: 450px) {

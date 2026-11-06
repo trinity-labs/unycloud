@@ -250,40 +250,41 @@ html[dir="rtl"] #search .boxes h3 {
 }
 
 #search .boxes > div {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-right: -1em;
-  margin-bottom: -1em;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
 }
 
-#search .boxes > div > div {
-  background: #3e3aab;
+#search .boxes > div > button {
+  background: var(--surfaceSecondary);
+  border: 1px solid var(--borderPrimary);
   display: flex;
-  color: #fff;
+  color: var(--textPrimary);
   text-align: center;
   cursor: pointer;
-  flex-grow: 1;
-  width: 10em;
-  height: 10em;
-  margin-bottom: 1em;
-  margin-right: 1em;
-  padding: 1em;
-  border-radius: 999px;
+  min-width: 0;
+  min-height: 3rem;
+  padding: 0.6rem;
+  gap: 0.5rem;
+  font: inherit;
+  border-radius: 4px;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  flex-wrap: wrap;
 }
 
-#search .boxes > div > div:hover {
-  opacity: 0.95;
+#search .boxes > div > button:hover,
+#search .boxes > div > button:focus-visible {
+  border-color: var(--brandPrimary);
+  outline: 2px solid var(--brandPrimary);
+  outline-offset: 1px;
 }
 
-#search .boxes p {
-  margin: 1em 0 0;
+#search .boxes span {
+  overflow-wrap: anywhere;
 }
 
 #search .boxes i {
-  color: #fff !important;
-  font-size: 3.5em;
+  color: var(--brandPrimary) !important;
+  font-size: 1.5rem;
 }

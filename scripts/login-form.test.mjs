@@ -1,0 +1,39 @@
+import assert from "node:assert/strict";
+import { readFileSync, realpathSync } from "node:fs";
+import { test } from "node:test";
+import { createRequire } from "node:module";
+
+const require = createRequire(realpathSync(new URL("../frontend/node_modules/vue/package.json", import.meta.url)));
+const { parse } = require("@vue/compiler-dom");
+
+const source = readFileSync(new URL("../frontend/src/views/Login.vue", import.meta.url), "utf8");
+const root = parse(source);
+const elements = [];
+function walk(node) {
+  if (node.type === 1) elements.push(node);
+  for (const child of node.children || []) walk(child);
+}
+walk(root);
+const attr = (node, name) => node.props.find((p) => p.type === 6 && p.name === name);
+const value = (node, name) => attr(node, name)?.value?.content;
+
+test("username remains a native editable text field without forced focus", () => {
+  const input = elements.find((node) => value(node, "id") === "username");
+  assert.ok(input);
+  assert.equal(value(input, "name"), "username");
+  assert.equal(value(input, "type"), "text");
+  assert.equal(value(input, "autocomplete"), "username");
+  for (const name of ["disabled", "readonly", "autofocus"]) {
+    assert.equal(attr(input, name), undefined);
+    assert.equal(input.props.some((p) => p.type === 7 && p.arg?.content === name), false);
+  }
+});
+
+test("credentials share the native login form", () => {
+  const form = elements.find((node) => node.tag === "form");
+  assert.equal(value(form, "autocomplete"), "on");
+  assert.equal(value(form, "method"), "post");
+  for (const id of ["username", "password"]) {
+    assert.equal(form.children.filter((node) => node.type === 1 && value(node, "id") === id).length, 1);
+  }
+});

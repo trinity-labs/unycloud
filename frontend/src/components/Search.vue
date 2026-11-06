@@ -1,6 +1,6 @@
 <template>
-  <div id="search" @click="open" v-bind:class="{ active, ongoing }">
-    <div id="input">
+  <div id="search" v-bind:class="{ active, ongoing }">
+    <div id="input" ref="searchInput" @click="open">
       <button
         v-if="active"
         class="action"
@@ -29,7 +29,7 @@
     </div>
 
     <div id="result" ref="result">
-      <div>
+      <div ref="searchContent">
         <template v-if="isEmpty">
           <p>{{ text }}</p>
 
@@ -37,17 +37,16 @@
             <div class="boxes">
               <h3>{{ $t("search.types") }}</h3>
               <div>
-                <div
-                  tabindex="0"
+                <button
+                  type="button"
                   v-for="(v, k) in boxes"
                   :key="k"
-                  role="button"
                   @click="init('type:' + k)"
                   :aria-label="$t('search.' + v.label)"
                 >
                   <i class="material-icons">{{ v.icon }}</i>
-                  <p>{{ $t("search." + v.label) }}</p>
-                </div>
+                  <span>{{ $t("search." + v.label) }}</span>
+                </button>
               </div>
             </div>
           </template>
@@ -102,6 +101,18 @@ const $showError = inject<IToastError>("$showError")!;
 
 const input = ref<HTMLInputElement | null>(null);
 const result = ref<HTMLElement | null>(null);
+const searchInput = ref<HTMLElement | null>(null);
+const searchContent = ref<HTMLElement | null>(null);
+
+const dismissOutside = (event: PointerEvent) => {
+  if (!active.value || !(event.target instanceof Node)) return;
+  if (
+    searchInput.value?.contains(event.target) ||
+    searchContent.value?.contains(event.target)
+  )
+    return;
+  layoutStore.closeHovers();
+};
 
 const { t } = useI18n();
 
@@ -156,6 +167,7 @@ const closeButtonTitle = computed(() => {
 });
 
 onMounted(() => {
+  document.addEventListener("pointerdown", dismissOutside, true);
   if (result.value === null) {
     return;
   }
@@ -171,6 +183,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  document.removeEventListener("pointerdown", dismissOutside, true);
   abortLastSearch();
   document.body.classList.remove("search-active");
 });
