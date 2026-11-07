@@ -12,7 +12,9 @@ export const getScheduledTheme = (date = new Date()): UserTheme =>
 export const getThemePreference = (): ThemePreference => {
   if (activePreference !== undefined) return activePreference;
   const saved = window.localStorage.getItem(themeStorageKey);
-  return saved === "auto" || isUserTheme(saved) ? saved : theme;
+  return saved === "auto" || saved === "light" || saved === "dark"
+    ? saved
+    : "auto";
 };
 
 export const startThemeSchedule = (): (() => void) => {

@@ -53,6 +53,8 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 ### Local Scheduled Theme (2026-11-07)
 
 - Header theme control cycles light, dark, auto and saves the preference locally.
+- Auto is the default when no valid local preference exists; saved light/dark
+  choices remain unchanged.
 - Auto uses device local time: light from 08:00 inclusive to 20:00 exclusive,
   dark otherwise. It does not follow the operating system theme.
 - Refresh while open and on focus/visibility return keeps theme-color metadata

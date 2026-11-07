@@ -14,6 +14,19 @@ afterEach(() => {
 });
 
 describe("scheduled theme", () => {
+  it.each([null, "", "invalid", "light", "dark", "auto"])(
+    "defaults to auto without replacing a saved choice: %s",
+    async (saved) => {
+      vi.resetModules();
+      vi.stubGlobal("window", {
+        localStorage: { getItem: () => saved },
+      });
+      const freshTheme = await import("../theme");
+      expect(freshTheme.getThemePreference()).toBe(
+        saved === "light" || saved === "dark" ? saved : "auto"
+      );
+    }
+  );
   it.each([
     [7, 59, "dark"],
     [8, 0, "light"],
