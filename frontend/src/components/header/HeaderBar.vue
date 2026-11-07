@@ -65,7 +65,7 @@ const ifActionsSlot = computed(() => (slots.actions ? true : false));
 const activeTheme = ref(getThemePreference() || "light");
 const themeIcon = computed(() =>
   activeTheme.value === "auto"
-    ? "brightness_auto"
+    ? "brightness_4"
     : activeTheme.value === "dark"
       ? "dark_mode"
       : "light_mode"
