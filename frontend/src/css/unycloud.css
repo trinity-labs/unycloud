@@ -296,7 +296,7 @@ button .material-icons:hover {
 
 nav.active {
     left: 0;
-    padding: 0rem 2rem 0 0;
+    padding: 0;
 }
 
 nav .action {
