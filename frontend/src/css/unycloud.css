@@ -1433,6 +1433,54 @@ header #dropdown button:focus i {
 }
 
 @media (width <= 736px) {
+    header #dropdown {
+        --menu-icon: #5a52c8;
+        --menu-hover: #f0effa;
+        width: min(20rem, calc(100vw - 1.5rem));
+        max-width: calc(100vw - 1.5rem);
+        padding: 0.375rem;
+        border-radius: 6px;
+    }
+
+    :root.dark header #dropdown {
+        --menu-icon: #a39cff;
+        --menu-hover: #282c3b;
+    }
+
+    header #dropdown.active {
+        border: 1px solid var(--borderPrimary) !important;
+        box-shadow: 0 8px 24px #00000026 !important;
+    }
+
+    header #dropdown.active .action {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 40px;
+        padding: 0.5rem 0.625rem;
+        gap: 0.625rem;
+        border-radius: 4px;
+        text-align: start;
+    }
+
+    header #dropdown.active .action:not(:disabled):not(.disabled):hover,
+    header #dropdown.active .action:focus-visible {
+        background: var(--menu-hover) !important;
+    }
+
+    header #dropdown.active .action:focus-visible {
+        outline: 2px solid var(--menu-icon);
+        outline-offset: -2px;
+    }
+
+    header #dropdown.active .action i {
+        flex: 0 0 1.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
+        padding: 0;
+        font-size: 1.25rem;
+    }
+
     #dropdown.active {
         transform: scale(1);
         background: white !important;
@@ -1450,7 +1498,7 @@ header #dropdown button:focus i {
     header #dropdown.active button:hover i,
     header #dropdown.active .action:focus i,
     header #dropdown.active button:focus i {
-        color: #3e3aab !important;
+        color: var(--menu-icon) !important;
         fill: #ffffff !important;
         opacity: 1 !important;
         background: 0 0 !important;
@@ -1458,9 +1506,14 @@ header #dropdown button:focus i {
 
     header #dropdown .action span:not(.counter),
     header #dropdown button span:not(.counter) {
-        padding: .4em;
+        padding: 0;
         display: inline-block;
         color: #6a6a6a !important;
-        font-weight: 500;
+        font-weight: 400;
+        font-size: 0.875rem;
+        line-height: 1.4;
+        min-width: 0;
+        white-space: normal;
+        overflow-wrap: anywhere;
     }
 }
