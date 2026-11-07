@@ -70,7 +70,7 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   guards cover button/grid structure and listener cleanup; they do not replace
   visual or browser interaction testing.
 
-### Open Regression: Login Username Autofill (2026-11-06)
+### Confirmed Username Autofill Fix (2026-11-07)
 
 #### Controlled Browser Trials
 
@@ -80,7 +80,15 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   on desktop or mobile; Password suggestions and sign-in work.
 - Trial A: remove only the form's `id="login-form"` and `name="login"`,
   introduced in `11a3c4ae`. Keep input identities, autocomplete, POST method,
-  action and submit handler unchanged. Native-browser result: PENDING.
+  action and submit handler unchanged. Deployed commit: `9adacea7`.
+  Native-browser result: SUCCESS, confirmed by the user on 2026-11-07 after
+  testing Username first. The confirmation did not specify device/browser
+  versions or separate desktop/mobile results; do not claim both were tested.
+- Preserve the confirmed form without `id` or `name`; preserve the INPUT
+  `id="username"`, `name="username"` and `autocomplete="username"`.
+  `scripts/login-form.test.mjs` guards this distinction during every build.
+  Removing the pair was successful; this does not isolate which attribute or
+  browser heuristic was responsible. Do not revert to text/email experiments.
 - For each trial, record the deployed commit, browser/device, whether Username
   suggestions appear before touching Password, whether selecting an account
   fills both fields, and whether sign-in succeeds. Never record credentials.
@@ -100,7 +108,7 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   credentials, whereas clicking the password field does. The username field is
   also reported as not clickable. Distinguish failure to receive focus from
   failure to open the browser's password-manager suggestions during diagnosis.
-- Status: candidate fix applied; native Chrome autofill validation is pending.
+- Historical status before Trial A: candidate fix, not browser-validated.
   The username field incorrectly used `type="email"` for arbitrary usernames;
   it now uses `type="text"` and no longer takes focus automatically on load.
   This is not proof of the cause of a pointer/focus failure. The screenshot demonstrates suggestions on the password

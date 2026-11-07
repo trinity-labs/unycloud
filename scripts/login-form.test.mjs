@@ -32,6 +32,11 @@ test("username remains a native editable text field without forced focus", () =>
 
 test("credentials share the native login form", () => {
   const form = elements.find((node) => node.tag === "form");
+  // Trial A (9adacea7) restored Username suggestions; input identities stay intact.
+  for (const name of ["id", "name"]) {
+    assert.equal(attr(form, name), undefined);
+    assert.equal(form.props.some((p) => p.type === 7 && p.arg?.content === name), false);
+  }
   assert.equal(value(form, "autocomplete"), "on");
   assert.equal(value(form, "method"), "post");
   for (const id of ["username", "password"]) {
