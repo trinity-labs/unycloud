@@ -1,6 +1,14 @@
 <template>
   <header>
-    <img v-if="showLogo" :src="logoURL" alt="UnyCloud" />
+    <router-link
+      class="header-home"
+      to="/files/"
+      :aria-label="t('sidebar.myFiles')"
+      :title="t('sidebar.myFiles')"
+      @click="layoutStore.closeHovers"
+    >
+      <img v-if="showLogo" :src="logoURL" alt="UnyCloud" />
+    </router-link>
     <Action
       v-if="showMenu"
       class="menu-button"
@@ -110,6 +118,35 @@ const toggleHeaderTheme = () => {
 </script>
 
 <style scoped>
+.header-home {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4rem;
+  height: 100%;
+  border-radius: 4px;
+  transition: backdrop-filter 150ms ease;
+}
+
+.header-home:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -4px;
+}
+
+/* The logo can be supplied by private header background branding. */
+@media (hover: hover) and (pointer: fine) {
+  .header-home:hover {
+    -webkit-backdrop-filter: brightness(0.65);
+    backdrop-filter: brightness(0.65);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-home {
+    transition: none;
+  }
+}
+
 .theme-button {
   display: inline-flex;
   align-items: center;
