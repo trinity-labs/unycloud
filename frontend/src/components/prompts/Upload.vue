@@ -1,5 +1,5 @@
 <template>
-  <div class="card floating">
+  <div class="card floating upload-choice-dialog">
     <div class="card-title">
       <h2>{{ t("prompts.upload") }}</h2>
     </div>
@@ -8,26 +8,20 @@
       <p>{{ t("prompts.uploadMessage") }}</p>
     </div>
 
-    <div class="card-action full">
-      <div
+    <div class="upload-options">
+      <button
+        type="button"
         @click="uploadFile"
-        @keypress.enter="uploadFile"
-        class="action"
+        class="upload-choice"
         id="focus-prompt"
-        tabindex="1"
       >
-        <i class="material-icons">insert_drive_file</i>
-        <div class="title">{{ t("buttons.file") }}</div>
-      </div>
-      <div
-        @click="uploadFolder"
-        @keypress.enter="uploadFolder"
-        class="action"
-        tabindex="2"
-      >
-        <i class="material-icons">folder</i>
-        <div class="title">{{ t("buttons.folder") }}</div>
-      </div>
+        <i class="material-icons" aria-hidden="true">insert_drive_file</i>
+        <span>{{ t("buttons.file") }}</span>
+      </button>
+      <button type="button" @click="uploadFolder" class="upload-choice">
+        <i class="material-icons" aria-hidden="true">folder</i>
+        <span>{{ t("buttons.folder") }}</span>
+      </button>
     </div>
   </div>
 </template>
@@ -122,3 +116,69 @@ const uploadFolder = () => {
   openUpload(true);
 };
 </script>
+
+<style scoped>
+.upload-choice-dialog {
+  width: min(24rem, calc(100vw - 2rem));
+}
+
+.upload-choice-dialog .card-title h2 {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.upload-options {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0 1rem 1rem;
+}
+
+.upload-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--borderPrimary);
+  border-radius: 4px;
+  background: var(--surfaceSecondary);
+  color: var(--textPrimary);
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: start;
+  cursor: pointer;
+}
+
+.upload-choice i {
+  flex: 0 0 1.25rem;
+  font-size: 1.25rem;
+  color: #5a52c8;
+}
+
+.upload-choice span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.upload-choice:hover,
+.upload-choice:focus-visible {
+  background: #f0effa;
+  border-color: #5a52c8;
+}
+
+.upload-choice:focus-visible {
+  outline: 2px solid #5a52c8;
+  outline-offset: 2px;
+}
+
+:root.dark .upload-choice i {
+  color: #a39cff;
+}
+
+:root.dark .upload-choice:hover,
+:root.dark .upload-choice:focus-visible {
+  background: #282c3b;
+  border-color: #a39cff;
+}
+</style>
