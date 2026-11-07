@@ -1278,22 +1278,36 @@ p.credits > span:nth-child(2n) {
     color: #ffffff;
 }
 
-:root.dark ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
-:root.dark ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #b4b4be;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #92929f;
 }
 
 :root.dark ::-webkit-scrollbar-thumb {
     background: #30374a;
-    border-radius: 8px;
 }
 
 :root.dark ::-webkit-scrollbar-thumb:hover {
     background: #424a63;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    * {
+        scrollbar-width: thin;
+    }
 }
 
 /*----------------------------------------------------------------------------------
