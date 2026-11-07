@@ -1,8 +1,6 @@
 <template>
   <div id="login" :class="{ recaptcha: recaptcha }">
     <form
-      id="login-form"
-      name="login"
       method="post"
       :action="createMode ? '/api/signup' : '/api/login'"
       autocomplete="on"

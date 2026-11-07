@@ -72,6 +72,22 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ### Open Regression: Login Username Autofill (2026-11-06)
 
+#### Controlled Browser Trials
+
+- Change one factor per trial; preserve Password and authentication behavior.
+  Do not stack another trial before the user reports the preceding result.
+- Baseline `2e15121f`: user reports no saved-account suggestions on Username
+  on desktop or mobile; Password suggestions and sign-in work.
+- Trial A: remove only the form's `id="login-form"` and `name="login"`,
+  introduced in `11a3c4ae`. Keep input identities, autocomplete, POST method,
+  action and submit handler unchanged. Native-browser result: PENDING.
+- For each trial, record the deployed commit, browser/device, whether Username
+  suggestions appear before touching Password, whether selecting an account
+  fills both fields, and whether sign-in succeeds. Never record credentials.
+- Once a successful variant is confirmed, explicitly record it here with the
+  failing baseline, exact change, user-confirmed results and regression checks.
+  A build or markup test alone is not a successful native-autofill result.
+
 - Follow-up on 2026-11-07: the user confirms typing and sign-in work, but native
   suggestions still appear only on Password on desktop and mobile. The earlier
   text-type/focus change did not resolve the reported issue.
