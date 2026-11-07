@@ -613,7 +613,6 @@ p.credits > span:nth-child(2n) {
 
 #listing #multiple-selection {
     font-weight: 900;
-    background-color: #21f3b6;
 }
 
 #listing.list .item div:first-of-type img {
@@ -1063,11 +1062,6 @@ p.credits > span:nth-child(2n) {
 :root.dark #listing .item[aria-selected=true] div i:before {
     background: linear-gradient(135deg, #5751d9, #817cff) !important;
     color: #ffffff !important;
-}
-
-:root.dark #listing #multiple-selection {
-    background: #1f6f5d;
-    color: #dbfff6;
 }
 
 :root.dark .message {
