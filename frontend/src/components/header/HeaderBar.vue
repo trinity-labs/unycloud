@@ -16,7 +16,33 @@
       :icon="themeIcon"
       :label="themeLabel"
       @action="toggleHeaderTheme"
-    />
+    >
+      <template v-if="activeTheme === 'auto'" #icon>
+        <svg
+          class="auto-theme-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            fill="currentColor"
+            d="M16.25 10.7A5.75 5.75 0 1 0 10.7 16.25A6.3 6.3 0 0 1 16.25 10.7Z"
+          />
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.3"
+            stroke-linecap="round"
+            d="M10.5 1.2v2M5.85 2.45l1 1.73M2.45 5.85l1.73 1M1.2 10.5h2M2.45 15.15l1.73-1M5.85 18.55l1-1.73M10.5 19.8v-2M15.15 2.45l-1 1.73M18.55 5.85l-1.73 1M19.8 10.5h-2"
+          />
+          <path
+            fill="currentColor"
+            fill-rule="evenodd"
+            d="M21.5 17a4.5 4.5 0 1 1-9 0a4.5 4.5 0 1 1 9 0ZM17 13.7a3.3 3.3 0 0 0 0 6.6Z"
+          />
+        </svg>
+      </template>
+    </Action>
 
     <div
       id="dropdown"
@@ -83,4 +109,10 @@ const toggleHeaderTheme = () => {
 };
 </script>
 
-<style></style>
+<style scoped>
+.auto-theme-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+</style>

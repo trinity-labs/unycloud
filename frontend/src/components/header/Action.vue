@@ -1,6 +1,8 @@
 <template>
   <button @click="action" :aria-label="label" :title="label" class="action">
-    <i class="material-icons">{{ icon }}</i>
+    <slot name="icon">
+      <i class="material-icons">{{ icon }}</i>
+    </slot>
     <span>{{ label }}</span>
     <span v-if="counter && counter > 0" class="counter">{{ counter }}</span>
   </button>
