@@ -72,6 +72,14 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ### Open Regression: Login Username Autofill (2026-11-06)
 
+- Follow-up on 2026-11-07: the user confirms typing and sign-in work, but native
+  suggestions still appear only on Password on desktop and mobile. The earlier
+  text-type/focus change did not resolve the reported issue.
+- At the user's request, Username is reduced to a native text input with stable
+  id/name, username autocomplete, its associated label, styling and Vue value/
+  placeholder bindings. Extra keyboard, correction and redundant ARIA attributes
+  are removed. Password is unchanged. Keep this field minimal; do not claim
+  native autofill is fixed until verified with saved credentials.
 - Recurring user report: clicking the username field does not offer saved
   credentials, whereas clicking the password field does. The username field is
   also reported as not clickable. Distinguish failure to receive focus from

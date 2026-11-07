@@ -23,10 +23,11 @@ test("username remains a native editable text field without forced focus", () =>
   assert.equal(value(input, "name"), "username");
   assert.equal(value(input, "type"), "text");
   assert.equal(value(input, "autocomplete"), "username");
-  for (const name of ["disabled", "readonly", "autofocus"]) {
+  for (const name of ["disabled", "readonly", "autofocus", "inputmode", "enterkeyhint", "aria-label", "autocapitalize", "autocorrect", "spellcheck"]) {
     assert.equal(attr(input, name), undefined);
     assert.equal(input.props.some((p) => p.type === 7 && p.arg?.content === name), false);
   }
+  assert.ok(elements.some((node) => node.tag === "label" && value(node, "for") === "username"));
 });
 
 test("credentials share the native login form", () => {

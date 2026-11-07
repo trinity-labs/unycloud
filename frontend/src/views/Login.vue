@@ -26,12 +26,6 @@
         class="input input--block"
         type="text"
         autocomplete="username"
-        inputmode="text"
-        enterkeyhint="next"
-        :aria-label="t('login.username')"
-        autocapitalize="off"
-        autocorrect="off"
-        spellcheck="false"
         v-model="username"
         :placeholder="t('login.username')"
       />
