@@ -74,7 +74,8 @@
         />
         <action icon="info" :label="t('buttons.info')" show="info" />
         <action
-          icon="check_circle"
+          :icon="fileStore.multiple ? 'check_circle' : 'radio_button_unchecked'"
+          :aria-pressed="fileStore.multiple"
           :label="t('buttons.selectMultiple')"
           @action="toggleMultipleSelection"
         />
