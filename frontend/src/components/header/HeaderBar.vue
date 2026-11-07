@@ -45,7 +45,7 @@
 import { useLayoutStore } from "@/stores/layout";
 
 import { logoURL } from "@/utils/constants";
-import { getTheme, toggleTheme } from "@/utils/theme";
+import { getThemePreference, toggleTheme } from "@/utils/theme";
 
 import Action from "@/components/header/Action.vue";
 import { computed, ref, useSlots } from "vue";
@@ -62,18 +62,24 @@ const slots = useSlots();
 const { t } = useI18n();
 
 const ifActionsSlot = computed(() => (slots.actions ? true : false));
-const activeTheme = ref<UserTheme>(getTheme() || "light");
+const activeTheme = ref(getThemePreference() || "light");
 const themeIcon = computed(() =>
-  activeTheme.value === "dark" ? "light_mode" : "dark_mode"
+  activeTheme.value === "auto"
+    ? "brightness_auto"
+    : activeTheme.value === "dark"
+      ? "dark_mode"
+      : "light_mode"
 );
 const themeLabel = computed(() =>
-  activeTheme.value === "dark"
-    ? `${t("settings.themes.title")}: ${t("settings.themes.light")}`
-    : `${t("settings.themes.title")}: ${t("settings.themes.dark")}`
+  activeTheme.value === "auto"
+    ? `${t("settings.themes.title")}: Auto (08:00 / 20:00)`
+    : activeTheme.value === "light"
+      ? `${t("settings.themes.title")}: ${t("settings.themes.light")}`
+      : `${t("settings.themes.title")}: ${t("settings.themes.dark")}`
 );
 const toggleHeaderTheme = () => {
   toggleTheme();
-  activeTheme.value = getTheme();
+  activeTheme.value = getThemePreference() || "light";
 };
 </script>
 

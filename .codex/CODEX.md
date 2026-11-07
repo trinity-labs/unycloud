@@ -50,6 +50,15 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Current Advancement
 
+### Local Scheduled Theme (2026-11-07)
+
+- Header theme control cycles light, dark, auto and saves the preference locally.
+- Auto uses device local time: light from 08:00 inclusive to 20:00 exclusive,
+  dark otherwise. It does not follow the operating system theme.
+- Refresh while open and on focus/visibility return keeps theme-color metadata
+  aligned with the resolved theme. Manual choices bypass the schedule.
+- Regression tests cover boundaries, cycling, persistence, metadata and cleanup.
+
 ### Watcher Git Synchronization (2026-11-06)
 
 - When Git sync is enabled, pending tracked/untracked changes trigger a cycle

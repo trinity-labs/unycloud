@@ -7,19 +7,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { onMounted, onUnmounted, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { setHtmlLocale } from "./i18n";
-import { getMediaPreference, getTheme, setTheme } from "./utils/theme";
+import {
+  getThemePreference,
+  setTheme,
+  startThemeSchedule,
+} from "./utils/theme";
 import { name } from "./utils/constants";
 import ToastHost from "@/components/ToastHost.vue";
 
 const { locale } = useI18n();
 
-const userTheme = ref<UserTheme>(getTheme() || getMediaPreference());
+let stopThemeSchedule: (() => void) | undefined;
+onUnmounted(() => stopThemeSchedule?.());
 
 onMounted(() => {
-  setTheme(userTheme.value);
+  setTheme(getThemePreference());
+  stopThemeSchedule = startThemeSchedule();
   setHtmlLocale(locale.value);
   // this might be null during HMR
   const loading = document.getElementById("loading");
