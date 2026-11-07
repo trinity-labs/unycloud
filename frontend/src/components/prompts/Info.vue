@@ -1,7 +1,10 @@
 <template>
   <div class="card floating">
     <div class="card-title">
-      <h2>{{ $t("prompts.fileInfo") }}</h2>
+      <h2 class="info-title">
+        <i class="material-icons info-title-icon" aria-hidden="true">info</i>
+        <span>{{ $t("prompts.fileInfo") }}</span>
+      </h2>
     </div>
 
     <div class="card-content">
@@ -194,3 +197,23 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.info-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-title-icon {
+  flex-shrink: 0;
+  color: var(--brandPrimary);
+  opacity: 0.66;
+  font-size: 1em;
+}
+
+.info-title span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+</style>
