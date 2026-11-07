@@ -20,7 +20,7 @@
       <template v-if="activeTheme === 'auto'" #icon>
         <svg
           class="auto-theme-icon"
-          viewBox="0 0 24 24"
+          viewBox="-1 -1 24 24"
           aria-hidden="true"
           focusable="false"
         >
@@ -110,9 +110,25 @@ const toggleHeaderTheme = () => {
 </script>
 
 <style scoped>
-.auto-theme-icon {
-  width: 24px;
-  height: 24px;
+.theme-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 3rem;
   flex-shrink: 0;
+}
+
+.auto-theme-icon {
+  display: block;
+  width: 1.33rem;
+  height: 1.33rem;
+  flex-shrink: 0;
+  opacity: 0.66;
+}
+
+.theme-button:hover .auto-theme-icon,
+.theme-button:focus-visible .auto-theme-icon {
+  opacity: 1;
 }
 </style>
