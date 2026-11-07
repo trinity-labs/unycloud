@@ -13,14 +13,18 @@
       v-if="controls"
       class="vue-number-input__button vue-number-input__button--minus"
       type="button"
-      tabindex="-1"
+      :aria-label="t('buttons.decrease')"
+      :title="t('buttons.decrease')"
       :disabled="disabled || readonly || !decreasable"
       @click="decrease"
-    ></button>
+    >
+      <i class="material-icons" aria-hidden="true">remove</i>
+    </button>
     <input
       ref="input"
       class="vue-number-input__input"
       type="number"
+      :id="id"
       :name="name"
       :value="Number.isNaN(value) ? '' : value"
       :min="min"
@@ -39,21 +43,28 @@
       v-if="controls"
       class="vue-number-input__button vue-number-input__button--plus"
       type="button"
-      tabindex="-1"
+      :aria-label="t('buttons.increase')"
+      :title="t('buttons.increase')"
       :disabled="disabled || readonly || !increasable"
       @click="increase"
-    ></button>
+    >
+      <i class="material-icons" aria-hidden="true">add</i>
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 defineOptions({ name: "vue-number-input" });
 
 const props = withDefaults(
   defineProps<{
     attrs?: Record<string, unknown>;
+    id?: string;
     center?: boolean;
     controls?: boolean;
     disabled?: boolean;

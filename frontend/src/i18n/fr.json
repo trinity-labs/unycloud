@@ -1,5 +1,7 @@
 {
   "buttons": {
+    "decrease": "Diminuer",
+    "increase": "Augmenter",
     "cancel": "Annuler",
     "clear": "Effacer",
     "close": "Fermer",

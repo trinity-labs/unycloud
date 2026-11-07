@@ -179,15 +179,40 @@ html[dir="rtl"] .breadcrumbs a {
   word-break: break-all;
 }
 
+.vue-number-input {
+  display: inline-flex;
+  align-items: stretch;
+  width: 11rem;
+  max-width: 100%;
+}
+
 .vue-number-input > input {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0.5rem;
+  border: 1px solid var(--borderPrimary);
+  border-radius: 4px;
+  text-align: center;
+  font: inherit;
   background: var(--surfacePrimary) !important;
   border-color: var(--surfaceSecondary) !important;
   color: var(--textSecondary) !important;
 }
 
 .vue-number-input--small > input {
-  height: 1rem !important;
   font-size: 1rem !important;
+}
+
+.vue-number-input--controls > input {
+  border-radius: 0;
+  appearance: textfield;
+}
+
+.vue-number-input--controls > input::-webkit-inner-spin-button,
+.vue-number-input--controls > input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
 }
 
 .vue-number-input :hover,
@@ -196,17 +221,39 @@ html[dir="rtl"] .breadcrumbs a {
 }
 
 .vue-number-input__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 2.75rem;
+  padding: 0;
+  border: 1px solid var(--borderPrimary);
+  color: var(--brandPrimary);
+  cursor: pointer;
   background: var(--surfacePrimary) !important;
 }
 
-.vue-number-input__button--minus,
-.vue-number-input__button--plus {
-  border-color: var(--surfaceSecondary) !important;
+.vue-number-input__button--minus {
+  border-radius: 4px 0 0 4px;
+  border-right: 0;
 }
 
-.vue-number-input__button::before,
-.vue-number-input__button::after {
-  background: var(--textSecondary) !important;
+.vue-number-input__button--plus {
+  border-radius: 0 4px 4px 0;
+  border-left: 0;
+}
+
+.vue-number-input__button:not(:disabled):hover {
+  filter: brightness(0.9);
+}
+
+.vue-number-input__button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.vue-number-input :focus-visible {
+  outline: 2px solid var(--brandPrimary);
+  outline-offset: 2px;
 }
 
 #modal-background .button:focus {

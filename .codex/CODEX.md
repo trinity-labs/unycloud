@@ -50,6 +50,14 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Current Advancement
 
+### Native Number Controls (2026-11-07)
+
+- The CSP-safe number input renders explicit minus/plus icons inside keyboard
+  accessible buttons, with static theme-aware styles and disabled boundary states.
+- Input IDs belong to the native input, not the wrapper, so settings labels focus
+  the field. Keep direct numeric entry and the existing bounds/step behavior.
+- Rendering tests guard the controls, input ID and minimum/maximum button states.
+
 ### Local Scheduled Theme (2026-11-07)
 
 - Header theme control cycles light, dark, auto and saves the preference locally.

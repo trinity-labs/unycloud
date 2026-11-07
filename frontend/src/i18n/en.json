@@ -1,5 +1,7 @@
 {
   "buttons": {
+    "decrease": "Decrease",
+    "increase": "Increase",
     "cancel": "Cancel",
     "clear": "Clear",
     "close": "Close",
