@@ -288,3 +288,19 @@ html[dir="rtl"] #search .boxes h3 {
   color: var(--brandPrimary) !important;
   font-size: 1.5rem;
 }
+/* Multiply the existing icon opacity without changing each theme's base color. */
+header .action > :is(i, svg) {
+  transition: filter 150ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  header .action:not(:disabled):not(.disabled):hover > :is(i, svg) {
+    filter: opacity(0.65);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header .action > :is(i, svg) {
+    transition: none;
+  }
+}

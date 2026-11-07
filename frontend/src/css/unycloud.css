@@ -893,14 +893,6 @@ p.credits > span:nth-child(2n) {
     opacity: 0.66 !important;
 }
 
-:root.dark header > .action:hover i,
-:root.dark header > button.action:hover i,
-:root.dark header > #more:hover i,
-:root.dark header .theme-button:hover i {
-    background: rgb(255 255 255 / 7%) !important;
-    opacity: 1 !important;
-}
-
 :root.dark .credits,
 :root.dark .credits > span,
 :root.dark p.credits:hover * {

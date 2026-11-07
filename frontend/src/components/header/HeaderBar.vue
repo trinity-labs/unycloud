@@ -127,7 +127,6 @@ const toggleHeaderTheme = () => {
   opacity: 0.66;
 }
 
-.theme-button:hover .auto-theme-icon,
 .theme-button:focus-visible .auto-theme-icon {
   opacity: 1;
 }
