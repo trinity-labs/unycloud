@@ -6,12 +6,19 @@
   >
     <div class="card floating">
       <div class="card-title">
-        <h2>
-          {{
-            $t("prompts.uploadFiles", {
-              files: uploadStore.pendingUploadCount,
-            })
-          }}
+        <h2 class="prompt-title">
+          <i
+            class="material-icons-outlined prompt-title-icon"
+            aria-hidden="true"
+            >upload</i
+          >
+          <span>
+            {{
+              $t("prompts.uploadFiles", {
+                files: uploadStore.pendingUploadCount,
+              })
+            }}
+          </span>
         </h2>
         <div class="upload-info">
           <div class="upload-speed">{{ speedText }}/s</div>

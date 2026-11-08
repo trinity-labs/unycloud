@@ -503,3 +503,20 @@ html[dir="rtl"] .credits {
   text-align: right;
   direction: ltr;
 }
+.card-title .prompt-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.prompt-title-icon {
+  flex-shrink: 0;
+  color: var(--brandPrimary);
+  opacity: 0.66;
+  font-size: 1em;
+}
+
+.prompt-title > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

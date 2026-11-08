@@ -1,7 +1,12 @@
 <template>
   <div class="card floating">
     <div class="card-title">
-      <h2>{{ $t("prompts.copy") }}</h2>
+      <h2 class="prompt-title">
+        <i class="material-icons-outlined prompt-title-icon" aria-hidden="true"
+          >content_copy</i
+        >
+        <span>{{ $t("prompts.copy") }}</span>
+      </h2>
     </div>
 
     <div class="card-content">

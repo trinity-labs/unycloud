@@ -50,6 +50,14 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Current Advancement
 
+### Popup Presentation (2026-11-08)
+
+- Existing popup titles include decorative action icons in the primary color
+  at 66% opacity. Shared title layout supports wrapping without shrinking icons.
+- Import choices use borderless buttons and the theme background, while keeping
+  visible keyboard focus. Keep these styles in the app, never in custom branding
+  or selectors tied to generated Vue scope hashes.
+
 ### Native Number Controls (2026-11-07)
 
 - The CSP-safe number input renders explicit minus/plus icons inside keyboard

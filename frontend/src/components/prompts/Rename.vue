@@ -1,7 +1,12 @@
 <template>
   <div class="card floating">
     <div class="card-title">
-      <h2>{{ $t("prompts.rename") }}</h2>
+      <h2 class="prompt-title">
+        <i class="material-icons-outlined prompt-title-icon" aria-hidden="true"
+          >edit</i
+        >
+        <span>{{ $t("prompts.rename") }}</span>
+      </h2>
     </div>
 
     <div class="card-content">

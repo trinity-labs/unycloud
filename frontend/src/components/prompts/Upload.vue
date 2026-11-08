@@ -1,7 +1,12 @@
 <template>
   <div class="card floating upload-choice-dialog">
     <div class="card-title">
-      <h2>{{ t("prompts.upload") }}</h2>
+      <h2 class="prompt-title">
+        <i class="material-icons-outlined prompt-title-icon" aria-hidden="true"
+          >upload</i
+        >
+        <span>{{ t("prompts.upload") }}</span>
+      </h2>
     </div>
 
     <div class="card-content">
@@ -140,9 +145,9 @@ const uploadFolder = () => {
   width: 100%;
   min-height: 44px;
   padding: 0.625rem 0.75rem;
-  border: 1px solid var(--borderPrimary);
+  border: none !important;
   border-radius: 4px;
-  background: var(--surfaceSecondary);
+  background: var(--background);
   color: var(--textPrimary);
   font: inherit;
   font-size: 0.875rem;
@@ -164,7 +169,6 @@ const uploadFolder = () => {
 .upload-choice:hover,
 .upload-choice:focus-visible {
   background: #f0effa;
-  border-color: #5a52c8;
 }
 
 .upload-choice:focus-visible {
@@ -179,6 +183,5 @@ const uploadFolder = () => {
 :root.dark .upload-choice:hover,
 :root.dark .upload-choice:focus-visible {
   background: #282c3b;
-  border-color: #a39cff;
 }
 </style>

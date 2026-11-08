@@ -1,12 +1,17 @@
 <template>
   <div class="card floating">
     <div class="card-title">
-      <h2>
-        {{
-          personalized
-            ? $t("prompts.resolveConflict")
-            : $t("prompts.replaceOrSkip")
-        }}
+      <h2 class="prompt-title">
+        <i class="material-icons-outlined prompt-title-icon" aria-hidden="true"
+          >difference</i
+        >
+        <span>
+          {{
+            personalized
+              ? $t("prompts.resolveConflict")
+              : $t("prompts.replaceOrSkip")
+          }}
+        </span>
       </h2>
     </div>
 

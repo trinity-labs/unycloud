@@ -1,7 +1,12 @@
 <template>
   <div class="card floating" id="share">
     <div class="card-title">
-      <h2>{{ $t("buttons.share") }}</h2>
+      <h2 class="prompt-title">
+        <i class="material-icons-outlined prompt-title-icon" aria-hidden="true"
+          >share</i
+        >
+        <span>{{ $t("buttons.share") }}</span>
+      </h2>
     </div>
 
     <template v-if="listing">

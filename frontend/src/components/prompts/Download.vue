@@ -1,7 +1,12 @@
 <template>
   <div class="card floating" id="download">
     <div class="card-title">
-      <h2>{{ t("prompts.download") }}</h2>
+      <h2 class="prompt-title">
+        <i class="material-icons-outlined prompt-title-icon" aria-hidden="true"
+          >download</i
+        >
+        <span>{{ t("prompts.download") }}</span>
+      </h2>
     </div>
 
     <div class="card-content">
