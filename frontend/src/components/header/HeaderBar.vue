@@ -36,7 +36,7 @@
             <clipPath :id="autoSunClipId">
               <path
                 clip-rule="evenodd"
-                d="M0 0H24V24H0Z M24.75 18.5a6.25 6.25 0 1 0-12.5 0a6.25 6.25 0 1 0 12.5 0Z"
+                d="M0 0H24V24H0Z M24 17.75a6.25 6.25 0 1 0-12.5 0a6.25 6.25 0 1 0 12.5 0Z"
               />
             </clipPath>
           </defs>
@@ -49,7 +49,7 @@
           <path
             fill="currentColor"
             fill-rule="evenodd"
-            d="M23.5 18.5a5 5 0 1 1-10 0a5 5 0 1 1 10 0ZM18.5 14.83a3.67 3.67 0 0 0 0 7.34Z"
+            d="M22.75 17.75a5 5 0 1 1-10 0a5 5 0 1 1 10 0ZM17.75 14.08a3.67 3.67 0 0 0 0 7.34Z"
           />
         </svg>
       </template>
