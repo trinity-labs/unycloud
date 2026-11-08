@@ -852,8 +852,7 @@ p.credits > span:nth-child(2n) {
 
 :root.dark nav .action i,
 :root.dark nav > .action:first-child i {
-    color: #817cffb0 !important;
-    border-color: rgb(129 124 255 / 24%);
+    color: #878787b0 !important;
     background: transparent;
     border-radius: 4px !important;
 }

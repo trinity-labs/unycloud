@@ -255,7 +255,7 @@ deployment-specific files committed to the repository.
 ## Release Notes
 
 - Sidebar icons use a fixed 1.5rem box with a 1rem glyph. Keep the light
-  color #cecece and dark color #817cffb0; preserve the logout color override.
+  color #cecece and dark color #878787b0; preserve the logout color override.
 
 - Keep private deployment domains, sshfs paths, tokens, keys, and local service
   files out of the project history.
