@@ -50,6 +50,14 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Current Advancement
 
+### Unified Interface Icons (2026-11-08)
+
+- All standard interface icons use locally bundled Material Icons Outlined,
+  including file-type pseudo-elements and folder-picker icons. Preserve type
+  colors, status semantics, custom branding and the hand-adjusted Auto symbol.
+- Filled and Font Awesome stylesheets are no longer loaded. Existing icon markup
+  remains compatible; regression guards prevent restoring mixed icon fonts.
+
 ### Popup Presentation (2026-11-08)
 
 - Existing popup titles include decorative action icons in the primary color

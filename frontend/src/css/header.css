@@ -18,10 +18,6 @@ header > * {
   flex: 0 0 auto;
 }
 
-header .action:not(.theme-button) > .material-icons {
-  font-family: "Material Icons Outlined";
-}
-
 header title {
   display: block;
   flex: 1 1 auto;
