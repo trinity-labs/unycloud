@@ -354,7 +354,7 @@ nav > .action:first-child:hover i {
     color: white !important;
 }
 
-nav i.material-icons {
+nav .action i {
     padding: 0;
     width: 1.5rem;
     height: 1.5rem;

@@ -3,7 +3,7 @@
   <nav :class="{ active }">
     <template v-if="isLoggedIn">
       <button @click="toAccountSettings" class="action">
-        <i class="material-icons">person</i>
+        <i class="fa-solid fa-user" aria-hidden="true"></i>
         <span>{{ user.username }}</span>
       </button>
       <button
@@ -12,7 +12,7 @@
         :aria-label="$t('sidebar.myFiles')"
         :title="$t('sidebar.myFiles')"
       >
-        <i class="material-icons">folder</i>
+        <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
         <span>{{ $t("sidebar.myFiles") }}</span>
       </button>
 
@@ -23,7 +23,7 @@
           :aria-label="$t('sidebar.newFolder')"
           :title="$t('sidebar.newFolder')"
         >
-          <i class="material-icons">create_new_folder</i>
+          <i class="fa-solid fa-folder-plus" aria-hidden="true"></i>
           <span>{{ $t("sidebar.newFolder") }}</span>
         </button>
 
@@ -33,7 +33,7 @@
           :aria-label="$t('sidebar.newFile')"
           :title="$t('sidebar.newFile')"
         >
-          <i class="material-icons">note_add</i>
+          <i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i>
           <span>{{ $t("sidebar.newFile") }}</span>
         </button>
       </div>
@@ -45,7 +45,7 @@
           :aria-label="$t('sidebar.settings')"
           :title="$t('sidebar.settings')"
         >
-          <i class="material-icons">settings_applications</i>
+          <i class="fa-solid fa-gear" aria-hidden="true"></i>
           <span>{{ $t("sidebar.settings") }}</span>
         </button>
       </div>
@@ -57,7 +57,7 @@
         :aria-label="$t('sidebar.logout')"
         :title="$t('sidebar.logout')"
       >
-        <i class="material-icons">exit_to_app</i>
+        <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
         <span>{{ $t("sidebar.logout") }}</span>
       </button>
     </template>
@@ -69,7 +69,7 @@
         :aria-label="$t('sidebar.login')"
         :title="$t('sidebar.login')"
       >
-        <i class="material-icons">exit_to_app</i>
+        <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
         <span>{{ $t("sidebar.login") }}</span>
       </router-link>
 
@@ -80,7 +80,7 @@
         :aria-label="$t('sidebar.signup')"
         :title="$t('sidebar.signup')"
       >
-        <i class="material-icons">person_add</i>
+        <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
         <span>{{ $t("sidebar.signup") }}</span>
       </router-link>
     </template>
