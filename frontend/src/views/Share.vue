@@ -5,7 +5,7 @@
 
       <action
         v-if="fileStore.selectedCount"
-        icon="file_download"
+        icon="download"
         :label="t('buttons.download')"
         @action="download"
         :counter="fileStore.selectedCount"
