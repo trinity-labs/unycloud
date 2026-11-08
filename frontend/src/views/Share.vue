@@ -20,7 +20,7 @@
         <i class="material-icons">content_paste</i>
       </button>
       <action
-        :icon="fileStore.multiple ? 'check_circle' : 'radio_button_unchecked'"
+        :icon="fileStore.multiple ? 'check_circle' : 'checklist'"
         :aria-pressed="fileStore.multiple"
         :label="t('buttons.selectMultiple')"
         @action="toggleMultipleSelection"
