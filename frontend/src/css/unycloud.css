@@ -314,7 +314,7 @@ nav .action {
 nav .action i {
     position: relative;
     top: -0.1rem;
-    color: #e3e3e3;
+    color: #cecece;
 }
 
 nav .action:hover {
@@ -362,7 +362,7 @@ nav .action i {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.125rem;
+    font-size: 1rem;
     top: 0 !important;
 }
 
@@ -852,7 +852,7 @@ p.credits > span:nth-child(2n) {
 
 :root.dark nav .action i,
 :root.dark nav > .action:first-child i {
-    color: #817cff !important;
+    color: #817cffb0 !important;
     border-color: rgb(129 124 255 / 24%);
     background: transparent;
     border-radius: 4px !important;
