@@ -456,41 +456,41 @@ p.credits > span:nth-child(2n) {
  * FILES ICONS
  *--------------------------------------------------------------------------------*/
 .file-icons [data-type="text"] i:before {
-	font-family: "Material Icons Outlined";
-    content: "description" !important;
-    font-weight: 400;
+	font-family: "Font Awesome 7 Free";
+    content: "\F15C" !important;
+    font-weight: 900;
     color: rgb(0 171 191);
 }
 
 
 .file-icons [data-ext=".pdf"] i:before {
-    font-family: "Material Icons Outlined";
-    content: "picture_as_pdf";
-    font-weight: 400;
+    font-family: "Font Awesome 7 Free";
+    content: "\F1C1";
+    font-weight: 900;
     color: rgb(211 0 0);
 }
 
 .file-icons [data-ext=".docx"] i:before,
 .file-icons [data-ext=".doc"] i:before {
-    font-family: "Material Icons Outlined";
-    content: "article" !important;
-    font-weight: 400;
+    font-family: "Font Awesome 7 Free";
+    content: "\F1C2" !important;
+    font-weight: 900;
     color: #0066d3;
 }
 
 .file-icons [data-ext=".xlsx"] i:before,
 .file-icons [data-ext=".xls"] i:before {
-    font-family: "Material Icons Outlined";
-    content: "table_chart" !important;
-    font-weight: 400;
+    font-family: "Font Awesome 7 Free";
+    content: "\F1C3" !important;
+    font-weight: 900;
     color: rgb(22 147 73);
 }
 
 .file-icons [data-ext=".pptx"] i:before,
 .file-icons [data-ext=".ppt"] i:before {
-    font-family: "Material Icons Outlined";
-    content: "slideshow" !important;
-    font-weight: 400;
+    font-family: "Font Awesome 7 Free";
+    content: "\F1C4" !important;
+    font-weight: 900;
     color: rgb(237 111 0);
 }
 
@@ -507,18 +507,18 @@ p.credits > span:nth-child(2n) {
 .file-icons [data-ext=".crl"] i:before,
 .file-icons [data-ext=".json"] i:before,
 .file-icons [data-ext=".sql"] i:before {
-	font-family: "Material Icons Outlined";
-    content: "code" !important;
-    font-weight: 400;
+	font-family: "Font Awesome 7 Free";
+    content: "\F1C9" !important;
+    font-weight: 900;
     color: #6088fd;
 }
 
 .file-icons [data-ext=".crl"] i:before,
 .file-icons [data-ext=".md5"] i:before,
 .file-icons [data-ext=".key"] i:before {
-	font-family: "Material Icons Outlined";
-    content: "key" !important;
-    font-weight: 400;
+	font-family: "Font Awesome 7 Free";
+    content: "\E4F0" !important;
+    font-weight: 900;
     color: #7e7aff;
 }
 
@@ -535,16 +535,16 @@ p.credits > span:nth-child(2n) {
 .file-icons [data-ext=".tgz"] i:before,
 .file-icons [data-ext=".xz"] i:before,
 .file-icons [data-ext=".zst"] i:before {
-	font-family: "Material Icons Outlined";
-    content: "folder_zip" !important;
-    font-weight: 400;
+	font-family: "Font Awesome 7 Free";
+    content: "\F1C6" !important;
+    font-weight: 900;
     color: #8b59ff;
 }
 
 .file-icons [data-ext=".zip"] i:before {
-	font-family: "Material Icons Outlined";
-    content: "folder_zip" !important;
-    font-weight: 400;
+	font-family: "Font Awesome 7 Free";
+    content: "\F1C6" !important;
+    font-weight: 900;
     color: #00c9cb;
 }
 
@@ -557,18 +557,18 @@ p.credits > span:nth-child(2n) {
 .file-icons [data-ext=".deb"] i:before,
 .file-icons [data-ext=".exe"] i:before,
 .file-icons [data-ext=".dll"] i:before {
-	font-family: "Material Icons Outlined";
-    content: "code" !important;
-    font-weight: 400;
+	font-family: "Font Awesome 7 Free";
+    content: "\F1C9" !important;
+    font-weight: 900;
     color: #2ecc71;
 }
 
 .file-icons [data-ext=".ai"] i:before,
 .file-icons [data-ext=".odg"] i:before,
 .file-icons [data-ext=".xcf"] i:before {
-	font-family: "Material Icons Outlined";
-    content: "image" !important;
-    font-weight: 400;
+	font-family: "Font Awesome 7 Free";
+    content: "\F1C5" !important;
+    font-weight: 900;
     color: rgb(255 226 0);
 }
 
@@ -580,23 +580,23 @@ p.credits > span:nth-child(2n) {
 .file-icons [data-ext=".vhd"] i:before,
 .file-icons [data-ext=".vmdk"] i:before,
 .file-icons [data-ext=".wim"] i:before {
-	font-family: "Material Icons Outlined";
-    content: "album" !important;
-    font-weight: 400;
+	font-family: "Font Awesome 7 Free";
+    content: "\F574" !important;
+    font-weight: 900;
     color: #b4e300;;
 }
 
 .file-icons [data-type="video"] i:before {
-	font-family: "Material Icons Outlined";
-    content: "movie" !important;
-    font-weight: 400;
+	font-family: "Font Awesome 7 Free";
+    content: "\F1C8" !important;
+    font-weight: 900;
     color: #ff3100;
 }
 
 .file-icons [data-type="audio"] i:before {
-	font-family: "Material Icons Outlined";
-    content: "audio_file" !important;
-    font-weight: 400;
+	font-family: "Font Awesome 7 Free";
+    content: "\F1C7" !important;
+    font-weight: 900;
     color: #3e3aab;
 }
 
