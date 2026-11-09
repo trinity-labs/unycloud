@@ -645,6 +645,15 @@ p.credits > span:nth-child(2n) {
     font-size: .75rem;
 }
 
+:root:not(.dark) #listing.list .item.header {
+    background: #f4f4f4;
+    z-index: 999;
+    border: 0;
+    border-bottom: 1px solid var(--borderPrimary);
+    padding: .85em;
+    display: flex !important;
+}
+
 #listing.list .name {
     font-weight: 500;
     font-size: 0.75rem;
