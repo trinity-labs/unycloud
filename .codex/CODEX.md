@@ -254,6 +254,9 @@ deployment-specific files committed to the repository.
 
 ## Release Notes
 
+- Listing column headings share a 0.75rem font size. The modified heading
+  uses a span, unlike item dates in time elements; cover both structures.
+
 - File rows and mosaic items keep their selection styling without hover effects
   in either theme. Selected icon backgrounds stay transparent; only the item
   carries the selection background.

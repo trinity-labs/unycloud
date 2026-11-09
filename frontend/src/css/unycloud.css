@@ -634,8 +634,15 @@ p.credits > span:nth-child(2n) {
 
 #listing.list .item.header {
     border-bottom: 1px solid var(--divider);
-    padding: 0 1rem .5rem;
+    padding: .5rem 1rem;
     border-radius: 2px;
+    margin: 0 auto .5rem;
+}
+
+#listing.list .item.header .name,
+#listing.list .item.header .size,
+#listing.list .item.header .modified {
+    font-size: .75rem;
 }
 
 #listing.list .name {
