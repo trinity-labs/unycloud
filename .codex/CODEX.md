@@ -258,8 +258,8 @@ deployment-specific files committed to the repository.
   in either theme. Selected icon backgrounds stay transparent; only the item
   carries the selection background.
 
-- Dark body/main use a continuous linear gradient, without lateral radial
-  light effects. Do not force this background over deployment branding.
+- Dark body/main use the base background without linear gradients or lateral
+  radial light effects. Preserve the deployment branding cascade.
 
 - Sidebar icons use a fixed 1.5rem box with a 1rem glyph. Keep the light
   color #cecece and dark color #878787b0; preserve the logout color override.

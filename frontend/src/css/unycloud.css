@@ -811,7 +811,6 @@ p.credits > span:nth-child(2n) {
 
 :root.dark body,
 :root.dark main {
-    background: linear-gradient(145deg, #18172b 0%, var(--background) 100%);
     color: var(--textSecondary);
 }
 
