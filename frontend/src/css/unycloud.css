@@ -604,10 +604,14 @@ p.credits > span:nth-child(2n) {
     font-size: 1.25em !important;
 }
 
-#listing .item[aria-selected=true],
+#listing .item[aria-selected=true] {
+    background: #3e3aab !important;
+    color: var(--iconSecondary) !important;
+}
+
 #listing .item[aria-selected=true] div i,
 #listing .item[aria-selected=true] div i:before {
-    background: #3e3aab !important;
+    background: transparent !important;
     color: var(--iconSecondary) !important;
 }
 
@@ -626,19 +630,6 @@ p.credits > span:nth-child(2n) {
 	border-radius: 4px;
     padding: 1em;
     border-top: 0;
-}
-
-#listing .item[aria-selected=true]:hover {
-    opacity: 0.85;
-}
-
-#listing.list .item:hover {
-    opacity: 0.7;
-    background: #f5f5f5;
-}
-
-#listing.list .item:hover i::before {
-    color: grey;
 }
 
 #listing.list .item.header {
@@ -1042,20 +1033,14 @@ p.credits > span:nth-child(2n) {
     box-shadow: none;
 }
 
-:root.dark #listing.list .item:hover,
-:root.dark #listing.mosaic .item:hover {
-    opacity: 1;
-    background: #222838 !important;
+:root.dark #listing .item[aria-selected=true] {
+    background: linear-gradient(135deg, #5751d9, #817cff) !important;
+    color: #ffffff !important;
 }
 
-:root.dark #listing.list .item:hover i::before {
-    color: inherit;
-}
-
-:root.dark #listing .item[aria-selected=true],
 :root.dark #listing .item[aria-selected=true] div i,
 :root.dark #listing .item[aria-selected=true] div i:before {
-    background: linear-gradient(135deg, #5751d9, #817cff) !important;
+    background: transparent !important;
     color: #ffffff !important;
 }
 

@@ -254,6 +254,10 @@ deployment-specific files committed to the repository.
 
 ## Release Notes
 
+- File rows and mosaic items keep their selection styling without hover effects
+  in either theme. Selected icon backgrounds stay transparent; only the item
+  carries the selection background.
+
 - Dark body/main no longer override the background with radial gradients.
   Preserve the base background and deployment branding cascade.
 
