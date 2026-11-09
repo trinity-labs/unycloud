@@ -634,7 +634,7 @@ p.credits > span:nth-child(2n) {
 
 #listing.list .item.header {
     border-bottom: 1px solid var(--divider);
-    padding: .5rem 1rem;
+    padding: 0 1rem .5rem;
     border-radius: 2px;
 }
 
