@@ -1100,10 +1100,10 @@ p.credits > span:nth-child(2n) {
     color: #ffffff !important;
 }
 
-:root.dark .action .counter {
-    background: #817cff;
+:root .action .counter {
+    background: #181b24;
     color: #ffffff;
-    border-color: #181b24;
+    border-color: #817cff;
 }
 
 :root.dark #search input {
