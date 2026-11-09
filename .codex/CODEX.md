@@ -254,6 +254,9 @@ deployment-specific files committed to the repository.
 
 ## Release Notes
 
+- Dark body/main no longer override the background with radial gradients.
+  Preserve the base background and deployment branding cascade.
+
 - Sidebar icons use a fixed 1.5rem box with a 1rem glyph. Keep the light
   color #cecece and dark color #878787b0; preserve the logout color override.
 

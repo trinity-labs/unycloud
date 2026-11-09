@@ -820,10 +820,6 @@ p.credits > span:nth-child(2n) {
 
 :root.dark body,
 :root.dark main {
-    background:
-        radial-gradient(circle at 12% 8%, rgb(62 58 171 / 18%), transparent 28rem),
-        radial-gradient(circle at 92% 18%, rgb(129 124 255 / 10%), transparent 24rem),
-        var(--background) !important;
     color: var(--textSecondary);
 }
 
