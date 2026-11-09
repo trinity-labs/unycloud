@@ -243,6 +243,16 @@ release_version() {
 }
 
 commit_and_push() {
+  version=$(release_version)
+  target=$(git -C "$ROOT_DIR" rev-list -n 1 "v$version" 2>/dev/null || true)
+  if git -C "$ROOT_DIR" diff --quiet HEAD &&
+     [ -z "$(git -C "$ROOT_DIR" ls-files --others --exclude-standard)" ] &&
+     [ -n "$target" ] && [ "$target" != "$(git -C "$ROOT_DIR" rev-parse HEAD)" ] &&
+     [ -z "$UNYCLOUD_GIT_RELEASE_VERSION" ] && [ "$UNYCLOUD_GIT_AUTO_BUMP" = "1" ]; then
+    "$VERSION_SCRIPT" bump fix >/dev/null || return $?
+    # The regular staged-change path must not bump this version a second time.
+    UNYCLOUD_GIT_AUTO_BUMP=0
+  fi
   git -C "$ROOT_DIR" add -A
   if git -C "$ROOT_DIR" diff --cached --quiet; then
     log "aucune modification a commit"
@@ -291,10 +301,10 @@ release_body() {
 publish_github_release() {
   [ "$UNYCLOUD_GIT_AUTO_RELEASE" = "1" ] || { log "publication release desactivee"; return 0; }
   [ "$UNYCLOUD_GIT_SYNC_PUSH" = "1" ] || { log "push desactive: publication release ignoree"; return 0; }
-  [ -f "$GH_TOKEN_FILE" ] || { log "token GitHub absent: publication release ignoree"; return 0; }
+  [ -f "$GH_TOKEN_FILE" ] || { log "token GitHub absent: publication release echouee"; return 1; }
 
   token=$(tr -d '\r\n' < "$GH_TOKEN_FILE")
-  [ -n "$token" ] || { log "token GitHub vide: publication release ignoree"; return 0; }
+  [ -n "$token" ] || { log "token GitHub vide: publication release echouee"; return 1; }
 
   version=$(release_version)
   tag="v$version"
@@ -343,8 +353,8 @@ run_sync() {
     return 1
   fi
   git_auth fetch origin --prune >/dev/null 2>&1 || true
-  commit_and_push
-  create_release_tag
+  commit_and_push || return $?
+  create_release_tag || return $?
   publish_github_release
 }
 

@@ -254,6 +254,11 @@ deployment-specific files committed to the repository.
 
 ## Release Notes
 
+- Watcher publication is tracked separately from the working-tree fingerprint.
+  Already-pushed commits still require a release. Only successful GitHub sync
+  records published.head; never mark publication complete after a manual push.
+  Clean commits beyond the current version tag receive a patch version bump.
+
 - Listing column headings share a 0.75rem font size. The modified heading
   uses a span, unlike item dates in time elements; cover both structures.
 

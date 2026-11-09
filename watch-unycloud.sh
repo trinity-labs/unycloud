@@ -50,6 +50,10 @@ tree_changed() {
     # Retry publication after a failed push, even when the working tree is clean.
     ahead=$(git -C "$ROOT_DIR" rev-list --count '@{upstream}..HEAD' 2>/dev/null || printf '0')
     [ "$ahead" = "0" ] || return 0
+    if [ "${UNYCLOUD_GIT_AUTO_RELEASE:-1}" = "1" ]; then
+      published=$(cat "$WATCH_STATE_DIR/published.head" 2>/dev/null || true)
+      [ "$published" = "$(git -C "$ROOT_DIR" rev-parse HEAD)" ] || return 0
+    fi
   fi
   ensure_watch_state
   old=$(cat "$WATCH_STATE_DIR/tree.fp")
@@ -101,7 +105,13 @@ release_build_lock() {
 
 sync_git() {
   [ -x "$GIT_SYNC_SCRIPT" ] || { echo "[unycloud] git sync script absent: $GIT_SYNC_SCRIPT"; return 0; }
-  UNYCLOUD_GIT_BUILD_VERIFIED=1 "$GIT_SYNC_SCRIPT" sync
+  UNYCLOUD_GIT_BUILD_VERIFIED=1 "$GIT_SYNC_SCRIPT" sync || return $?
+  if [ "${UNYCLOUD_GIT_SYNC_ENABLED:-0}" = "1" ] &&
+     [ "${UNYCLOUD_GIT_SYNC_PUSH:-1}" = "1" ] &&
+     [ "${UNYCLOUD_GIT_AUTO_RELEASE:-1}" = "1" ]; then
+    ensure_watch_state
+    git -C "$ROOT_DIR" rev-parse HEAD > "$WATCH_STATE_DIR/published.head"
+  fi
 }
 
 install_after_build() {
