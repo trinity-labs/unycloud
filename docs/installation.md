@@ -32,9 +32,38 @@ more information.
 
 ## Docker
 
-UnyCloud v0.29.3 is published as binary archives. The Docker setup in this
-repository is intentionally local and generic: build the binary first, then
-build the image from this working tree.
+The Docker publishing workflow builds Linux/amd64 images from the existing
+Dockerfile after all CI checks pass on `master` pushes and `v*` tags. It pushes
+to both GHCR and Docker Hub:
+
+- GHCR: `ghcr.io/trinity-labs/unycloud`
+- Docker Hub: `<namespace>/unycloud`
+
+Default-branch builds receive the `edge` tag. Version tags such as `v0.29.3`
+produce `0.29.3` and `0.29` image tags; stable releases also receive `latest`.
+Every build includes a `sha-<short-commit>` tag.
+
+Before enabling publishing, configure these GitHub Actions repository secrets:
+
+- `DOCKERHUB_USERNAME`: the Docker Hub account used to authenticate.
+- `DOCKERHUB_TOKEN`: a Docker Hub access token with write access to the image
+    repository.
+
+Optionally set the repository variable `DOCKERHUB_NAMESPACE` to publish under
+a Docker Hub organization instead of the login account. Ensure the Docker Hub
+repository exists and the token can push to it. GHCR authentication uses the
+automatic `GITHUB_TOKEN` with `packages: write`; no separate GHCR secret is
+needed. Set the GHCR package visibility to public after the first publication
+if anonymous pulls are required.
+
+After the first successful publication, pull a stable release with:
+
+```sh
+docker pull ghcr.io/trinity-labs/unycloud:latest
+```
+
+To build locally, build the binary first, then build the image from this working
+tree:
 
 ```sh
 scripts/build.sh

@@ -110,6 +110,26 @@ jobs:
         run: pnpm install --frozen-lockfile
       - run: scripts/security-scan.sh
 
+  publish-docker:
+    name: Publish Docker Image
+    needs:
+      [
+        "lint-frontend",
+        "test-frontend",
+        "lint-backend",
+        "test",
+        "build",
+        "security",
+      ]
+    if: github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/docker-publish.yaml
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
   release:
     name: Release
     needs:
