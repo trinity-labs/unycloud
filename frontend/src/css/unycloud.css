@@ -1076,7 +1076,7 @@ p.credits > span:nth-child(2n) {
         border-radius: inherit;
         pointer-events: none;
         background: linear-gradient(110deg, transparent 40%, color-mix(in srgb, var(--brandPrimary) 14%, transparent) 50%, transparent 60%) 150% 0 / 250% 100% no-repeat;
-        animation: listing-keyload .75s ease-out both;
+        animation: listing-keyload 1.2s ease-out .15s both;
     }
 
     :root.dark #listing .item[aria-selected]:hover::after,
