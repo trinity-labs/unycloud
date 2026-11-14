@@ -1,4 +1,17 @@
 {
+  "pdf": {
+    "controls": "Commandes PDF",
+    "page": "Page",
+    "zoomIn": "Agrandir",
+    "zoomOut": "Réduire",
+    "fitWidth": "Ajuster à la largeur",
+    "rotate": "Pivoter",
+    "password": "Mot de passe du document",
+    "wrongPassword": "Mot de passe incorrect",
+    "loading": "Chargement du PDF...",
+    "error": "Impossible d'afficher ce PDF.",
+    "retry": "Réessayer"
+  },
   "buttons": {
     "decrease": "Diminuer",
     "increase": "Augmenter",

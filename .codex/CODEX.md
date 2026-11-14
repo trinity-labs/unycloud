@@ -50,6 +50,25 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Current Advancement
 
+### Local PDF Preview (2026-11-14)
+
+- The authenticated file preview uses Mozilla PDF.js 6.5.438 instead of a native
+  iframe/mobile fallback. The component is lazy-loaded and renders one page at
+  a time, with page selection, fit-width zoom, rotation and password handling.
+- Worker, CMaps, standard fonts, image decoder fallbacks and license are served
+  locally with the application. No external document viewer or CDN is used.
+- Existing same-origin raw-file endpoints and their authorization remain in
+  use. Downloads on error respect the user's download permission. Source URLs
+  must match the application origin; no PDF scripting or XFA viewer is enabled.
+- Preserve the strict CSP: WebAssembly is disabled and font glyphs use PDF.js
+  path rendering. Do not add script/style exceptions for the generic viewer.
+- Canvas backing storage is limited to four million pixels and 4096 pixels per
+  dimension. Cancel pending renders and destroy loading tasks on file changes
+  or unmount. Standard resources are versioned together with the worker.
+- Verified with Chromium desktop and mobile emulation using synthetic PDFs:
+  rendered pixels, page changes, zoom, rotation, invalid document handling and
+  encrypted document/password retry. Real Android/iOS hardware is not covered.
+
 ### Security Maintenance (2026-11-14)
 
 - Go toolchain pins in the module, CI, release and build/security scripts now

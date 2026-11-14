@@ -29,6 +29,7 @@ export {
   footerLinks,
   disableUsedPercentage,
   baseURL,
+  staticURL,
   logoURL,
   recaptcha,
   recaptchaKey,

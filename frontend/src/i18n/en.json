@@ -1,4 +1,17 @@
 {
+  "pdf": {
+    "controls": "PDF controls",
+    "page": "Page",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "fitWidth": "Fit width",
+    "rotate": "Rotate",
+    "password": "Document password",
+    "wrongPassword": "Incorrect password",
+    "loading": "Loading PDF...",
+    "error": "Unable to display this PDF.",
+    "retry": "Retry"
+  },
   "buttons": {
     "decrease": "Decrease",
     "increase": "Increase",

@@ -1,6 +1,6 @@
 {
   "name": "unycloud-frontend",
-  "version": "0.34.0",
+  "version": "0.35.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -32,6 +32,7 @@
     "marked-katex-extension": "^5.1.13",
     "material-icons": "^1.13.14",
     "normalize.css": "^8.0.1",
+    "pdfjs-dist": "6.5.438",
     "pinia": "^4.1.0",
     "pretty-bytes": "^7.2.0",
     "qrcode.vue": "^3.11.0",

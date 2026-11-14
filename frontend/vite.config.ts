@@ -2,8 +2,52 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import { compression } from "vite-plugin-compression2";
+import { readFileSync, readdirSync } from "node:fs";
+import { createRequire } from "node:module";
+import { dirname, join } from "node:path";
+import type { Plugin } from "vite";
+
+function pdfAssets(): Plugin {
+  const require = createRequire(import.meta.url);
+  const root = dirname(require.resolve("pdfjs-dist/package.json"));
+  const { version } = JSON.parse(
+    readFileSync(join(root, "package.json"), "utf8")
+  );
+  const assets = new Map<string, Buffer>();
+  for (const folder of ["cmaps", "standard_fonts", "wasm", "iccs"]) {
+    for (const file of readdirSync(join(root, folder))) {
+      assets.set(
+        `pdfjs/${version}/${folder}/${file}`,
+        readFileSync(join(root, folder, file))
+      );
+    }
+  }
+  assets.set(`pdfjs/${version}/LICENSE`, readFileSync(join(root, "LICENSE")));
+  return {
+    name: "local-pdf-assets",
+    buildStart() {
+      for (const [fileName, source] of assets)
+        this.emitFile({ type: "asset", fileName, source });
+    },
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const key = (req.url || "").split("?")[0].replace(/^\//, "");
+        const asset = assets.get(key);
+        if (!asset) return next();
+        res.setHeader(
+          "Content-Type",
+          key.endsWith(".js")
+            ? "application/javascript"
+            : "application/octet-stream"
+        );
+        res.end(asset);
+      });
+    },
+  };
+}
 
 const plugins = [
+  pdfAssets(),
   vue(),
   VueI18nPlugin({
     include: [`${import.meta.dirname}/src/i18n/**/*.json`],
