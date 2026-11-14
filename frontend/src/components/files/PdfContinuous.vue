@@ -126,12 +126,23 @@ async function pump() {
   running = true;
   try {
     while (!disposed) {
+      const root = props.scroller.getBoundingClientRect();
+      const visible = new Set(
+        [...nearby].filter((number) => {
+          const rect = slots[number - 1]?.getBoundingClientRect();
+          return rect && rect.bottom > root.top && rect.top < root.bottom;
+        })
+      );
       const candidates = [...nearby]
-        .sort((a, b) => Math.abs(a - currentPage) - Math.abs(b - currentPage))
-        .slice(0, canvasLimit);
+        .sort(
+          (a, b) =>
+            Number(visible.has(b)) - Number(visible.has(a)) ||
+            Math.abs(a - currentPage) - Math.abs(b - currentPage)
+        )
+        .slice(0, Math.max(canvasLimit, visible.size));
       // A rebuilt observer has no entries yet; retain the last visible rasters.
       if (!candidates.length) break;
-      // Bound retained page rasters independently of document length.
+      // Keep visible pages at low zoom; bound offscreen prefetch independently of document length.
       for (const number of rendered.keys()) {
         if (!candidates.includes(number)) {
           slots[number - 1]?.replaceChildren();
