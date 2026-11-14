@@ -111,6 +111,26 @@
         <a @click="help">{{ $t("sidebar.help") }}</a>
       </span>
     </p>
+    <footer v-if="!disableExternal" class="nav-footer">
+      <a
+        class="action"
+        href="https://docs.trinity-net.com/unyport/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+        <span>Docs UnyPort</span>
+      </a>
+      <a
+        class="action"
+        href="https://github.com/trinity-labs/unycloud"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class="fa-solid fa-code-branch" aria-hidden="true"></i>
+        <span>GitHub</span>
+      </a>
+    </footer>
   </nav>
 </template>
 
@@ -253,6 +273,20 @@ export default {
 </script>
 
 <style scoped>
+nav {
+  height: calc(100dvh - 4rem);
+}
+
+nav > * {
+  flex-shrink: 0;
+}
+
+.nav-footer {
+  margin-top: auto;
+  padding: 0.5rem 0 max(0.5rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--divider);
+}
+
 .credits__version {
   display: inline-flex;
   flex-direction: row;
