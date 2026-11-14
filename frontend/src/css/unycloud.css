@@ -1050,12 +1050,24 @@ p.credits > span:nth-child(2n) {
 }
 
 @media (hover: hover) {
-    :root:not(.dark) #listing .item[aria-selected="false"]:hover {
-        background: color-mix(in srgb, var(--brandPrimary) 8%, var(--surfacePrimary));
+    #listing .item[aria-selected="false"]::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        background: color-mix(in srgb, var(--brandPrimary) 8%, transparent);
+        opacity: 0;
+        transition: opacity .1s ease;
     }
 
-    :root.dark #listing .item[aria-selected="false"]:hover {
-        background: color-mix(in srgb, var(--brandPrimary) 18%, var(--surfacePrimary));
+    :root.dark #listing .item[aria-selected="false"]::before {
+        background: color-mix(in srgb, var(--brandPrimary) 18%, transparent);
+    }
+
+    #listing .item[aria-selected="false"]:hover::before {
+        opacity: 1;
+        transition-delay: .15s;
     }
 }
 

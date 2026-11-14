@@ -377,7 +377,8 @@ deployment-specific files committed to the repository.
   uses a span, unlike item dates in time elements; cover both structures.
 
 - File rows and mosaic items have a subtle brand-tinted hover background in both
-  themes on hover-capable devices. Apply it only to aria-selected="false":
+  themes on hover-capable devices, with a 150ms entry delay and no exit delay.
+  Use a non-interactive opacity overlay to preserve gradients. Apply it only to aria-selected="false":
   selected items retain their selection background. A single CSS keyload sheen
   runs for 1.2s after a 150ms hover delay only for selected items, without intercepting
   clicks or shifting layout. Disable animation with prefers-reduced-motion.
