@@ -291,10 +291,11 @@ async function loadDocument() {
   documentReady.value = false;
   pageCount.value = 0;
   pageNumber.value = 1;
-  continuous.value = window.matchMedia(
+  const desktop = window.matchMedia(
     "(min-width: 738px) and (hover: hover) and (pointer: fine)"
   ).matches;
-  zoom.value = continuous.value ? 0.75 : 1;
+  continuous.value = true;
+  zoom.value = desktop ? 0.75 : 1;
   rotation.value = 0;
   error.value = false;
   busy.value = true;

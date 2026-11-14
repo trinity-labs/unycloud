@@ -41,6 +41,11 @@ type Connection = EventTarget & {
 const connection = (navigator as Navigator & { connection?: Connection })
   .connection;
 const nearby = new Set<number>();
+const canvasLimit = window.matchMedia(
+  "(min-width: 738px) and (hover: hover) and (pointer: fine)"
+).matches
+  ? 4
+  : 2;
 const rendered = new Map<number, number>();
 const measuredPages = new Set<number>();
 let slots: HTMLElement[] = [];
@@ -123,10 +128,10 @@ async function pump() {
     while (!disposed) {
       const candidates = [...nearby]
         .sort((a, b) => Math.abs(a - currentPage) - Math.abs(b - currentPage))
-        .slice(0, 4);
+        .slice(0, canvasLimit);
       // A rebuilt observer has no entries yet; retain the last visible rasters.
       if (!candidates.length) break;
-      // Keep at most four page rasters, regardless of document length.
+      // Bound retained page rasters independently of document length.
       for (const number of rendered.keys()) {
         if (!candidates.includes(number)) {
           slots[number - 1]?.replaceChildren();

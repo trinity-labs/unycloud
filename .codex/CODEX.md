@@ -78,7 +78,9 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   lazy-rendered near the viewport with at most four retained canvases. A fast
   reported connection permits one viewport of prefetch; slow/save-data/unknown
   connections use visible pages only. Network hints are optional, not proof of
-  actual bandwidth. Mobile retains single-page fit-width mode.
+  actual bandwidth. Mobile also uses continuous lazy rendering at fit-width,
+  retaining at most two canvases instead of four on desktop. Verify page jumps,
+  zoom, mixed page sizes and eviction on mobile as well as desktop.
 - Preserve page navigation, current-page tracking, cancellation, scroll anchor
   during zoom, and serialized page cleanup in continuous mode. Do not fetch all
   page metadata or rasterize the full document at startup.
