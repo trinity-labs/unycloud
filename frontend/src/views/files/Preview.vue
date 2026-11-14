@@ -1,6 +1,7 @@
 <template>
   <div
     id="previewer"
+    :class="{ 'pdf-preview': isPdf }"
     @touchmove.prevent.stop
     @wheel.prevent.stop
     @mousemove="toggleNavigation"

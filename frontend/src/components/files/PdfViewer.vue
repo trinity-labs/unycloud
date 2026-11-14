@@ -163,6 +163,7 @@ let renderGeneration = 0;
 let observer: ResizeObserver | undefined;
 let resizeTimer: ReturnType<typeof setTimeout> | undefined;
 let disposed = false;
+let displayedPage = 0;
 
 function changePage(event: Event) {
   const input = event.target as HTMLInputElement;
@@ -183,11 +184,12 @@ async function renderPage() {
   const document = pdf;
   if (!document || !canvasHost.value || !scroller.value || disposed) return;
   const current = ++renderGeneration;
+  const requestedPage = pageNumber.value;
   rendering?.cancel();
   busy.value = true;
   let page;
   try {
-    page = await document.getPage(pageNumber.value);
+    page = await document.getPage(requestedPage);
     if (current !== renderGeneration || disposed) return;
     const angle = (page.rotate + rotation.value) % 360;
     const original = page.getViewport({ scale: 1, rotation: angle });
@@ -208,13 +210,8 @@ async function renderPage() {
     canvas.setAttribute("role", "img");
     canvas.setAttribute(
       "aria-label",
-      `${t("pdf.page")} ${pageNumber.value} / ${pageCount.value}`
+      `${t("pdf.page")} ${requestedPage} / ${pageCount.value}`
     );
-    upsertRule(`.${canvasClass}`, {
-      width: cssPx(viewport.width, 1, 30000),
-      height: cssPx(viewport.height, 1, 30000),
-    });
-    canvasHost.value.replaceChildren(canvas);
     const task = page.render({
       canvas,
       viewport,
@@ -222,8 +219,24 @@ async function renderPage() {
     });
     rendering = task;
     await task.promise;
-    if (current === renderGeneration) {
-      scroller.value?.scrollTo(0, 0);
+    if (current === renderGeneration && !disposed && canvasHost.value) {
+      // Keep the completed page visible while rendering the next zoom offscreen.
+      const previousCanvas = canvasHost.value.querySelector("canvas");
+      const scale = previousCanvas
+        ? viewport.width / previousCanvas.getBoundingClientRect().width
+        : 1;
+      const left = scroller.value.scrollLeft * scale;
+      const top = scroller.value.scrollTop * scale;
+      upsertRule(`.${canvasClass}`, {
+        width: cssPx(viewport.width, 1, 30000),
+        height: cssPx(viewport.height, 1, 30000),
+      });
+      canvasHost.value.replaceChildren(canvas);
+      scroller.value.scrollTo(
+        displayedPage === requestedPage ? left : 0,
+        displayedPage === requestedPage ? top : 0
+      );
+      displayedPage = requestedPage;
       error.value = false;
     }
   } catch (cause) {
@@ -234,7 +247,6 @@ async function renderPage() {
     )
       error.value = true;
   } finally {
-    page?.cleanup();
     if (current === renderGeneration) busy.value = false;
   }
 }
@@ -246,6 +258,7 @@ async function loadDocument() {
   const previous = loadingTask;
   loadingTask = undefined;
   pdf = undefined;
+  displayedPage = 0;
   documentReady.value = false;
   pageCount.value = 0;
   pageNumber.value = 1;
@@ -336,8 +349,8 @@ onBeforeUnmount(() => {
 <style scoped>
 .pdf-viewer {
   width: 100%;
-  height: calc(100% - 4rem);
-  margin-top: 4rem;
+  height: calc(100% - var(--pdf-header-height, 4rem));
+  margin-top: var(--pdf-header-height, 4rem);
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -399,9 +412,12 @@ onBeforeUnmount(() => {
   min-width: 32px;
 }
 .pdf-scroll {
+  position: relative;
   flex: 1;
+  min-width: 0;
   min-height: 0;
   overflow: auto;
+  scrollbar-gutter: stable;
   overscroll-behavior: contain;
   touch-action: pan-x pan-y pinch-zoom;
 }

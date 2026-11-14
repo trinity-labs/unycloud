@@ -195,6 +195,27 @@ main .spinner .bounce2 {
   text-shadow: 1px 1px 1px #000000;
 }
 
+#previewer.pdf-preview {
+  --pdf-header-height: calc(4rem + env(safe-area-inset-top, 0px));
+  height: 100dvh;
+}
+
+#previewer.pdf-preview header {
+  height: var(--pdf-header-height);
+  padding-top: calc(0.5rem + env(safe-area-inset-top, 0px));
+}
+
+#previewer.pdf-preview header > title {
+  min-width: 0;
+}
+
+@media (max-width: 737px) {
+  #previewer.pdf-preview header > title {
+    padding: 0 0.5rem;
+    font-size: 1rem;
+  }
+}
+
 @media (min-width: 738px) {
   #previewer header #dropdown .action i {
     color: #fff;

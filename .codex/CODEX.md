@@ -52,6 +52,12 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ### Local PDF Preview (2026-11-14)
 
+- Zoom renders into a detached canvas and swaps only the latest completed render.
+  Preserve scroll position for zoom; reset it only when changing pages. Never
+  clean up a shared PDF page while a newer render may still be using it.
+- Keep the PDF scroll gutter stable to avoid resize/render feedback loops.
+  Mobile preview uses the dynamic viewport height and a shrinkable compact title.
+
 - The authenticated file preview uses Mozilla PDF.js 6.5.438 instead of a native
   iframe/mobile fallback. The component is lazy-loaded and renders one page at
   a time, with page selection, fit-width zoom, rotation and password handling.
