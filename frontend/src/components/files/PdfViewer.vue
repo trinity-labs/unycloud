@@ -262,7 +262,11 @@ async function loadDocument() {
   documentReady.value = false;
   pageCount.value = 0;
   pageNumber.value = 1;
-  zoom.value = 1;
+  zoom.value = window.matchMedia(
+    "(min-width: 738px) and (hover: hover) and (pointer: fine)"
+  ).matches
+    ? 0.5
+    : 1;
   rotation.value = 0;
   error.value = false;
   busy.value = true;
