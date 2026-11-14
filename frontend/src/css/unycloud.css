@@ -645,6 +645,13 @@ p.credits > span:nth-child(2n) {
     font-size: .75rem;
 }
 
+#listing.list .item.header div i {
+    font-size: .875rem;
+    width: .875rem;
+    height: .875rem;
+    line-height: 1;
+}
+
 :root:not(.dark) #listing.list .item.header {
     background: #f4f4f4;
     z-index: 999;
