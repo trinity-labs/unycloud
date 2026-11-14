@@ -1,3 +1,18 @@
+export function pdfPrefetchScreens(connection?: {
+  saveData?: boolean;
+  effectiveType?: string;
+  downlink?: number;
+}) {
+  if (
+    !connection ||
+    connection.saveData ||
+    (connection.effectiveType && connection.effectiveType !== "4g") ||
+    (connection.downlink !== undefined && connection.downlink < 2)
+  )
+    return 0;
+  return connection.effectiveType === "4g" ? 1 : 0;
+}
+
 export function pdfCanvasSize(
   width: number,
   height: number,

@@ -12,7 +12,7 @@
         :disabled="!documentReady || pageNumber <= 1"
         :title="t('buttons.previous')"
         :aria-label="t('buttons.previous')"
-        @click="pageNumber--"
+        @click="goToPage(pageNumber - 1)"
       >
         <i class="material-icons" aria-hidden="true">chevron_left</i>
       </button>
@@ -32,7 +32,7 @@
         :disabled="!documentReady || pageNumber >= pageCount"
         :title="t('buttons.next')"
         :aria-label="t('buttons.next')"
-        @click="pageNumber++"
+        @click="goToPage(pageNumber + 1)"
       >
         <i class="material-icons" aria-hidden="true">chevron_right</i>
       </button>
@@ -108,13 +108,32 @@
       <p v-if="busy" class="pdf-loading" role="status">
         {{ t("pdf.loading") }}
       </p>
-      <div ref="canvasHost" class="pdf-canvas-host"></div>
+      <PdfContinuous
+        v-if="continuous && continuousDocument && scroller"
+        ref="continuousViewer"
+        :document="continuousDocument"
+        :scroller="scroller"
+        :zoom="zoom"
+        :rotation="rotation"
+        @page="pageNumber = $event"
+        @busy="busy = $event"
+        @error="error = true"
+      />
+      <div v-else ref="canvasHost" class="pdf-canvas-host"></div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import {
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  shallowRef,
+  watch,
+} from "vue";
+import PdfContinuous from "./PdfContinuous.vue";
 import { useI18n } from "vue-i18n";
 import {
   getDocument,
@@ -142,6 +161,9 @@ const { t } = useI18n();
 GlobalWorkerOptions.workerSrc = workerURL;
 const canvasClass = getDynamicClass("pdf-canvas");
 const passwordID = getDynamicClass("pdf-password");
+const continuous = ref(false);
+const continuousDocument = shallowRef<PDFDocumentProxy>();
+const continuousViewer = ref<InstanceType<typeof PdfContinuous>>();
 const scroller = ref<HTMLElement>();
 const canvasHost = ref<HTMLElement>();
 const pageNumber = ref(1);
@@ -169,8 +191,13 @@ function changePage(event: Event) {
   const input = event.target as HTMLInputElement;
   const value = Number(input.value);
   if (Number.isInteger(value))
-    pageNumber.value = Math.max(1, Math.min(pageCount.value, value));
+    goToPage(Math.max(1, Math.min(pageCount.value, value)));
   input.value = String(pageNumber.value);
+}
+
+function goToPage(number: number) {
+  pageNumber.value = number;
+  if (continuous.value) continuousViewer.value?.goToPage(number);
 }
 
 function submitPassword() {
@@ -181,6 +208,7 @@ function submitPassword() {
 }
 
 async function renderPage() {
+  if (continuous.value) return;
   const document = pdf;
   if (!document || !canvasHost.value || !scroller.value || disposed) return;
   const current = ++renderGeneration;
@@ -258,15 +286,15 @@ async function loadDocument() {
   const previous = loadingTask;
   loadingTask = undefined;
   pdf = undefined;
+  continuousDocument.value = undefined;
   displayedPage = 0;
   documentReady.value = false;
   pageCount.value = 0;
   pageNumber.value = 1;
-  zoom.value = window.matchMedia(
+  continuous.value = window.matchMedia(
     "(min-width: 738px) and (hover: hover) and (pointer: fine)"
-  ).matches
-    ? 0.5
-    : 1;
+  ).matches;
+  zoom.value = continuous.value ? 0.75 : 1;
   rotation.value = 0;
   error.value = false;
   busy.value = true;
@@ -308,6 +336,7 @@ async function loadDocument() {
     const result = await task.promise;
     if (current !== generation || disposed) return;
     pdf = result;
+    continuousDocument.value = result;
     pageCount.value = result.numPages;
     documentReady.value = true;
     await nextTick();

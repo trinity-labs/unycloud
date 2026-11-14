@@ -74,6 +74,15 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ### Local PDF Preview (2026-11-14)
 
+- Desktop opens at 0.75 of fit-width in continuous mode. Page placeholders are
+  lazy-rendered near the viewport with at most four retained canvases. A fast
+  reported connection permits one viewport of prefetch; slow/save-data/unknown
+  connections use visible pages only. Network hints are optional, not proof of
+  actual bandwidth. Mobile retains single-page fit-width mode.
+- Preserve page navigation, current-page tracking, cancellation, scroll anchor
+  during zoom, and serialized page cleanup in continuous mode. Do not fetch all
+  page metadata or rasterize the full document at startup.
+
 - Zoom renders into a detached canvas and swaps only the latest completed render.
   Preserve scroll position for zoom; reset it only when changing pages. Never
   clean up a shared PDF page while a newer render may still be using it.
