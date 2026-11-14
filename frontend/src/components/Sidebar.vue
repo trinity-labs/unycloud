@@ -273,21 +273,32 @@ export default {
 
 <style scoped>
 nav .action i.nav-books-icon {
-  gap: 2px;
+  gap: 1px;
 }
 
 .nav-books-icon span {
+  position: relative;
   width: 4px;
   height: 15px;
-  border: 1.5px solid currentColor;
+  background: currentColor;
   border-radius: 1px;
   flex-shrink: 0;
+}
+
+.nav-books-icon span::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 1px;
+  width: 2px;
+  height: 3px;
+  background: var(--surfacePrimary);
 }
 
 .nav-books-icon span:last-child {
   transform: rotate(-12deg);
   transform-origin: bottom center;
-  margin-left: 2px;
+  margin-left: 1px;
 }
 
 nav .action i.nav-user-icon {

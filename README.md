@@ -131,24 +131,16 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
-## UnyCloud v0.33.0
+## UnyCloud v0.34.0
 
-- ✅ Changed `.codex/CODEX.md`;
-- ✅ Changed `.github/workflows/ci.yaml`;
-- ✅ Changed `.goreleaser.yml`;
 - ✅ Changed `README.md`;
 - ✅ Changed `RELEASE_NOTES.md`;
-- ✅ Changed `Taskfile.yml`;
 - ✅ Changed `UNYCLOUD_VERSION`;
 - ✅ Changed `docs/MAINTENANCE.md`;
 - ✅ Changed `docs/installation.md`;
 - ✅ Changed `frontend/package.json`;
-- ✅ Changed `frontend/pnpm-lock.yaml`;
-- ✅ Added `frontend/src/utils/__tests__/csp-style.test.ts`;
-- ✅ Changed `go.mod`;
-- ✅ Changed `go.sum`;
-- ✅ Changed `scripts/build.sh`;
-- ✅ Changed `scripts/security-scan.sh`;
+- ✅ Changed `frontend/src/components/Sidebar.vue`;
+- ✅ Changed `http/footer_links.go`;
 
 See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
 [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md) for maintenance/deployment notes.
@@ -169,7 +161,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.33.0`:
+Container builds are local in `v0.34.0`:
 
 ```sh
 scripts/build.sh
