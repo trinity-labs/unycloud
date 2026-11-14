@@ -7,7 +7,7 @@
     @mousemove="toggleNavigation"
     @touchstart.passive="toggleNavigation"
   >
-    <header-bar v-if="isPdf || isCsv || showNav">
+    <header-bar>
       <action icon="close" :label="$t('buttons.close')" @action="close()" />
       <title>{{ name }}</title>
       <action
@@ -18,6 +18,7 @@
       />
 
       <template #actions>
+        <SystemFileActions />
         <action
           :disabled="layoutStore.loading"
           v-if="authStore.user?.perm.rename"
@@ -27,9 +28,9 @@
         />
         <action
           :disabled="layoutStore.loading"
-          v-if="isCsv && authStore.user?.perm.modify"
+          v-if="authStore.user?.perm.download"
           icon="edit_note"
-          :label="t('buttons.editAsText')"
+          :label="t('reader.inspect')"
           @action="editAsText"
         />
         <action
@@ -172,15 +173,26 @@ import { resizePreview } from "@/utils/constants";
 import url from "@/utils/url";
 import { throttle } from "lodash-es";
 import HeaderBar from "@/components/header/HeaderBar.vue";
+import SystemFileActions from "@/components/files/SystemFileActions.vue";
 import Action from "@/components/header/Action.vue";
 import ExtendedImage from "@/components/files/ExtendedImage.vue";
 import VideoPlayer from "@/components/files/VideoPlayer.vue";
 import CsvViewer from "@/components/files/CsvViewer.vue";
-import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import {
+  computed,
+  defineAsyncComponent,
+  inject,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
-const PdfViewer = defineAsyncComponent(() => import("@/components/files/PdfViewer.vue"));
+const PdfViewer = defineAsyncComponent(
+  () => import("@/components/files/PdfViewer.vue")
+);
 
 // CSV file size limit for preview (5MB)
 // Prevents browser memory issues with large files

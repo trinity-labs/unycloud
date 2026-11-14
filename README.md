@@ -95,6 +95,24 @@ Known upstream issue classes remain important audit targets:
 Published upstream advisories remain relevant background:
 https://github.com/filebrowser/filebrowser/security/advisories
 
+## File Reading And Editing
+
+- PDF files use a locally bundled Mozilla PDF.js reader with page navigation,
+  zoom, rotation and password support on desktop and mobile browsers.
+- Code uses highlight.js with Monokai and an editable native text surface.
+  Valid UTF-8 files up to 10 MiB can be edited when the account has read and
+  modify permissions. Coloration is disabled above 100,000 characters.
+- Unknown formats can be inspected as text or a read-only hexadecimal preview
+  (first 4 KiB). This is not an Office document editor or binary editor.
+- Where supported, **Open with / Share** hands a file to the operating system's
+  sharing sheet. Available targets depend on the browser and installed apps;
+  no arbitrary application is launched and no automatic return of edits is
+  promised. Download is the fallback.
+- **Import edited version** opens the system file picker and requires explicit
+  confirmation before replacing the original. Save pending text edits first.
+  Sharing and replacement are limited to 32 MiB; normal download/upload remains
+  available for larger files. No external preview or conversion service is used.
+
 ## UnyCloud change
 
 The first UnyCloud release establishes the fork and applies the first
@@ -131,15 +149,25 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
-## UnyCloud v0.36.2
+## UnyCloud v0.37.0
 
+- ✅ Changed `.codex/CODEX.md`;
 - ✅ Changed `README.md`;
 - ✅ Changed `RELEASE_NOTES.md`;
 - ✅ Changed `UNYCLOUD_VERSION`;
 - ✅ Changed `docs/MAINTENANCE.md`;
 - ✅ Changed `docs/installation.md`;
 - ✅ Changed `frontend/package.json`;
-- ✅ Changed `frontend/src/components/Sidebar.vue`;
+- ✅ Changed `frontend/pnpm-lock.yaml`;
+- ✅ Changed `frontend/src/api/files.ts`;
+- ✅ Added `frontend/src/components/files/SystemFileActions.vue`;
+- ✅ Changed `frontend/src/i18n/en.json`;
+- ✅ Changed `frontend/src/i18n/fr.json`;
+- ✅ Added `frontend/src/utils/__tests__/code.test.ts`;
+- ✅ Added `frontend/src/utils/code.ts`;
+- ✅ Changed `frontend/src/views/Files.vue`;
+- ✅ Changed `frontend/src/views/files/Editor.vue`;
+- ✅ Changed `frontend/src/views/files/Preview.vue`;
 
 See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
 [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md) for maintenance/deployment notes.
@@ -160,7 +188,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.36.2`:
+Container builds are local in `v0.37.0`:
 
 ```sh
 scripts/build.sh

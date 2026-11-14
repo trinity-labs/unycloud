@@ -50,6 +50,28 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Current Advancement
 
+### Code And System File Workflows (2026-11-14)
+
+- Code editing uses local highlight.js with Monokai, an accessible native
+  textarea and a synchronized, sanitized highlighting layer. Only span/class
+  markup is allowed. Syntax parsing is capped at 100,000 characters; larger
+  text remains editable without coloration. Do not execute previewed code.
+- Unknown formats can open in the reader. Only complete, valid UTF-8 text up
+  to 10 MiB is editable. Binary, invalid encoding and larger files have a
+  read-only hex preview of at most 4 KiB. Preserve UTF-8 BOM and CRLF on save.
+- Preview and editor use the application header and shared system-file actions.
+  Native sharing is feature-detected, limited to 32 MiB, and triggered by a
+  second explicit click after fetching the file so user activation is retained.
+  There is no promise of a particular installed editor or automatic round trip.
+- Edited files can be imported through the native file chooser and replace the
+  original only after explicit confirmation. Keep read/modify permissions,
+  reject unsaved editor changes, and retain backend PUT authorization. Download
+  remains available when the browser cannot share files. Do not invent OS
+  permission prompts or launch arbitrary local programs.
+- Verify mobile/desktop code rendering, save, binary read-only behavior, native
+  sharing via mocks, import cancellation and confirmed binary replacement.
+  Real Android/iOS/Windows share targets still require device validation.
+
 ### Local PDF Preview (2026-11-14)
 
 - Zoom renders into a detached canvas and swaps only the latest completed render.

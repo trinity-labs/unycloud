@@ -1,4 +1,22 @@
 {
+  "reader": {
+    "inspect": "Open as text / hexadecimal",
+    "controls": "File controls",
+    "language": "Language",
+    "plainText": "Plain text",
+    "binary": "Hexadecimal",
+    "binaryNotice": "Binary, unsupported encoding or large file: read-only preview of the first 4 KiB.",
+    "cut": "Cut",
+    "paste": "Paste",
+    "selectAll": "Select all",
+    "openWith": "Open with / Share",
+    "importEdited": "Import edited version",
+    "replaceConfirm": "Replace {name} with this file? The previous contents will be overwritten.",
+    "saveFirst": "Save or discard your changes before continuing.",
+    "tooLarge": "This operation is limited to 32 MiB. Use Download or Upload for larger files.",
+    "shareUnavailable": "Sharing this file is unavailable in this browser. Download it to open it in another application.",
+    "noReadPermission": "You do not have permission to read this file."
+  },
   "pdf": {
     "controls": "PDF controls",
     "page": "Page",

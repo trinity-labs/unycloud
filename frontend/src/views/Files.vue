@@ -8,7 +8,11 @@
 
     <breadcrumbs base="/files" />
     <errors v-if="error" :errorCode="error.status" />
-    <component v-else-if="currentView" :is="currentView"></component>
+    <component
+      v-else-if="currentView"
+      :is="currentView"
+      :key="`${route.fullPath}:${fileStore.req?.modified}`"
+    ></component>
     <div v-else>
       <h2 class="message delayed">
         <div class="spinner">
@@ -69,6 +73,8 @@ const currentView = computed(() => {
 
   if (fileStore.req.isDir) {
     return FileListing;
+  } else if (route.query.edit === "true" || fileStore.req.type === "blob") {
+    return Editor;
   } else if (fileStore.req.extension.toLowerCase() === ".csv") {
     // CSV files use Preview for table view, unless ?edit=true
     if (route.query.edit === "true") {

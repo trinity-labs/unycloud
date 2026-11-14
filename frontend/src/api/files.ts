@@ -75,8 +75,47 @@ export async function remove(url: string) {
   return resourceAction(url, "DELETE");
 }
 
-export async function put(url: string, content = "") {
+export async function put(url: string, content: string | Blob = "") {
   return resourceAction(url, "PUT", content);
+}
+
+export async function readBytes(
+  url: string,
+  limit: number,
+  signal?: AbortSignal
+) {
+  const response = await fetchURL(`/api/raw${removePrefix(url)}`, { signal });
+  const reader = response.body?.getReader();
+  if (!reader) throw new Error("Unable to read file");
+  const chunks: Uint8Array[] = [];
+  let length = 0;
+  let truncated = false;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const available = Math.max(0, limit - length);
+      chunks.push(value.slice(0, available));
+      length += Math.min(value.length, available);
+      if (value.length > available) {
+        truncated = true;
+        break;
+      }
+    }
+  } finally {
+    await reader.cancel();
+  }
+  const bytes = new Uint8Array(length);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return {
+    bytes,
+    truncated,
+    type: response.headers.get("Content-Type") || "application/octet-stream",
+  };
 }
 
 export function download(format: any, ...files: string[]) {

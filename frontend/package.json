@@ -1,6 +1,6 @@
 {
   "name": "unycloud-frontend",
-  "version": "0.36.2",
+  "version": "0.37.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -25,6 +25,7 @@
     "dayjs": "^1.11.23",
     "dompurify": "3.4.17",
     "filesize": "^11.0.32",
+    "highlight.js": "^11.12.0",
     "js-base64": "^3.9.6",
     "jwt-decode": "^4.0.0",
     "lodash-es": "^4.18.1",

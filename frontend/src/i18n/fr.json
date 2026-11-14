@@ -1,4 +1,22 @@
 {
+  "reader": {
+    "inspect": "Ouvrir en texte / hexadécimal",
+    "controls": "Outils du fichier",
+    "language": "Langage",
+    "plainText": "Texte brut",
+    "binary": "Hexadécimal",
+    "binaryNotice": "Fichier binaire, encodage non pris en charge ou fichier volumineux : aperçu des 4 premiers Kio en lecture seule.",
+    "cut": "Couper",
+    "paste": "Coller",
+    "selectAll": "Tout sélectionner",
+    "openWith": "Ouvrir avec / Partager",
+    "importEdited": "Importer la version modifiée",
+    "replaceConfirm": "Remplacer {name} par ce fichier ? Le contenu précédent sera écrasé.",
+    "saveFirst": "Enregistrez ou abandonnez vos modifications avant de continuer.",
+    "tooLarge": "Cette opération est limitée à 32 Mio. Utilisez Télécharger ou Importer pour les fichiers plus volumineux.",
+    "shareUnavailable": "Le partage de ce fichier est indisponible dans ce navigateur. Téléchargez-le pour l'ouvrir dans une autre application.",
+    "noReadPermission": "Vous n'avez pas l'autorisation de lire ce fichier."
+  },
   "pdf": {
     "controls": "Commandes PDF",
     "page": "Page",
