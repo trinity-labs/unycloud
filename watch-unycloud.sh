@@ -6,7 +6,9 @@ ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ENV_FILE=${UNYCLOUD_GIT_SYNC_ENV:-"$ROOT_DIR/unycloud-git-sync.env"}
 GIT_SYNC_SCRIPT=${GIT_SYNC_SCRIPT:-"$ROOT_DIR/scripts/sync-unycloud-git.sh"}
 INSTALL_SCRIPT=${INSTALL_SCRIPT:-"$ROOT_DIR/scripts/install-unycloud.sh"}
+DEPENDENCY_UPDATE_SCRIPT=${DEPENDENCY_UPDATE_SCRIPT:-"$ROOT_DIR/scripts/update-compatible-dependencies.sh"}
 POLL_INTERVAL=${POLL_INTERVAL:-30}
+DEPENDENCY_CHECK_INTERVAL=${UNYCLOUD_DEPENDENCY_CHECK_INTERVAL:-21600}
 WATCH_DEBOUNCE=${WATCH_DEBOUNCE:-6}
 WATCH_QUIET_CHECKS=${WATCH_QUIET_CHECKS:-3}
 PID_FILE=${PID_FILE:-/tmp/unycloud-watch.pid}
@@ -15,6 +17,24 @@ BUILD_LOCK_DIR=${BUILD_LOCK_DIR:-/tmp/unycloud-build.lock}
 WATCH_STATE_DIR=${WATCH_STATE_DIR:-/tmp/unycloud-watch-state}
 UNYCLOUD_NGINX_RELOAD_COMMAND=${UNYCLOUD_NGINX_RELOAD_COMMAND:-}
 MODE=${1:-watch}
+
+dependency_check_due() {
+  [ "${UNYCLOUD_DEPENDENCY_AUTO_UPDATE:-1}" = "1" ] || return 1
+  stamp="$WATCH_STATE_DIR/dependencies.checked"
+  now=$(date +%s)
+  last=$(cat "$stamp" 2>/dev/null || printf '0')
+  [ $((now - last)) -ge "$DEPENDENCY_CHECK_INTERVAL" ]
+}
+
+check_dependencies() {
+  mkdir -p "$WATCH_STATE_DIR"
+  date +%s > "$WATCH_STATE_DIR/dependencies.checked"
+  [ -x "$DEPENDENCY_UPDATE_SCRIPT" ] || {
+    echo "[unycloud] script de mise a jour absent: $DEPENDENCY_UPDATE_SCRIPT"
+    return 1
+  }
+  "$DEPENDENCY_UPDATE_SCRIPT"
+}
 
 load_env() {
   if [ -f "$ENV_FILE" ]; then
@@ -222,6 +242,9 @@ watch_loop() {
   ensure_watch_state
   echo "[unycloud] watching $ROOT_DIR every ${POLL_INTERVAL}s"
   while true; do
+    if dependency_check_due; then
+      check_dependencies || echo "[unycloud] verification des dependances echouee; sources inchangees"
+    fi
     if tree_changed; then
       echo "[unycloud] changement detecte"
       if wait_for_quiet_tree; then

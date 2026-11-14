@@ -298,7 +298,7 @@ nav .action i.nav-books-icon {
 .nav-books-icon span:last-child {
   transform: rotate(-12deg);
   transform-origin: bottom center;
-  margin-left: 5px;
+  margin-left: 1.66px;
 }
 
 nav .action i.nav-user-icon {
