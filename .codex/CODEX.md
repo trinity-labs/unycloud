@@ -376,9 +376,11 @@ deployment-specific files committed to the repository.
 - Listing column headings share a 0.75rem font size. The modified heading
   uses a span, unlike item dates in time elements; cover both structures.
 
-- File rows and mosaic items keep their selection styling without hover effects
-  in either theme. Selected icon backgrounds stay transparent; only the item
-  carries the selection background.
+- File rows and mosaic items have a subtle brand-tinted hover background in both
+  themes on hover-capable devices. Apply it only to aria-selected="false":
+  selected items must retain their existing appearance on hover. Exclude column
+  headings. Selected icon backgrounds stay transparent; only the item carries
+  the selection background.
 
 - Dark body/main use the base background without linear gradients or lateral
   radial light effects. Preserve the deployment branding cascade.

@@ -1049,6 +1049,16 @@ p.credits > span:nth-child(2n) {
     box-shadow: 0 10px 28px rgb(0 0 0 / 22%);
 }
 
+@media (hover: hover) {
+    :root:not(.dark) #listing .item[aria-selected="false"]:hover {
+        background: color-mix(in srgb, var(--brandPrimary) 8%, var(--surfacePrimary));
+    }
+
+    :root.dark #listing .item[aria-selected="false"]:hover {
+        background: color-mix(in srgb, var(--brandPrimary) 18%, var(--surfacePrimary));
+    }
+}
+
 :root.dark #listing.list .item.header {
     background: #10131b;
     border-bottom-color: var(--borderPrimary);
