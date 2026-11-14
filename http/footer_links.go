@@ -18,8 +18,8 @@ func runtimeFooterLinks() []footerLink {
 		prefix string
 		footerLink
 	}{
-		{"UNYCLOUD_DOCS", footerLink{"https://docs.trinity-net.com/unycloud/", "Docs UnyCloud", "fa-book-open"}},
-		{"UNYCLOUD_GIT", footerLink{"https://github.com/trinity-labs/unycloud", "GitHub", "fa-code-branch"}},
+		{"UNYCLOUD_DOCS", footerLink{"https://docs.trinity-net.com/unycloud/", "Docs UnyCloud", "nav-books-icon"}},
+		{"UNYCLOUD_GIT", footerLink{"https://github.com/trinity-labs/unycloud", "GitHub", "fa-brands fa-git-alt"}},
 	} {
 		link := item.footerLink
 		if value, exists := os.LookupEnv(item.prefix + "_URL"); exists {

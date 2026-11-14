@@ -120,7 +120,11 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        <i class="fa-solid" :class="link.icon" aria-hidden="true"></i>
+        <i :class="link.icon" aria-hidden="true">
+          <template v-if="link.icon === 'nav-books-icon'">
+            <span></span><span></span><span></span>
+          </template>
+        </i>
         <span>{{ link.label }}</span>
       </a>
     </footer>
@@ -268,6 +272,24 @@ export default {
 </script>
 
 <style scoped>
+nav .action i.nav-books-icon {
+  gap: 2px;
+}
+
+.nav-books-icon span {
+  width: 4px;
+  height: 15px;
+  border: 1.5px solid currentColor;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.nav-books-icon span:last-child {
+  transform: rotate(-12deg);
+  transform-origin: bottom center;
+  margin-left: 2px;
+}
+
 nav .action i.nav-user-icon {
   font-size: 0.875rem;
 }
