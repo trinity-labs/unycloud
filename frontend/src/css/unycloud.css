@@ -23,7 +23,7 @@ nav {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    padding: 0;
+    padding: .33rem 0 0;
     min-width: 12rem;
 }
 
@@ -296,7 +296,7 @@ button .material-icons:hover {
 
 nav.active {
     left: 0;
-    padding: 0;
+    padding: .33rem 0 0;
 }
 
 nav .action {

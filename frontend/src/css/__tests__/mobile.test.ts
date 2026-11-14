@@ -11,7 +11,7 @@ describe("mobile file listing styles", () => {
     const css = readFileSync(resolve(__dirname, "../unycloud.css"), "utf8");
     const active = css.match(/nav\.active\s*\{([^}]+)\}/)?.[1];
     expect(active).toBeDefined();
-    expect(active).toMatch(/padding:\s*0\s*;/);
+    expect(active).toMatch(/padding:\s*\.33rem 0 0\s*;/);
     expect(css).toMatch(/nav \.action\s*\{\s*width:\s*100%;/);
   });
 

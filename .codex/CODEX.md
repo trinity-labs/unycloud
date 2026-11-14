@@ -390,6 +390,8 @@ deployment-specific files committed to the repository.
 
 - Sidebar icons use a fixed 1.5rem box with a 1rem glyph. Keep the light
   color #cecece and dark color #878787b0; preserve the logout color override.
+- Sidebar padding is .33rem 0 0, including the open mobile state. Preserve
+  full-width actions and the synchronized desktop sidebar/content widths.
 
 - Keep private deployment domains, sshfs paths, tokens, keys, and local service
   files out of the project history.
