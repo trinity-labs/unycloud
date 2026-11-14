@@ -41,7 +41,7 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## CVE And Dependency Hygiene
 
-- Use the pinned Go toolchain from `go.mod` (`go1.27.3` since 2026-10-27).
+- Use the pinned Go toolchain from `go.mod` (`go1.27.4` since 2026-11-14).
 - Run `govulncheck` and production `pnpm audit` before release.
 - Keep Dependabot config active for Go modules and frontend packages.
 - When updating dependencies, verify that the replacement does not weaken CSP or
@@ -49,6 +49,23 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 - Do not suppress vulnerability reports without code-path analysis.
 
 ## Current Advancement
+
+### Security Maintenance (2026-11-14)
+
+- Go toolchain pins in the module, CI, release and build/security scripts now
+  use 1.27.4. Updated direct Go modules and selected archive dependencies.
+- Frontend maintenance stays on the existing major versions. TypeScript 7,
+  VueUse 15 and Vitest 5 migrations are deliberately excluded from this pass.
+- Updated PostCSS and compatible frontend packages. The scoped minimatch
+  override upgrades affected versions 7 through 10 to 11.0.1 to address
+  GHSA-g3hv-75wg-m249 in development tooling. Full npm audit is clean after
+  installation; retain the override until upstream dependencies remove it.
+- Reviewed Markdown sanitization, HTML templates, API request destinations,
+  raw preview response isolation, toast rendering, CSSOM value constraints
+  and service-worker cache boundaries. This targeted review is not an
+  exhaustive penetration test or a real-device browser validation.
+- Added CSS value regression tests. Preserve the login form and its dedicated
+  autofill guards during dependency maintenance.
 
 ### Configurable Sidebar Footer
 

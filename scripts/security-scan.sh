@@ -2,7 +2,7 @@
 
 set -eu
 
-export GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.3}"
+export GOTOOLCHAIN="${GOTOOLCHAIN:-go1.27.4}"
 
 repo_root="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 

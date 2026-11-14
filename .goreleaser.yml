@@ -5,7 +5,7 @@ project_name: unycloud
 env:
   - GO111MODULE=on
   - CGO_ENABLED=0
-  - GOTOOLCHAIN=go1.27.3
+  - GOTOOLCHAIN=go1.27.4
 
 before:
   hooks:
