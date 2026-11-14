@@ -1069,20 +1069,16 @@ p.credits > span:nth-child(2n) {
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    #listing .item[aria-selected]:hover::after {
+    #listing .item[aria-selected="true"]:hover::after {
         content: "";
         position: absolute;
         inset: 0;
         border-radius: inherit;
         pointer-events: none;
-        background: linear-gradient(110deg, transparent 40%, color-mix(in srgb, var(--brandPrimary) 14%, transparent) 50%, transparent 60%) 150% 0 / 250% 100% no-repeat;
+        background: linear-gradient(110deg, transparent 40%, rgb(255 255 255 / 16%) 50%, transparent 60%) 150% 0 / 250% 100% no-repeat;
         animation: listing-keyload 1.2s ease-out .15s both;
     }
 
-    :root.dark #listing .item[aria-selected]:hover::after,
-    #listing .item[aria-selected="true"]:hover::after {
-        background-image: linear-gradient(110deg, transparent 40%, rgb(255 255 255 / 16%) 50%, transparent 60%);
-    }
 }
 
 :root.dark #listing.list .item.header {

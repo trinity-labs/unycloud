@@ -379,7 +379,7 @@ deployment-specific files committed to the repository.
 - File rows and mosaic items have a subtle brand-tinted hover background in both
   themes on hover-capable devices. Apply it only to aria-selected="false":
   selected items retain their selection background. A single CSS keyload sheen
-  runs for 1.2s after a 150ms hover delay for both selected and unselected items, without intercepting
+  runs for 1.2s after a 150ms hover delay only for selected items, without intercepting
   clicks or shifting layout. Disable animation with prefers-reduced-motion.
   Exclude column headings. Selected icon backgrounds stay transparent; only the
   item carries the selection background.
