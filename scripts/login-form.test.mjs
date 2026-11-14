@@ -20,7 +20,8 @@ const value = (node, name) => attr(node, name)?.value?.content;
 test("username remains a native editable text field without forced focus", () => {
   const input = elements.find((node) => value(node, "id") === "username");
   assert.ok(input);
-  assert.equal(value(input, "name"), "username");
+  // Chrome server predictions misclassified the old name as CREDIT_CARD_NAME_FIRST.
+  assert.equal(value(input, "name"), "unycloud_username");
   assert.equal(value(input, "type"), "text");
   assert.equal(value(input, "autocomplete"), "username");
   for (const name of ["disabled", "readonly", "autofocus", "inputmode", "enterkeyhint", "aria-label", "autocapitalize", "autocorrect", "spellcheck"]) {

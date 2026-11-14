@@ -20,7 +20,7 @@
       <label class="sr-only" for="username">{{ t("login.username") }}</label>
       <input
         id="username"
-        name="username"
+        name="unycloud_username"
         class="input input--block"
         type="text"
         autocomplete="username"

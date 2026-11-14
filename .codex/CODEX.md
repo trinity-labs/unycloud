@@ -99,6 +99,21 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ### Confirmed Username Autofill Fix (2026-11-07)
 
+#### Server Prediction Follow-up (2026-11-14)
+
+- User-provided Chromium diagnostics identify the visible text field with
+  autocomplete=username as CREDIT_CARD_NAME_FIRST. Parsing then reports no
+  username element (renderer id 0), although saved credentials are found.
+- Chromium excludes server-predicted non-credential fields even from parsing
+  based on autocomplete. This is distinct from a focus or CSS failure.
+- Controlled mitigation: change only the input name to unycloud_username to
+  change its signature; keep id=username, the associated label, type=text,
+  autocomplete=username, Vue binding and API payload unchanged. Do not rotate
+  this name on each deployment. Keep the form without id/name.
+- This supersedes the input-name requirement below, not the confirmed removal
+  of the form identity. Await user-profile confirmation and a new diagnostic
+  showing a nonzero username renderer id before declaring suggestions fixed.
+
 #### Controlled Browser Trials
 
 - Change one factor per trial; preserve Password and authentication behavior.
