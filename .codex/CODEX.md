@@ -50,6 +50,26 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Current Advancement
 
+### Configurable Sidebar Footer
+
+- Runtime environment variables `UNYCLOUD_DOCS_URL` and `UNYCLOUD_GIT_URL`
+  override the documentation and source links. Unset variables keep the default
+  UnyCloud destinations; explicitly empty values hide the respective link.
+- `UNYCLOUD_DOCS_LABEL` and `UNYCLOUD_GIT_LABEL` override visible labels.
+  Empty labels keep the defaults. Only absolute HTTP(S) URLs without embedded
+  credentials are accepted; invalid URLs hide the link.
+- Existing `disableExternal` branding still hides both links. If neither link
+  is visible, the footer and its divider are omitted. Restart the service after
+  changing its environment; no frontend rebuild is needed.
+- Example Docker Compose environment:
+
+  ```yaml
+  environment:
+    UNYCLOUD_DOCS_URL: "https://example.org/docs/"
+    UNYCLOUD_DOCS_LABEL: "Documentation"
+    UNYCLOUD_GIT_URL: "" # Hide the source link
+  ```
+
 ### Popup Presentation (2026-11-08)
 
 - Existing popup titles include decorative action icons in the primary color

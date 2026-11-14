@@ -35,6 +35,7 @@ func handleWithStaticData(w http.ResponseWriter, _ *http.Request, d *data, fSys 
 	data := map[string]interface{}{
 		"Name":                  d.settings.Branding.Name,
 		"DisableExternal":       d.settings.Branding.DisableExternal,
+		"FooterLinks":           runtimeFooterLinks(),
 		"DisableUsedPercentage": d.settings.Branding.DisableUsedPercentage,
 		"Color":                 d.settings.Branding.Color,
 		"BaseURL":               d.server.BaseURL,

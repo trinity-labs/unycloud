@@ -1,5 +1,7 @@
 const name: string = window.FileBrowser.Name || "UnyCloud";
 const disableExternal: boolean = window.FileBrowser.DisableExternal;
+const footerLinks: { url: string; label: string; icon: string }[] =
+  window.FileBrowser.FooterLinks || [];
 const disableUsedPercentage: boolean = window.FileBrowser.DisableUsedPercentage;
 const baseURL: string = window.FileBrowser.BaseURL;
 const staticURL: string = window.FileBrowser.StaticURL;
@@ -24,6 +26,7 @@ const hideLoginButton = window.FileBrowser.HideLoginButton;
 export {
   name,
   disableExternal,
+  footerLinks,
   disableUsedPercentage,
   baseURL,
   logoURL,

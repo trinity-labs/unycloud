@@ -111,24 +111,17 @@
         <a @click="help">{{ $t("sidebar.help") }}</a>
       </span>
     </p>
-    <footer v-if="!disableExternal" class="nav-footer">
+    <footer v-if="!disableExternal && footerLinks.length" class="nav-footer">
       <a
+        v-for="link in footerLinks"
+        :key="link.icon"
         class="action"
-        href="https://docs.trinity-net.com/unycloud/"
+        :href="link.url"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <i class="fa-solid fa-book-open" aria-hidden="true"></i>
-        <span>Docs UnyCloud</span>
-      </a>
-      <a
-        class="action"
-        href="https://github.com/trinity-labs/unycloud"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <i class="fa-solid fa-code-branch" aria-hidden="true"></i>
-        <span>GitHub</span>
+        <i class="fa-solid" :class="link.icon" aria-hidden="true"></i>
+        <span>{{ link.label }}</span>
       </a>
     </footer>
   </nav>
@@ -147,6 +140,7 @@ import {
   signup,
   hideLoginButton,
   disableExternal,
+  footerLinks,
   disableUsedPercentage,
   noAuth,
   logoutPage,
@@ -186,6 +180,7 @@ export default {
     hideLoginButton: () => hideLoginButton,
     version: () => version,
     disableExternal: () => disableExternal,
+    footerLinks: () => footerLinks,
     disableUsedPercentage: () => disableUsedPercentage,
     versionStatusClass() {
       if (this.disableExternal || this.versionCheck.error) return "";
