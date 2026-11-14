@@ -3,7 +3,7 @@
   <nav :class="{ active }">
     <template v-if="isLoggedIn">
       <button @click="toAccountSettings" class="action">
-        <i class="fa-solid fa-user" aria-hidden="true"></i>
+        <i class="fa-regular fa-user nav-user-icon" aria-hidden="true"></i>
         <span>{{ user.username }}</span>
       </button>
       <button
@@ -273,6 +273,10 @@ export default {
 </script>
 
 <style scoped>
+nav .action i.nav-user-icon {
+  font-size: 0.875rem;
+}
+
 nav {
   height: calc(100dvh - 4rem);
 }
