@@ -110,9 +110,12 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   change its signature; keep id=username, the associated label, type=text,
   autocomplete=username, Vue binding and API payload unchanged. Do not rotate
   this name on each deployment. Keep the form without id/name.
+- User confirmed the fix after deployment of v0.30.1 (f7b342a8) on
+  2026-11-14. Separate desktop/mobile results and a post-fix diagnostic were
+  not supplied. Preserve name=unycloud_username across future releases.
 - This supersedes the input-name requirement below, not the confirmed removal
-  of the form identity. Await user-profile confirmation and a new diagnostic
-  showing a nonzero username renderer id before declaring suggestions fixed.
+  of the form identity. Do not restore name=username: the recorded server
+  prediction associated that signature with a credit-card field.
 
 #### Controlled Browser Trials
 
