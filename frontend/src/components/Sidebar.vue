@@ -114,12 +114,12 @@
     <footer v-if="!disableExternal" class="nav-footer">
       <a
         class="action"
-        href="https://docs.trinity-net.com/unyport/"
+        href="https://docs.trinity-net.com/unycloud/"
         target="_blank"
         rel="noopener noreferrer"
       >
         <i class="fa-solid fa-book-open" aria-hidden="true"></i>
-        <span>Docs UnyPort</span>
+        <span>Docs UnyCloud</span>
       </a>
       <a
         class="action"
