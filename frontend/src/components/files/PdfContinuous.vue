@@ -124,6 +124,8 @@ async function pump() {
       const candidates = [...nearby]
         .sort((a, b) => Math.abs(a - currentPage) - Math.abs(b - currentPage))
         .slice(0, 4);
+      // A rebuilt observer has no entries yet; retain the last visible rasters.
+      if (!candidates.length) break;
       // Keep at most four page rasters, regardless of document length.
       for (const number of rendered.keys()) {
         if (!candidates.includes(number)) {
