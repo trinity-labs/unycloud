@@ -4,7 +4,7 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Project Contract
 
-- Login uses the local indigo-cloud-panorama.png background in both themes,
+- Login uses the local cloud-panorama.webp background in both themes,
   without tint overlays. Background-only edits must preserve form styles and
   the validated username/password autofill markup.
 
