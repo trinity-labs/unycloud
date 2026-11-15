@@ -120,7 +120,7 @@ nav .credits {
 #login form {
     -webkit-backdrop-filter: blur(8px);
     background-color: #fff;
-    background-image: url(/static/img/unycloud/unycloud-logo-simple.png), none;
+    background-image: url(/static/img/unycloud/unycloud-logo-wordmark.png), none;
     background-position: 50% 1.75rem;
     background-repeat: no-repeat;
     background-size: 8rem;
