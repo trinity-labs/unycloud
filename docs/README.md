@@ -35,7 +35,7 @@ Project-level documents live in the repository root: [README](../README.md),
 
 - **Easy Login System**
 
-  ![Login screen](static/1.jpg)
+  ![UnyCloud login screen](static/unycloud-login.jpg)
 
 - **Sleek Interface**
 

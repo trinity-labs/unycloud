@@ -12,6 +12,10 @@ The goal is deliberately conservative: keep the native File Browser feature set
 alive, patch it, harden it, and preserve compatibility for existing users.
 UnyCloud is not a rewrite and does not try to become a different cloud product.
 
+<p align="center">
+  <img src="./docs/static/unycloud-login.jpg" width="720" alt="UnyCloud login screen"/>
+</p>
+
 ## Project Position
 
 File Browser upstream announced the end of active maintenance and repository
@@ -149,22 +153,17 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
-## UnyCloud v0.40.0
+## UnyCloud v0.40.1
 
-- ✅ Changed `.codex/CODEX.md`;
 - ✅ Changed `README.md`;
 - ✅ Changed `RELEASE_NOTES.md`;
 - ✅ Changed `UNYCLOUD_VERSION`;
 - ✅ Changed `docs/MAINTENANCE.md`;
+- ✅ Changed `docs/README.md`;
 - ✅ Changed `docs/installation.md`;
-- ✅ Changed `frontend/index.html`;
+- ✅ Removed `docs/static/1.jpg`;
+- ✅ Added `docs/static/unycloud-login.jpg`;
 - ✅ Changed `frontend/package.json`;
-- ✅ Changed `frontend/public/index.html`;
-- ✅ Changed `frontend/src/i18n/index.ts`;
-- ✅ Changed `frontend/src/main.ts`;
-- ✅ Changed `frontend/src/utils/theme.ts`;
-- ✅ Added `http/initial_colors_language_test.go`;
-- ✅ Changed `http/static.go`;
 
 See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
 [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md) for maintenance/deployment notes.
@@ -185,7 +184,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.40.0`:
+Container builds are local in `v0.40.1`:
 
 ```sh
 scripts/build.sh
