@@ -14,8 +14,11 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 - The login cloud logo uses unycloud-logo-wordmark.png with the two-tone
   UnyCloud name embedded in the image, not HTML. Preserve login field markup.
 - Login uses the local purple-mountains-sky.png background in both themes,
-  with a uniform #3e3aab tint at 66% opacity. Background-only edits must preserve form styles and
+  with a #3e3aab tint fading from opaque at the top to 66% at the bottom.
+  Background-only edits must preserve form styles and
   the validated username/password autofill markup.
+- The app manages its own translations. Both HTML entrypoints declare
+  translate="no" and google notranslate; keep dynamic lang/dir updates intact.
 
 - Repository: `trinity-labs/unycloud`.
 - Lineage: `filebrowser/filebrowser`, Apache-2.0.
