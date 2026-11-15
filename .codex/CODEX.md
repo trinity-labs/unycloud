@@ -15,6 +15,7 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   UnyCloud name embedded in the image, not HTML. Preserve login field markup.
 - Login uses the local purple-mountains-sky.png background in both themes,
   with a #3e3aab tint fading from opaque at the top to 66% at the bottom.
+  A subtle tiled monochrome dither reduces gradient banding on large displays.
   Background-only edits must preserve form styles and
   the validated username/password autofill markup.
 - The app manages its own translations. Both HTML entrypoints declare

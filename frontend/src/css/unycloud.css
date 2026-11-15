@@ -76,10 +76,10 @@ nav .credits {
     position: fixed;
     inset: 0;
     background-color: #3e3aab;
-    background-image: linear-gradient(to bottom, #3e3aab 0%, rgb(62 58 171 / 66%) 100%), url(/static/img/unycloud/purple-mountains-sky.png);
-    background-size: cover;
+    background-image: url(/static/img/unycloud/gradient-dither.svg), linear-gradient(to bottom, #3e3aab 0%, rgb(62 58 171 / 66%) 100%), url(/static/img/unycloud/purple-mountains-sky.png);
+    background-size: 128px 128px, cover, cover;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: repeat, no-repeat, no-repeat;
     padding: 1rem;
 }
 
@@ -1275,7 +1275,7 @@ p.credits > span:nth-child(2n) {
 
 :root.dark #login {
     background-color: #0f1117;
-    background-image: linear-gradient(to bottom, #3e3aab 0%, rgb(62 58 171 / 66%) 100%), url(/static/img/unycloud/purple-mountains-sky.png);
+    background-image: url(/static/img/unycloud/gradient-dither.svg), linear-gradient(to bottom, #3e3aab 0%, rgb(62 58 171 / 66%) 100%), url(/static/img/unycloud/purple-mountains-sky.png);
 }
 
 :root.dark #login form {
