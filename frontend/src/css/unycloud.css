@@ -127,7 +127,7 @@ nav .credits {
     background-attachment: scroll;
     background-origin: padding-box;
     background-clip: border-box;
-    border: 1px solid #fff6;
+    border: 1.5px solid #4b1c9e;
     border-radius: 4px;
     width: 100%;
     max-width: 24rem;
