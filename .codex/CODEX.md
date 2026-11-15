@@ -24,6 +24,9 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Security Rules
 
+- Keep interest-cohort out of Permissions-Policy in both application headers
+  and reverse-proxy examples. Verify public response headers after proxy reloads.
+
 - CSP must never rely on `unsafe-inline`, `unsafe-eval`, hashes, or nonce
   workarounds.
 - Application code must not contain inline `<script>`, inline `<style>`,
