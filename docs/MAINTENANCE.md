@@ -19,7 +19,7 @@ scripts/build.sh
 
 The default artifact is `dist/unycloud`.
 
-Container images are local for `v0.39.11`:
+Container images are local for `v0.39.12`:
 
 ```sh
 scripts/build.sh
