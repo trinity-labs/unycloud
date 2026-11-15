@@ -149,7 +149,7 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
-## UnyCloud v0.39.5
+## UnyCloud v0.39.6
 
 - ✅ Changed `.codex/CODEX.md`;
 - ✅ Changed `README.md`;
@@ -158,6 +158,7 @@ maintenance hardening set:
 - ✅ Changed `docs/MAINTENANCE.md`;
 - ✅ Changed `docs/installation.md`;
 - ✅ Changed `frontend/package.json`;
+- ✅ Added `frontend/public/img/unycloud/purple-mountains-sky.png`;
 - ✅ Changed `frontend/src/css/unycloud.css`;
 
 See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
@@ -179,7 +180,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.39.5`:
+Container builds are local in `v0.39.6`:
 
 ```sh
 scripts/build.sh
