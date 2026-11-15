@@ -20,6 +20,10 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   the validated username/password autofill markup.
 - The app manages its own translations. Both HTML entrypoints declare
   translate="no" and google notranslate; keep dynamic lang/dir updates intact.
+  Server HTML uses Accept-Language rather than hard-coded English. Wait for
+  the initial locale messages before mounting to avoid an English flash.
+- Mobile theme-color stays #3e3aab across themes; the dark PWA launch
+  background remains #0f1117.
 
 - Repository: `trinity-labs/unycloud`.
 - Lineage: `filebrowser/filebrowser`, Apache-2.0.

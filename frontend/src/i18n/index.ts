@@ -211,9 +211,7 @@ async function loadLocale(locale: string) {
   loadedLocales.add(locale);
 }
 
-if (initialLocale !== "en") {
-  void loadLocale(initialLocale);
-}
+export const initialLocaleReady = loadLocale(initialLocale);
 
 export function setHtmlLocale(locale: string) {
   const html = document.documentElement;

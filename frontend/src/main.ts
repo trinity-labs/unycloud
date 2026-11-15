@@ -3,7 +3,7 @@ import { createApp } from "vue";
 import VueLazyload from "vue-lazyload";
 import createPinia from "@/stores";
 import router from "@/router";
-import i18n, { isRtl } from "@/i18n";
+import i18n, { isRtl, initialLocaleReady } from "@/i18n";
 import App from "@/App.vue";
 import VueNumberInput from "@/components/VueNumberInput.vue";
 import { showToast } from "@/utils/toast";
@@ -82,4 +82,6 @@ app.provide("$showError", (error: Error | string, displayReport = true) => {
 
 registerServiceWorker();
 
-router.isReady().then(() => app.mount("#app"));
+Promise.all([router.isReady(), initialLocaleReady.catch(() => undefined)]).then(
+  () => app.mount("#app")
+);

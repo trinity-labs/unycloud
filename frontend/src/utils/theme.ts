@@ -1,8 +1,8 @@
 import { theme } from "./constants";
 
 const themeStorageKey = "unycloudTheme";
-const lightThemeColor = "#5a52c8";
-const darkThemeColor = "#151329";
+const lightThemeColor = "#3e3aab";
+const darkThemeColor = "#3e3aab";
 export type ThemePreference = UserTheme | "auto";
 let activePreference: ThemePreference | undefined;
 

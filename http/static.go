@@ -15,13 +15,15 @@ import (
 	"strings"
 	texttemplate "text/template"
 
+	"golang.org/x/text/language"
+
 	"github.com/filebrowser/filebrowser/v2/auth"
 	"github.com/filebrowser/filebrowser/v2/settings"
 	"github.com/filebrowser/filebrowser/v2/storage"
 	"github.com/filebrowser/filebrowser/v2/version"
 )
 
-func handleWithStaticData(w http.ResponseWriter, _ *http.Request, d *data, fSys fs.FS, file, contentType string) (int, error) {
+func handleWithStaticData(w http.ResponseWriter, r *http.Request, d *data, fSys fs.FS, file, contentType string) (int, error) {
 	w.Header().Set("Content-Type", contentType)
 
 	auther, err := d.store.Auth.Get(d.settings.AuthMethod)
@@ -33,6 +35,7 @@ func handleWithStaticData(w http.ResponseWriter, _ *http.Request, d *data, fSys 
 	themeColor, backgroundColor := runtimeThemeColors(activeTheme)
 
 	data := map[string]interface{}{
+		"Language":              initialHTMLLanguage(r.Header.Get("Accept-Language")),
 		"Name":                  d.settings.Branding.Name,
 		"DisableExternal":       d.settings.Branding.DisableExternal,
 		"FooterLinks":           runtimeFooterLinks(),
@@ -127,12 +130,20 @@ func runtimeTheme(settingsTheme string) string {
 	return envTheme
 }
 
+func initialHTMLLanguage(accept string) string {
+	tags, _, err := language.ParseAcceptLanguage(accept)
+	if err != nil || len(tags) == 0 {
+		return "en"
+	}
+	return tags[0].String()
+}
+
 func runtimeThemeColors(theme string) (themeColor, backgroundColor string) {
 	if theme == "dark" {
-		return "#151329", "#0f1117"
+		return "#3e3aab", "#0f1117"
 	}
 
-	return "#5a52c8", "#ffffff"
+	return "#3e3aab", "#ffffff"
 }
 
 func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs fs.FS) (index, static http.Handler) {
