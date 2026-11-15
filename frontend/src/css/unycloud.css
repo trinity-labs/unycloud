@@ -1279,9 +1279,9 @@ p.credits > span:nth-child(2n) {
 }
 
 :root.dark #login form {
-    background-color: rgb(24 27 36 / 92%);
-    border-color: rgb(255 255 255 / 10%);
-    box-shadow: 0 28px 72px -12px rgb(0 0 0 / 55%), 0 8px 24px -6px rgb(0 0 0 / 32%);
+    background-color: #181b24eb;
+    border-color: #181b24eb;
+    box-shadow: 0 28px 72px -12px #0000008c, 0 8px 24px -6px #00000052;
 }
 
 :root.dark #login .input--block {
