@@ -4,6 +4,9 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Project Contract
 
+- Initial loading and the empty application shell use #3e3aab in both themes,
+  with white loading dots. Keep loaded page backgrounds independent.
+
 - The login card uses a soft two-layer shadow: violet-tinted in light mode,
   neutral black in dark mode. Preserve its geometry and autofill markup.
 - The login cloud logo uses unycloud-logo-wordmark.png with the two-tone

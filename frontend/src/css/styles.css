@@ -28,10 +28,10 @@
 }
 
 #loading {
-  background: var(--background);
+  background: #3e3aab;
 }
 #loading .spinner > div {
-  background: var(--iconPrimary);
+  background: #fff;
 }
 
 main .spinner {
