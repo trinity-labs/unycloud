@@ -1,8 +1,6 @@
-# UnyCloud
-
-<p align="center">
-  <img src="./branding/banner.png" width="720" alt="UnyCloud"/>
-</p>
+<h1 align="center">
+  <img src="./branding/unycloud-logo-bicolor.png" width="224" alt="UnyCloud" />
+</h1>
 
 UnyCloud is a maintained fork of File Browser, derived from
 [`filebrowser/filebrowser`](https://github.com/filebrowser/filebrowser) under
@@ -153,15 +151,15 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
-## UnyCloud v0.40.2
+## UnyCloud v0.40.3
 
 - ✅ Changed `README.md`;
 - ✅ Changed `RELEASE_NOTES.md`;
 - ✅ Changed `UNYCLOUD_VERSION`;
+- ✅ Added `branding/unycloud-logo-bicolor.png`;
 - ✅ Changed `docs/MAINTENANCE.md`;
 - ✅ Changed `docs/installation.md`;
 - ✅ Changed `frontend/package.json`;
-- ✅ Changed `frontend/src/css/unycloud.css`;
 
 See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
 [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md) for maintenance/deployment notes.
@@ -182,7 +180,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.40.2`:
+Container builds are local in `v0.40.3`:
 
 ```sh
 scripts/build.sh
