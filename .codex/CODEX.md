@@ -4,6 +4,10 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Project Contract
 
+- Login uses the local indigo-cloud-panorama.png background in both themes,
+  without tint overlays. Background-only edits must preserve form styles and
+  the validated username/password autofill markup.
+
 - Repository: `trinity-labs/unycloud`.
 - Lineage: `filebrowser/filebrowser`, Apache-2.0.
 - Keep the Go module path `github.com/filebrowser/filebrowser/v2` unless a

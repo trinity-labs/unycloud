@@ -76,9 +76,7 @@ nav .credits {
     position: fixed;
     inset: 0;
     background-color: #3e3aab;
-    background-image:
-        linear-gradient(rgb(90 82 200), rgb(117 82 224 / 80%)),
-        url(/static/img/unycloud/cloud-background.png);
+    background-image: url(/static/img/unycloud/indigo-cloud-panorama.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1277,10 +1275,7 @@ p.credits > span:nth-child(2n) {
 
 :root.dark #login {
     background-color: #0f1117;
-    background-image:
-        radial-gradient(circle at 18% 16%, rgb(129 124 255 / 28%), transparent 28rem),
-        linear-gradient(145deg, rgb(18 19 36 / 96%), rgb(10 12 20 / 94%)),
-        url(/static/img/unycloud/cloud-background.png);
+    background-image: url(/static/img/unycloud/indigo-cloud-panorama.png);
 }
 
 :root.dark #login form {
