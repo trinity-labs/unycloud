@@ -6,6 +6,8 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 - Initial loading and the empty application shell use #3e3aab in both themes,
   with white loading dots. Keep loaded page backgrounds independent.
+  Version the loading stylesheet URL and serve it no-store to avoid stale
+  startup colors after updates. Preserve the dark PWA manifest background.
 
 - The login card uses a soft two-layer shadow: violet-tinted in light mode,
   neutral black in dark mode. Preserve its geometry and autofill markup.

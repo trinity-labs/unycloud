@@ -160,7 +160,7 @@ func getStaticHandlers(store *storage.Storage, server *settings.Server, assetsFs
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 
 		switch staticPath {
-		case "runtime.js", "pwa-install.js", "sw.js", "manifest.json",
+		case "runtime.js", "pwa-install.js", "sw.js", "manifest.json", "loading.css",
 			"img/icons/favicon.ico", "img/icons/favicon-16x16.png", "img/icons/favicon-32x32.png",
 			"img/icons/apple-touch-icon.png", "img/icons/android-chrome-192x192.png",
 			"img/icons/android-chrome-512x512.png", "img/icons/favicon-v2.ico",
