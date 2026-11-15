@@ -448,6 +448,7 @@ onBeforeUnmount(() => {
   min-width: 0;
   min-height: 0;
   overflow: auto;
+  background: #3a3a3a;
   scrollbar-gutter: stable;
   overscroll-behavior: contain;
   touch-action: pan-x pan-y pinch-zoom;
