@@ -149,8 +149,8 @@ nav .credits {
 #login img {
     content: url(/static/img/unycloud/unycloud-full-white-logo.png);
     position: fixed;
-    top: -50%;
-    left: 0rem;
+    top: max(1rem, env(safe-area-inset-top));
+    left: max(1rem, calc(50% - 12rem));
     width: 6.66rem;
     height: auto;
     opacity: 0.66;
@@ -1426,17 +1426,6 @@ p.credits > span:nth-child(2n) {
     }
 }
 
-@media (max-width: 800px) {
-	#login img {
-    top: -40%;
-	}
-}
-
-@media (max-width: 1024px) {
-	#login img {
-    top: -45%;
-	}
-}
 
 header #dropdown {
     background: transparent !important;

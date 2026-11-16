@@ -1,5 +1,6 @@
 <template>
   <div id="login" :class="{ recaptcha: recaptcha }">
+    <img :src="logoURL" alt="UnyCloud" />
     <form
       method="post"
       :action="createMode ? '/api/signup' : '/api/login'"
@@ -7,7 +8,6 @@
       novalidate
       @submit="submit"
     >
-      <img :src="logoURL" alt="UnyCloud" />
       <h1>
         <template v-if="loginBrandLink">
           <a :href="repositoryURL" target="_blank" rel="noopener noreferrer">

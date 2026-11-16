@@ -4,6 +4,10 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ## Project Contract
 
+- Keep the deployment branding image outside the transformed login form,
+  anchored inside the viewport safe area. Negative percentage offsets hide
+  the logo on laptop-height screens. Preserve login inputs when changing layout.
+
 - Initial loading and the empty application shell use #3e3aab in both themes,
   with white loading dots. Keep loaded page backgrounds independent.
   Version the loading stylesheet URL and serve it no-store to avoid stale
