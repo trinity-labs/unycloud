@@ -149,7 +149,7 @@ nav .credits {
 #login img {
     content: url(/static/img/unycloud/unycloud-full-white-logo.png);
     position: fixed;
-    top: max(1rem, env(safe-area-inset-top));
+    top: max(6.66rem, env(safe-area-inset-top));
     left: max(1rem, calc(50% - 12rem));
     width: 6.66rem;
     height: auto;
