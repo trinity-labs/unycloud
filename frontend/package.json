@@ -1,6 +1,6 @@
 {
   "name": "unycloud-frontend",
-  "version": "0.41.1",
+  "version": "0.42.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -24,7 +24,7 @@
     "csv-parse": "^7.0.3",
     "dayjs": "^1.11.23",
     "dompurify": "3.4.17",
-    "filesize": "^11.0.32",
+    "filesize": "^11.0.33",
     "highlight.js": "^11.12.0",
     "js-base64": "^3.9.6",
     "jwt-decode": "^4.0.0",
