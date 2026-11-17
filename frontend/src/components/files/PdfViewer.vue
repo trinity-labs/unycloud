@@ -392,8 +392,8 @@ onBeforeUnmount(() => {
   color: var(--textPrimary);
 }
 .pdf-toolbar {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(24px, 34px) 42px minmax(0, 40px) minmax(24px, 34px) minmax(24px, 34px) 36px repeat(3, minmax(24px, 34px));
   align-items: center;
   justify-content: center;
   gap: 2px;
@@ -403,7 +403,9 @@ onBeforeUnmount(() => {
   border-bottom: 1px solid var(--divider);
 }
 .pdf-toolbar button {
-  width: 36px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
   height: 40px;
   padding: 0;
   display: inline-flex;
@@ -431,7 +433,9 @@ onBeforeUnmount(() => {
   font-size: 20px;
 }
 .pdf-page-input {
-  width: 48px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
   height: 32px;
   padding: 2px;
   text-align: center;
@@ -452,25 +456,13 @@ onBeforeUnmount(() => {
   font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
 }
-@media (min-width: 355px) {
-  .pdf-toolbar {
-    display: grid;
-    grid-template-columns: 34px 42px minmax(0, 40px) 34px 34px 36px 34px 34px 34px;
-  }
-  .pdf-toolbar button,
-  .pdf-page-input {
-    width: 100%;
-    min-width: 0;
-    margin: 0;
-  }
-  .pdf-page-total,
-  .pdf-zoom-value {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 14px;
-  }
+.pdf-page-total,
+.pdf-zoom-value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
 }
 .pdf-scroll {
   position: relative;
