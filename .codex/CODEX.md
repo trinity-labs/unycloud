@@ -26,12 +26,13 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   translate="no" and google notranslate; keep dynamic lang/dir updates intact.
   Server HTML uses Accept-Language rather than hard-coded English. Wait for
   the initial locale messages before mounting to avoid an English flash.
-- Login/loading theme-color stays #3e3aab. After navigation into the app,
-  theme-color follows the page surface (#fafafa / #0f1117) rather than the
-  primary color. Android's three-button navigation is native, not a CSS dock:
-  transparency cannot be forced separately from the status bar. Preserve
-  viewport-fit=cover for supported edge-to-edge browsers and the dark PWA launch
-  background #0f1117. Native system-bar rendering requires device validation.
+- Keep theme-color #3e3aab on every route and theme: the top status bar must
+  remain primary. Changing page theme-color to the surface was tested on the
+  user's phone and changed only the TOP bar, leaving the BOTTOM bar violet.
+  Do not repeat this as a navigation-bar fix. Android's three-button navigation
+  is native, not a CSS dock; independent transparency has not been achieved.
+  Preserve viewport-fit=cover and the dark PWA launch background #0f1117.
+  Native system-bar rendering requires device validation, not desktop emulation.
 
 - Repository: `trinity-labs/unycloud`.
 - Lineage: `filebrowser/filebrowser`, Apache-2.0.

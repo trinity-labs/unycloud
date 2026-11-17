@@ -23,9 +23,8 @@ const assert = require('node:assert/strict');
         await page.waitForSelector('canvas');
         assert.equal((await page.locator('.pdf-zoom-value').textContent()).trim(), '100%');
         assert.equal(await page.evaluate(() => {
-          const expected = document.documentElement.classList.contains('dark') ? '#0f1117' : '#fafafa';
-          return [...document.querySelectorAll('meta[name="theme-color"]')].every(meta => meta.content === expected);
-        }), true, 'app system-bar colors must match its surface');
+          return [...document.querySelectorAll('meta[name="theme-color"]')].every(meta => meta.content === '#3e3aab');
+        }), true, 'status bar must retain the primary color in every theme');
         await page.evaluate(() => {
           const link = document.createElement('link');
           link.rel = 'stylesheet';

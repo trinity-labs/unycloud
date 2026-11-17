@@ -16,7 +16,6 @@ import { baseURL, name } from "@/utils/constants";
 import i18n from "@/i18n";
 import { recaptcha, loginPage } from "@/utils/constants";
 import { login, validateLogin } from "@/utils/auth";
-import { setThemePage } from "@/utils/theme";
 
 const titles = {
   Login: "sidebar.login",
@@ -216,10 +215,6 @@ router.beforeResolve(async (to, from) => {
   }
 
   return;
-});
-
-router.afterEach((to, _from, failure) => {
-  if (!failure) setThemePage(to.name === "Login");
 });
 
 export { router, router as default };

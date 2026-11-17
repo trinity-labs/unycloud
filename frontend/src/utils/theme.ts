@@ -1,14 +1,6 @@
 import { theme } from "./constants";
 
 const themeStorageKey = "unycloudTheme";
-const lightThemeColor = "#fafafa";
-const darkThemeColor = "#0f1117";
-let isLoginPage = true;
-
-export const setThemePage = (login: boolean) => {
-  isLoginPage = login;
-  setThemeMetaColor(getTheme());
-};
 export type ThemePreference = UserTheme | "auto";
 let activePreference: ThemePreference | undefined;
 
@@ -60,7 +52,7 @@ export const setTheme = (theme: ThemePreference, persist = false) => {
     html.className = theme === "auto" ? getScheduledTheme() : theme;
   }
 
-  setThemeMetaColor(html.className as UserTheme);
+  setThemeMetaColor();
 
   if (persist) {
     window.localStorage.setItem(themeStorageKey, theme);
@@ -89,17 +81,10 @@ export const getMediaPreference = (): UserTheme => {
   }
 };
 
-const setThemeMetaColor = (theme: UserTheme) => {
-  // Native system bars share this hint; browsers may ignore alpha entirely.
-  const color = isLoginPage
-    ? "#3e3aab"
-    : theme === "dark"
-      ? darkThemeColor
-      : lightThemeColor;
-
+const setThemeMetaColor = () => {
   document
     .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
     .forEach((meta) => {
-      meta.setAttribute("content", color);
+      meta.setAttribute("content", "#3e3aab");
     });
 };
