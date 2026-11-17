@@ -8,7 +8,8 @@ import (
 	"github.com/filebrowser/filebrowser/v2/settings"
 )
 
-func TestManifestLeavesNavigationBarToPlatform(t *testing.T) {
+func TestManifestPreservesLegacyThemeColors(t *testing.T) {
+	t.Setenv("UNYCLOUD_THEME", "")
 	for _, theme := range []string{"light", "dark"} {
 		w := httptest.NewRecorder()
 		d := &data{settings: &settings.Settings{}, server: &settings.Server{}}
@@ -20,8 +21,12 @@ func TestManifestLeavesNavigationBarToPlatform(t *testing.T) {
 		if err := json.Unmarshal(w.Body.Bytes(), &manifest); err != nil {
 			t.Fatal(err)
 		}
-		if _, exists := manifest["theme_color"]; exists {
-			t.Fatal("manifest must not force the Android navigation bar color")
+		want := "#5a52c8"
+		if theme == "dark" {
+			want = "#151329"
+		}
+		if manifest["theme_color"] != want {
+			t.Fatalf("theme %s: manifest color %v, want %s", theme, manifest["theme_color"], want)
 		}
 		if manifest["name"] != "UnyCloud" || manifest["short_name"] != "UnyCloud" || manifest["display"] != "standalone" {
 			t.Fatal("PWA identity or display mode changed")

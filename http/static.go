@@ -378,6 +378,10 @@ func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 
 	activeTheme := runtimeTheme(d.settings.Branding.Theme)
 	_, backgroundColor := runtimeThemeColors(activeTheme)
+	manifestThemeColor := "#5a52c8"
+	if activeTheme == "dark" {
+		manifestThemeColor = "#151329"
+	}
 
 	startURL := d.server.BaseURL
 	if startURL == "" {
@@ -403,9 +407,9 @@ func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 		"start_url":        startURL,
 		"display":          "standalone",
 		"background_color": backgroundColor,
+		"theme_color":      manifestThemeColor,
 	}
-	// Installed Chromium WebAPKs reuse manifest theme_color for the Android
-	// navigation bar. Leave it to the platform; page meta keeps the status color.
+	// Preserve pre-v0.40 manifest colors independently of the page status bar.
 
 	body, err := json.Marshal(manifest)
 	if err != nil {
