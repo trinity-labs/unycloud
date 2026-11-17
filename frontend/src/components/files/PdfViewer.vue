@@ -168,7 +168,7 @@ const scroller = ref<HTMLElement>();
 const canvasHost = ref<HTMLElement>();
 const pageNumber = ref(1);
 const pageCount = ref(0);
-const zoom = ref(1);
+const zoom = ref(0.75);
 const rotation = ref(0);
 const documentReady = ref(false);
 const busy = ref(true);
@@ -292,7 +292,7 @@ async function loadDocument() {
   pageCount.value = 0;
   pageNumber.value = 1;
   continuous.value = true;
-  zoom.value = 0.5;
+  zoom.value = 0.75;
   rotation.value = 0;
   error.value = false;
   busy.value = true;

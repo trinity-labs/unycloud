@@ -102,7 +102,7 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ### Local PDF Preview (2026-11-14)
 
-- PDFs open at 0.5 of fit-width on desktop and mobile in continuous mode. Page placeholders are
+- PDFs open at 0.75 of fit-width on desktop and mobile in continuous mode (one 0.25 zoom step above 0.5). Page placeholders are
   lazy-rendered near the viewport with a four-canvas desktop cache target. A fast
   reported connection permits one viewport of prefetch; slow/save-data/unknown
   connections use visible pages only. Network hints are optional, not proof of
