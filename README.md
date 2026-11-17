@@ -151,7 +151,7 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
-## UnyCloud v0.42.3
+## UnyCloud v0.42.4
 
 - ✅ Changed `.codex/CODEX.md`;
 - ✅ Changed `README.md`;
@@ -181,7 +181,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.42.3`:
+Container builds are local in `v0.42.4`:
 
 ```sh
 scripts/build.sh

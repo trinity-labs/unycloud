@@ -452,6 +452,26 @@ onBeforeUnmount(() => {
   font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
 }
+@media (min-width: 355px) {
+  .pdf-toolbar {
+    display: grid;
+    grid-template-columns: 34px 42px minmax(0, 40px) 34px 34px 36px 34px 34px 34px;
+  }
+  .pdf-toolbar button,
+  .pdf-page-input {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+  .pdf-page-total,
+  .pdf-zoom-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+  }
+}
 .pdf-scroll {
   position: relative;
   flex: 1;

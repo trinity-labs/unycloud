@@ -104,6 +104,8 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 - Show the reactive zoom percentage between the zoom buttons in a fixed-width
   readout, including mobile; the value is relative to fit-width.
+- At viewport widths of 355px and above, keep all nine PDF toolbar controls
+  on one grid row; constrain page totals so long documents cannot force wrapping.
 
 - PDFs open at 0.75 of fit-width on desktop and mobile in continuous mode (one 0.25 zoom step above 0.5). Page placeholders are
   lazy-rendered near the viewport with a four-canvas desktop cache target. A fast
