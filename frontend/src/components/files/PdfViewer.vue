@@ -45,6 +45,9 @@
       >
         <i class="material-icons" aria-hidden="true">zoom_out</i>
       </button>
+      <output class="pdf-zoom-value" aria-live="polite" aria-atomic="true">
+        {{ Math.round(zoom * 100) }}%
+      </output>
       <button
         type="button"
         :disabled="!documentReady || zoom >= 3"
@@ -441,6 +444,13 @@ onBeforeUnmount(() => {
 .pdf-page-total {
   font-size: 0.875rem;
   min-width: 32px;
+}
+.pdf-zoom-value {
+  flex: 0 0 4ch;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
 }
 .pdf-scroll {
   position: relative;
