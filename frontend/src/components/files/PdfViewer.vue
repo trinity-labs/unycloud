@@ -393,7 +393,10 @@ onBeforeUnmount(() => {
 }
 .pdf-toolbar {
   display: grid;
-  grid-template-columns: minmax(24px, 34px) 42px minmax(0, 40px) minmax(24px, 34px) minmax(24px, 34px) 36px repeat(3, minmax(24px, 34px));
+  grid-template-columns: minmax(0, 40px) 40px 40px repeat(2, minmax(0, 40px)) 44px repeat(3, minmax(0, 40px));
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   align-items: center;
   justify-content: center;
   gap: 2px;
@@ -431,6 +434,7 @@ onBeforeUnmount(() => {
 }
 .pdf-toolbar i {
   font-size: 20px;
+  flex: 0 0 auto;
 }
 .pdf-page-input {
   width: 100%;
@@ -463,6 +467,14 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 14px;
+}
+@media (max-width: 349px) {
+  .pdf-toolbar {
+    grid-template-columns: minmax(0, 36px) 36px 36px repeat(2, minmax(0, 36px)) 40px repeat(3, minmax(0, 36px));
+  }
+  .pdf-toolbar i {
+    font-size: 16px;
+  }
 }
 .pdf-scroll {
   position: relative;

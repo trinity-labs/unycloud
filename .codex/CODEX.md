@@ -108,6 +108,17 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   320px CSS viewports. Do not gate the grid behind a minimum-width query:
   browser zoom and preview framing can reduce the effective viewport width.
   Verify using an actual PDF in the app, not only an isolated toolbar fixture.
+  Reduce toolbar glyphs only below 350px (16px instead of 20px), retaining
+  40px-high buttons. Grid button tracks must shrink without fixed minima.
+  The preview header must not reserve space or an invisible home link for a
+  hidden branding logo. Balance the mobile title between Close and theme/menu.
+  Run scripts/pdf-header.browser-test.cjs with playwright-core, PDF_TEST_URL
+  pointing to a local test PDF, and optional BRANDING_CSS to check the real
+  deployment cascade. Cover 320-1024px, both themes, 16/20/24px root fonts,
+  live resizing, zoom, rotation and menu interaction before publishing.
+  Also check the listing header after closing the PDF: the desktop search
+  field must shrink at the mobile breakpoint instead of pushing actions off
+  screen. Header transitions must not animate width or margins on resize.
 
 - PDFs open at 0.75 of fit-width on desktop and mobile in continuous mode (one 0.25 zoom step above 0.5). Page placeholders are
   lazy-rendered near the viewport with a four-canvas desktop cache target. A fast

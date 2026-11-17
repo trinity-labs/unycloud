@@ -18,6 +18,11 @@ header > * {
   flex: 0 0 auto;
 }
 
+/* Breakpoint changes must not animate widths or displace neighboring controls. */
+header .action {
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
 header .action:not(.theme-button) > .material-icons {
   font-family: "Material Icons Outlined";
 }
@@ -25,6 +30,7 @@ header .action:not(.theme-button) > .material-icons {
 header title {
   display: block;
   flex: 1 1 auto;
+  min-width: 0;
   padding: 0 1em;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -69,6 +75,8 @@ header .menu-button {
 }
 
 #search {
+  flex: 0 1 25em;
+  min-width: 0;
   position: relative;
   height: 100%;
   width: 100%;

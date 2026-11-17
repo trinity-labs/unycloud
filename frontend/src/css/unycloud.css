@@ -278,7 +278,30 @@ button .material-icons:hover {
 
 #previewer header {
 	background-image: none;
+    padding-left: max(.5rem, env(safe-area-inset-left));
+    padding-right: max(.5rem, env(safe-area-inset-right)) !important;
 }
+
+#previewer header .header-home {
+    display: none;
+}
+
+#previewer header > title {
+    min-width: 0;
+    text-align: center;
+}
+
+@media (max-width: 736px) {
+    /* Balance Close against the two actions on the opposite side. */
+    #previewer header > .action:first-of-type {
+        width: 44px;
+        min-width: 44px;
+        margin-inline-end: 44px;
+        display: inline-flex;
+        justify-content: center;
+    }
+}
+
 
 #editor-container title {
 	color: white;
@@ -1378,6 +1401,29 @@ p.credits > span:nth-child(2n) {
         background: transparent !important;
     }
 
+    header > .action {
+        width: 44px !important;
+        min-width: 44px !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    header > .action i {
+        font-size: 22px;
+        padding: 0;
+    }
+
+    header .theme-button .auto-theme-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    header > title {
+        min-width: 0;
+        padding: 0;
+    }
+
     header .material-icons {
         color: #ffffff !important;
         background: transparent !important;
@@ -1388,8 +1434,8 @@ p.credits > span:nth-child(2n) {
         display: inline-flex !important;
         visibility: visible !important;
         opacity: 1 !important;
-        width: 2.75rem !important;
-        min-width: 2.75rem !important;
+        width: 44px !important;
+        min-width: 44px !important;
         height: 3rem !important;
         align-items: center !important;
         justify-content: center !important;
@@ -1546,5 +1592,27 @@ header #dropdown button:focus i {
         min-width: 0;
         white-space: normal;
         overflow-wrap: anywhere;
+    }
+}
+
+@media (max-width: 349px) {
+    header > .action,
+    header #more {
+        width: 36px !important;
+        min-width: 36px !important;
+        padding: 0;
+    }
+
+    header > .action i {
+        font-size: 18px;
+    }
+
+    #previewer header > .action:first-of-type {
+        margin-inline-end: 36px;
+    }
+
+    header .theme-button .auto-theme-icon {
+        width: 18px;
+        height: 18px;
     }
 }
