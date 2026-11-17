@@ -26,8 +26,12 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   translate="no" and google notranslate; keep dynamic lang/dir updates intact.
   Server HTML uses Accept-Language rather than hard-coded English. Wait for
   the initial locale messages before mounting to avoid an English flash.
-- Mobile theme-color stays #3e3aab across themes; the dark PWA launch
-  background remains #0f1117.
+- Login/loading theme-color stays #3e3aab. After navigation into the app,
+  theme-color follows the page surface (#fafafa / #0f1117) rather than the
+  primary color. Android's three-button navigation is native, not a CSS dock:
+  transparency cannot be forced separately from the status bar. Preserve
+  viewport-fit=cover for supported edge-to-edge browsers and the dark PWA launch
+  background #0f1117. Native system-bar rendering requires device validation.
 
 - Repository: `trinity-labs/unycloud`.
 - Lineage: `filebrowser/filebrowser`, Apache-2.0.
@@ -120,7 +124,9 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   field must shrink at the mobile breakpoint instead of pushing actions off
   screen. Header transitions must not animate width or margins on resize.
 
-- PDFs open at 0.75 of fit-width on desktop and mobile in continuous mode (one 0.25 zoom step above 0.5). Page placeholders are
+- PDFs open at fit-width (100%) on mobile (width <=736px or coarse pointer),
+  and 75% on desktop. Apply this only on document load, not on resize, so user
+  zoom is preserved. Page placeholders are
   lazy-rendered near the viewport with a four-canvas desktop cache target. A fast
   reported connection permits one viewport of prefetch; slow/save-data/unknown
   connections use visible pages only. Network hints are optional, not proof of

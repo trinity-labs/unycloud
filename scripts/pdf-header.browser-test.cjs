@@ -21,6 +21,11 @@ const assert = require('node:assert/strict');
         }));
         await page.goto(process.env.PDF_TEST_URL);
         await page.waitForSelector('canvas');
+        assert.equal((await page.locator('.pdf-zoom-value').textContent()).trim(), '100%');
+        assert.equal(await page.evaluate(() => {
+          const expected = document.documentElement.classList.contains('dark') ? '#0f1117' : '#fafafa';
+          return [...document.querySelectorAll('meta[name="theme-color"]')].every(meta => meta.content === expected);
+        }), true, 'app system-bar colors must match its surface');
         await page.evaluate(() => {
           const link = document.createElement('link');
           link.rel = 'stylesheet';
@@ -55,8 +60,8 @@ const assert = require('node:assert/strict');
           console.log(`PASS ${theme} font=${fontSize} width=${width}`);
         }
         await page.locator('.pdf-toolbar button').nth(3).click();
-        await page.waitForFunction(() => document.querySelector('.pdf-zoom-value').textContent.includes('100%'));
-        for (let i = 0; i < 8; i++) await page.locator('.pdf-toolbar button').nth(3).click();
+        await page.waitForFunction(() => document.querySelector('.pdf-zoom-value').textContent.includes('125%'));
+        for (let i = 0; i < 7; i++) await page.locator('.pdf-toolbar button').nth(3).click();
         await page.waitForFunction(() => document.querySelector('.pdf-zoom-value').textContent.includes('300%'));
         await page.locator('.pdf-toolbar button').nth(4).click();
         await page.locator('.pdf-toolbar button').last().click();
@@ -81,6 +86,13 @@ const assert = require('node:assert/strict');
         }
         await page.close();
       }
+    }
+    for (const [width, hasTouch, expected] of [[1280, false, '75%'], [1024, true, '100%']]) {
+      const page = await browser.newPage({ viewport: { width, height: 800 }, hasTouch });
+      await page.goto(process.env.PDF_TEST_URL);
+      await page.waitForSelector('canvas');
+      assert.equal((await page.locator('.pdf-zoom-value').textContent()).trim(), expected);
+      await page.close();
     }
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

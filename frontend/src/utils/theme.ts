@@ -1,8 +1,14 @@
 import { theme } from "./constants";
 
 const themeStorageKey = "unycloudTheme";
-const lightThemeColor = "#3e3aab";
-const darkThemeColor = "#3e3aab";
+const lightThemeColor = "#fafafa";
+const darkThemeColor = "#0f1117";
+let isLoginPage = true;
+
+export const setThemePage = (login: boolean) => {
+  isLoginPage = login;
+  setThemeMetaColor(getTheme());
+};
 export type ThemePreference = UserTheme | "auto";
 let activePreference: ThemePreference | undefined;
 
@@ -84,7 +90,12 @@ export const getMediaPreference = (): UserTheme => {
 };
 
 const setThemeMetaColor = (theme: UserTheme) => {
-  const color = theme === "dark" ? darkThemeColor : lightThemeColor;
+  // Native system bars share this hint; browsers may ignore alpha entirely.
+  const color = isLoginPage
+    ? "#3e3aab"
+    : theme === "dark"
+      ? darkThemeColor
+      : lightThemeColor;
 
   document
     .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')

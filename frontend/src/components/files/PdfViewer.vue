@@ -152,7 +152,7 @@ import type {
 import workerURL from "pdfjs-dist/legacy/build/pdf.worker.min.mjs?url";
 import { staticURL } from "@/utils/constants";
 import { cssPx, getDynamicClass, upsertRule } from "@/utils/cspStyle";
-import { pdfCanvasSize } from "@/utils/pdf";
+import { pdfCanvasSize, pdfInitialZoom } from "@/utils/pdf";
 
 const props = defineProps<{
   src: string;
@@ -171,7 +171,12 @@ const scroller = ref<HTMLElement>();
 const canvasHost = ref<HTMLElement>();
 const pageNumber = ref(1);
 const pageCount = ref(0);
-const zoom = ref(0.75);
+const initialZoom = () =>
+  pdfInitialZoom(
+    window.innerWidth,
+    window.matchMedia("(pointer: coarse)").matches
+  );
+const zoom = ref(initialZoom());
 const rotation = ref(0);
 const documentReady = ref(false);
 const busy = ref(true);
@@ -295,7 +300,7 @@ async function loadDocument() {
   pageCount.value = 0;
   pageNumber.value = 1;
   continuous.value = true;
-  zoom.value = 0.75;
+  zoom.value = initialZoom();
   rotation.value = 0;
   error.value = false;
   busy.value = true;
@@ -393,7 +398,10 @@ onBeforeUnmount(() => {
 }
 .pdf-toolbar {
   display: grid;
-  grid-template-columns: minmax(0, 40px) 40px 40px repeat(2, minmax(0, 40px)) 44px repeat(3, minmax(0, 40px));
+  grid-template-columns: minmax(0, 40px) 40px 40px repeat(
+      2,
+      minmax(0, 40px)
+    ) 44px repeat(3, minmax(0, 40px));
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
@@ -470,7 +478,10 @@ onBeforeUnmount(() => {
 }
 @media (max-width: 349px) {
   .pdf-toolbar {
-    grid-template-columns: minmax(0, 36px) 36px 36px repeat(2, minmax(0, 36px)) 40px repeat(3, minmax(0, 36px));
+    grid-template-columns: minmax(0, 36px) 36px 36px repeat(
+        2,
+        minmax(0, 36px)
+      ) 40px repeat(3, minmax(0, 36px));
   }
   .pdf-toolbar i {
     font-size: 16px;

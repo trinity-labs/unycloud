@@ -1,3 +1,6 @@
+export const pdfInitialZoom = (width: number, coarsePointer: boolean) =>
+  width <= 736 || coarsePointer ? 1 : 0.75;
+
 export function pdfPrefetchScreens(connection?: {
   saveData?: boolean;
   effectiveType?: string;

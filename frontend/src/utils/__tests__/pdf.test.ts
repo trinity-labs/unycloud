@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { pdfCanvasSize } from "../pdf";
+import { pdfCanvasSize, pdfInitialZoom } from "../pdf";
+
+describe("PDF initial zoom", () => {
+  it("fits mobile pages and keeps desktop at 75 percent", () => {
+    expect(pdfInitialZoom(355, false)).toBe(1);
+    expect(pdfInitialZoom(736, false)).toBe(1);
+    expect(pdfInitialZoom(737, false)).toBe(0.75);
+    expect(pdfInitialZoom(1280, false)).toBe(0.75);
+    expect(pdfInitialZoom(1024, true)).toBe(1);
+  });
+});
 
 describe("PDF canvas memory budget", () => {
   it("keeps ordinary pages crisp", () => {
