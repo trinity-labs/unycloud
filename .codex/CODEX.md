@@ -33,6 +33,11 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   is native, not a CSS dock; independent transparency has not been achieved.
   Preserve viewport-fit=cover and the dark PWA launch background #0f1117.
   Native system-bar rendering requires device validation, not desktop emulation.
+  Omit theme_color from the install manifest: Chromium change 0a6ab4f0e2ce
+  reuses that manifest color for the installed WebAPK navigation bar. Keep the
+  page meta violet separately. This leaves the bottom bar to Android, not a
+  guaranteed transparent color. Existing installations may retain old manifest
+  metadata until their WebAPK updates; validate on the installed device.
 
 - Repository: `trinity-labs/unycloud`.
 - Lineage: `filebrowser/filebrowser`, Apache-2.0.

@@ -377,7 +377,7 @@ func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 	name = "UnyCloud"
 
 	activeTheme := runtimeTheme(d.settings.Branding.Theme)
-	themeColor, backgroundColor := runtimeThemeColors(activeTheme)
+	_, backgroundColor := runtimeThemeColors(activeTheme)
 
 	startURL := d.server.BaseURL
 	if startURL == "" {
@@ -403,8 +403,9 @@ func handleManifest(w http.ResponseWriter, d *data) (int, error) {
 		"start_url":        startURL,
 		"display":          "standalone",
 		"background_color": backgroundColor,
-		"theme_color":      themeColor,
 	}
+	// Installed Chromium WebAPKs reuse manifest theme_color for the Android
+	// navigation bar. Leave it to the platform; page meta keeps the status color.
 
 	body, err := json.Marshal(manifest)
 	if err != nil {
