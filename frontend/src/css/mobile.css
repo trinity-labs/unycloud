@@ -86,28 +86,61 @@
   }
   #file-selection {
     position: fixed;
-    bottom: 1em;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
-    background: var(--surfaceSecondary);
-    box-shadow:
-      rgba(0, 0, 0, 0.06) 0px 1px 3px,
-      rgba(0, 0, 0, 0.12) 0px 1px 2px;
-    width: 95%;
-    max-width: 20em;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: var(--surfacePrimary);
+    border: 1px solid var(--borderPrimary);
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgb(0 0 0 / 14%);
+    width: calc(100% - 2rem);
+    max-width: 30rem;
     z-index: 1;
   }
-  #file-selection .action {
-    border-radius: 50%;
-    width: auto;
+  #file-selection .selection-actions {
+    display: flex;
+    flex: 1 0 auto;
+    justify-content: space-evenly;
+    gap: 2px;
   }
-  #file-selection > span {
-    display: inline-block;
-    margin-left: 1em;
-    color: var(--textPrimary);
-    margin-right: auto;
+  #file-selection .action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    color: var(--brandPrimary);
+  }
+  #file-selection .action i {
+    padding: 0;
+    font-size: 21px;
+    color: inherit;
+  }
+  #file-selection .action:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+  }
+  #file-selection .selection-delete {
+    color: var(--red);
+  }
+  :root.dark #file-selection .action:not(.selection-delete) {
+    color: #b4afff;
+  }
+  #file-selection .selection-summary {
+    flex: 1 0 6rem;
+    padding: 0.25rem 0.5rem;
+    color: var(--textSecondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
   }
   #file-selection .action span {
     display: none;

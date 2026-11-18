@@ -83,45 +83,48 @@
     </header-bar>
 
     <div
-      v-if="isMobile"
+      v-if="isMobile && fileStore.selectedCount > 0"
       id="file-selection"
       :class="{
         'file-selection-margin-bottom': fileStore.multiple,
       }"
     >
-      <span v-if="fileStore.selectedCount > 0">
+      <span class="selection-summary" role="status">
         {{ t("prompts.filesSelected", fileStore.selectedCount) }}
       </span>
-      <action
-        v-if="headerButtons.share"
-        icon="share"
-        :label="t('buttons.share')"
-        show="share"
-      />
-      <action
-        v-if="headerButtons.rename"
-        icon="mode_edit"
-        :label="t('buttons.rename')"
-        show="rename"
-      />
-      <action
-        v-if="headerButtons.copy"
-        icon="content_copy"
-        :label="t('buttons.copyFile')"
-        show="copy"
-      />
-      <action
-        v-if="headerButtons.move"
-        icon="forward"
-        :label="t('buttons.moveFile')"
-        show="move"
-      />
-      <action
-        v-if="headerButtons.delete"
-        icon="delete"
-        :label="t('buttons.delete')"
-        show="delete"
-      />
+      <div class="selection-actions">
+        <action
+          v-if="headerButtons.share"
+          icon="share"
+          :label="t('buttons.share')"
+          show="share"
+        />
+        <action
+          v-if="headerButtons.rename"
+          icon="mode_edit"
+          :label="t('buttons.rename')"
+          show="rename"
+        />
+        <action
+          v-if="headerButtons.copy"
+          icon="content_copy"
+          :label="t('buttons.copyFile')"
+          show="copy"
+        />
+        <action
+          v-if="headerButtons.move"
+          icon="forward"
+          :label="t('buttons.moveFile')"
+          show="move"
+        />
+        <action
+          v-if="headerButtons.delete"
+          icon="delete"
+          :label="t('buttons.delete')"
+          show="delete"
+          class="selection-delete"
+        />
+      </div>
     </div>
 
     <div v-if="layoutStore.loading">

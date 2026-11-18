@@ -177,7 +177,7 @@
     "downloadMessage": "Choisissez le format de téléchargement :",
     "error": "Quelque chose s'est mal passé",
     "fileInfo": "Informations",
-    "filesSelected": "{count} éléments sélectionnés",
+    "filesSelected": "{count} élément sélectionné | {count} éléments sélectionnés",
     "lastModified": "Dernière modification",
     "move": "Déplacer",
     "moveMessage": "Choisissez un nouveau dossier principal pour vos fichier(s)/dossier(s) :",
