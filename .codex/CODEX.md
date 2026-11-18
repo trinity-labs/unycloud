@@ -253,6 +253,20 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 
 ### Confirmed Username Autofill Fix (2026-11-07)
 
+#### Server Prediction Recurrence (2026-11-18)
+
+- User logs now report CREDIT_CARD_NAME_FIRST for unycloud_username too.
+  The user's live DOM confirms type=text, autocomplete=username and
+  action=/api/login. The log's HTML_TYPE_EMAIL does not match those live
+  attributes; its cause is not established.
+- Controlled trial: change only name to unycloud_login_identifier. Preserve
+  id=username, label, autocomplete, password, form and authentication payload.
+  This supersedes the earlier name requirement below. Keep this name stable;
+  do not rotate it on releases. The login guard checks the new name.
+- This is a mitigation trial, not a confirmed native-autofill fix. Browser DOM,
+  focus and typing checks cannot prove saved-account suggestions. User Chrome
+  validation remains required before marking this recurrence resolved.
+
 #### Server Prediction Follow-up (2026-11-14)
 
 - User-provided Chromium diagnostics identify the visible text field with
