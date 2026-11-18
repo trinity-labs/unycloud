@@ -459,11 +459,11 @@ p.credits > span:nth-child(2n) {
 }
 
 .vue-simple-progress-bar::-webkit-progress-value {
-    background: #3e3aab !important;
+    background: linear-gradient(90deg, #817cff, #57d3ff) !important;
 }
 
 .vue-simple-progress-bar::-moz-progress-bar {
-    background: #3e3aab !important;
+    background: linear-gradient(90deg, #817cff, #57d3ff) !important;
 }
 
 .card-action {
