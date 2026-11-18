@@ -881,6 +881,14 @@ p.credits > span:nth-child(2n) {
     transition: background-color 0.15s, color 0.15s;
 }
 
+:root.dark .action i {
+    color: #817cff;
+    border-radius: 50%;
+    padding: .4em;
+    font-size: 1.33rem;
+    transition: all .1s ease-in-out;
+}
+
 :root.dark nav .action i,
 :root.dark nav > .action:first-child i {
     color: #878787b0 !important;
