@@ -119,9 +119,9 @@
     color: var(--brandPrimary);
   }
   #file-selection .action i {
+    color: inherit !important;
     padding: 0;
     font-size: 21px;
-    color: inherit;
   }
   #file-selection .action:focus-visible {
     outline: 2px solid currentColor;

@@ -151,7 +151,7 @@ maintenance hardening set:
 - interactive commands bounded by an internal timeout;
 - build artifact renamed to `dist/unycloud`.
 
-## UnyCloud v0.44.8
+## UnyCloud v0.44.9
 
 - ✅ Changed `README.md`;
 - ✅ Changed `RELEASE_NOTES.md`;
@@ -160,8 +160,6 @@ maintenance hardening set:
 - ✅ Changed `docs/installation.md`;
 - ✅ Changed `frontend/package.json`;
 - ✅ Changed `frontend/src/css/mobile.css`;
-- ✅ Changed `frontend/src/i18n/fr.json`;
-- ✅ Changed `frontend/src/views/files/FileListing.vue`;
 
 See [`docs/CSP-AUDIT.md`](docs/CSP-AUDIT.md) for the CSP contract and
 [`docs/MAINTENANCE.md`](docs/MAINTENANCE.md) for maintenance/deployment notes.
@@ -182,7 +180,7 @@ scripts/security-scan.sh
 
 The build artifact is `dist/unycloud`.
 
-Container builds are local in `v0.44.8`:
+Container builds are local in `v0.44.9`:
 
 ```sh
 scripts/build.sh
