@@ -440,26 +440,26 @@ const files = computed((): Resource[] => {
 
 const nameIcon = computed(() => {
   if (nameSorted.value && !ascOrdered.value) {
-    return "arrow_upward";
+    return "expand_less";
   }
 
-  return "arrow_downward";
+  return "expand_more";
 });
 
 const sizeIcon = computed(() => {
   if (sizeSorted.value && ascOrdered.value) {
-    return "arrow_downward";
+    return "expand_more";
   }
 
-  return "arrow_upward";
+  return "expand_less";
 });
 
 const modifiedIcon = computed(() => {
   if (modifiedSorted.value && ascOrdered.value) {
-    return "arrow_downward";
+    return "expand_more";
   }
 
-  return "arrow_upward";
+  return "expand_less";
 });
 
 const viewIcon = computed(() => {
@@ -919,15 +919,15 @@ const sort = async (by: string) => {
   let asc = false;
 
   if (by === "name") {
-    if (nameIcon.value === "arrow_upward") {
+    if (nameIcon.value === "expand_less") {
       asc = true;
     }
   } else if (by === "size") {
-    if (sizeIcon.value === "arrow_upward") {
+    if (sizeIcon.value === "expand_less") {
       asc = true;
     }
   } else if (by === "modified") {
-    if (modifiedIcon.value === "arrow_upward") {
+    if (modifiedIcon.value === "expand_less") {
       asc = true;
     }
   }
