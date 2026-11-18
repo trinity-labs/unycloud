@@ -675,11 +675,12 @@ p.credits > span:nth-child(2n) {
 
 :root:not(.dark) #listing.list .item.header {
     z-index: 999;
-    border: 0;
-    border-bottom: none;
     background: #f4f4f4;
+    border: 0;
+    border-bottom-width: medium;
     padding: .85em;
     display: flex !important;
+    border-radius: 4px;
 }
 
 #listing.list .name {
