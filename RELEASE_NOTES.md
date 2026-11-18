@@ -1,4 +1,4 @@
-# UnyCloud v0.44.2
+# UnyCloud v0.44.3
 
 UnyCloud is a maintained File Browser fork focused on security, speed, and full legacy compatibility.
 

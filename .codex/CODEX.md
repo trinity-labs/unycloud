@@ -251,7 +251,18 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   guards cover button/grid structure and listener cleanup; they do not replace
   visual or browser interaction testing.
 
-### Confirmed Username Autofill Fix (2026-11-07)
+### Username Autofill — Current Contract And Evidence
+
+- Current input contract: id=username, name=unycloud_login_identifier,
+  type=text, autocomplete=username, with the label bound to id=username.
+  The form has no id/name, uses POST /api/login, and keeps autocomplete=on.
+  Password keeps autocomplete=current-password in sign-in mode.
+- Preserve this contract during unrelated changes, including CSS, PDF, theme,
+  branding and dependency updates. Historical names below are NOT instructions
+  to restore them. Do not rotate the name automatically or on every release.
+- CURRENT STATUS: v0.44.2 is deployed and technically verified; restoration
+  of saved-account suggestions in the reporting user's Chrome is UNCONFIRMED.
+  Do not label this incident resolved until the user validates native behavior.
 
 #### Server Prediction Recurrence (2026-11-18)
 
@@ -259,6 +270,19 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   The user's live DOM confirms type=text, autocomplete=username and
   action=/api/login. The log's HTML_TYPE_EMAIL does not match those live
   attributes; its cause is not established.
+- Evidence supplied by the user: Chrome 157.0.8103.79, Windows 10, French
+  locale; form signature 5334574593755305429, username field signature
+  667748715, password field signature 2051817934. The log says Retrieved
+  Cached Autofill Query Request and reports server=[CREDIT_CARD_NAME_FIRST]
+  for unycloud_username. Its overall field type is EMAIL_ADDRESS, with
+  html=HTML_TYPE_EMAIL; do not conflate the overall type with server prediction.
+  Password reports server=[NO_SERVER_DATA] and HTML_TYPE_UNRECOGNIZED.
+  These Autofill logs alone do not establish password-manager parsing failure.
+- A separate live DOM check supplied by the user confirms type=text,
+  name=unycloud_username, autocomplete=username, action=/api/login.
+  The deployed DOM matched in Codex checks. No evidence establishes that the
+  PDF change reverted login attributes, that an extension altered them, or
+  that clearing browser caches would repair the server classification.
 - Controlled trial: change only name to unycloud_login_identifier. Preserve
   id=username, label, autocomplete, password, form and authentication payload.
   This supersedes the earlier name requirement below. Keep this name stable;
@@ -266,6 +290,23 @@ UnyCloud is a maintained, security-focused fork of File Browser.
 - This is a mitigation trial, not a confirmed native-autofill fix. Browser DOM,
   focus and typing checks cannot prove saved-account suggestions. User Chrome
   validation remains required before marking this recurrence resolved.
+- Delivered in v0.44.2, commit df73ef5488f6c11584139117dc9b1cb148f96676.
+  Verified remote master, deployed executable version, health=OK and the new
+  name in the public page's DOM. Chromium checks at 390px and 1280px verified
+  focus, typing, type=text, autocomplete=username and current-password.
+  These were automated viewport checks, not the user's Windows profile or a
+  physical phone, and did not test saved credentials or submit a login.
+- Validation: 2 login structure tests, 61 frontend tests, CSP audit, build,
+  Go tests, go vet and targeted Go race tests passed. Lint had no errors and
+  six existing formatting warnings outside Login.vue. Production pnpm audit
+  reported no known vulnerabilities. govulncheck was unavailable in the
+  watcher environment; do not claim a successful Go vulnerability scan.
+- Next acceptance check: reload the deployed page, click Username BEFORE
+  Password, confirm saved-account suggestions, selection filling both fields
+  and successful login. Record browser/device/version and explicit user result;
+  test reload/logout and installed PWA separately where applicable. If still
+  failing, capture fresh field/form signatures and predictions for the new
+  name plus password-manager parsing evidence before another mitigation.
 
 #### Server Prediction Follow-up (2026-11-14)
 
@@ -280,7 +321,7 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   this name on each deployment. Keep the form without id/name.
 - User confirmed the fix after deployment of v0.30.1 (f7b342a8) on
   2026-11-14. Separate desktop/mobile results and a post-fix diagnostic were
-  not supplied. Preserve name=unycloud_username across future releases.
+  not supplied. This historical name was superseded by the 2026-11-18 trial.
 - This supersedes the input-name requirement below, not the confirmed removal
   of the form identity. Do not restore name=username: the recorded server
   prediction associated that signature with a credit-card field.
@@ -297,8 +338,9 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   Native-browser result: SUCCESS, confirmed by the user on 2026-11-07 after
   testing Username first. The confirmation did not specify device/browser
   versions or separate desktop/mobile results; do not claim both were tested.
-- Preserve the confirmed form without `id` or `name`; preserve the INPUT
-  `id="username"`, `name="username"` and `autocomplete="username"`.
+- Preserve the confirmed form without `id` or `name`; the INPUT used
+  `id="username"`, `name="username"` and `autocomplete="username"` at that time.
+  Use the current contract above for its name today.
   `scripts/login-form.test.mjs` guards this distinction during every build.
   Removing the pair was successful; this does not isolate which attribute or
   browser heuristic was responsible. Do not revert to text/email experiments.
@@ -327,7 +369,7 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   This is not proof of the cause of a pointer/focus failure. The screenshot demonstrates suggestions on the password
   field, not successful username interaction. Do not mark this fixed based on
   autocomplete attributes, a successful build or password-field autofill alone.
-- `frontend/src/views/Login.vue` already declares `id="username"`,
+- Historically `frontend/src/views/Login.vue` declared `id="username"`,
   `name="username"` and `autocomplete="username"`. Check the deployed DOM and
   assets, overlays, pointer events, focus handlers and field replacement before
   attributing the regression to missing attributes or browser caching.
