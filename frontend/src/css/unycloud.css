@@ -674,10 +674,10 @@ p.credits > span:nth-child(2n) {
 }
 
 :root:not(.dark) #listing.list .item.header {
-    background: #f4f4f4;
     z-index: 999;
     border: 0;
-    border-bottom: 1px solid var(--borderPrimary);
+    border-bottom: none;
+    background: #f4f4f4;
     padding: .85em;
     display: flex !important;
 }
