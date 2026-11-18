@@ -925,7 +925,7 @@ p.credits > span:nth-child(2n) {
 :root.dark .credits,
 :root.dark .credits > span,
 :root.dark p.credits:hover * {
-    color: #817cff;
+    color: #545454;
 }
 
 :root.dark .vue-simple-progress-bar,
