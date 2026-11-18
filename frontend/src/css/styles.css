@@ -210,6 +210,10 @@ main .spinner .bounce2 {
 }
 
 @media (max-width: 737px) {
+  #previewer.pdf-preview header {
+    background-image: none !important;
+  }
+
   #previewer.pdf-preview header > title {
     padding: 0 0.5rem;
     font-size: 1rem;
