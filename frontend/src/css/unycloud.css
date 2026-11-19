@@ -683,10 +683,14 @@ p.credits > span:nth-child(2n) {
 }
 
 #listing.list .name {
+    font-size: .75rem;
     font-weight: 500;
-    font-size: 0.75rem;
     position: relative;
-    top: 0.15rem;
+    top: .1rem;
+}
+
+.item.header .name {
+    top: 0 !important;
 }
 
 #listing.list .item .modified time,
