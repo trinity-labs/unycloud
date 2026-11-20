@@ -41,46 +41,60 @@ import { removeToast, toasts } from "@/utils/toast";
 <style scoped>
 .toast-host {
   position: fixed;
-  left: 50%;
-  top: max(1em, env(safe-area-inset-top));
+  right: max(1.25em, env(safe-area-inset-right));
+  bottom: max(1.25em, env(safe-area-inset-bottom));
   z-index: 10000;
-  width: min(34em, calc(100vw - 2em));
-  transform: translateX(-50%);
+  width: min(24em, calc(100vw - 2.5em));
   display: flex;
   flex-direction: column;
-  gap: 0.625em;
+  gap: 0.75em;
   pointer-events: none;
 }
 
 .toast {
-  --toast-accent: #5d5fef;
-  --toast-accent-soft: rgba(93, 95, 239, 0.14);
+  --toast-accent: #817cff;
+  --toast-glow: rgba(129, 124, 255, 0.28);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 0.875em;
-  min-height: 4em;
-  padding: 0.75em 0.75em 0.75em 0.875em;
-  color: #242338;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid rgba(36, 35, 56, 0.1);
-  border-left: 0.25em solid var(--toast-accent);
-  border-radius: 0.75em;
+  gap: 0.75em;
+  min-height: 4.5em;
+  padding: 0.75em;
+  color: #f8f7ff;
+  background: rgba(24, 24, 37, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.125em;
   box-shadow:
-    0 1em 2.5em rgba(26, 25, 56, 0.18),
-    0 0.125em 0.5em rgba(26, 25, 56, 0.08);
-  backdrop-filter: blur(1em);
-  animation: toast-enter 180ms ease-out both;
+    0 1.5em 4em rgba(14, 13, 31, 0.32),
+    0 0 2.5em var(--toast-glow);
+  backdrop-filter: blur(1.25em) saturate(140%);
+  animation: toast-enter 240ms cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
   pointer-events: auto;
 }
 
+.toast::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  height: 0.1875em;
+  background: var(--toast-accent);
+  transform-origin: left;
+  animation: toast-timeout 5s linear both;
+  content: "";
+}
+
 .toast--success {
-  --toast-accent: #16845b;
-  --toast-accent-soft: rgba(22, 132, 91, 0.13);
+  --toast-accent: #36d399;
+  --toast-glow: rgba(54, 211, 153, 0.22);
 }
 
 .toast--error {
-  --toast-accent: #d04444;
-  --toast-accent-soft: rgba(208, 68, 68, 0.13);
+  --toast-accent: #ff6b7a;
+  --toast-glow: rgba(255, 107, 122, 0.24);
 }
 
 .toast--rtl {
@@ -92,30 +106,33 @@ import { removeToast, toasts } from "@/utils/toast";
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: 2.25em;
-  height: 2.25em;
-  color: var(--toast-accent);
-  background: var(--toast-accent-soft);
-  border-radius: 50%;
+  width: 2.75em;
+  height: 2.75em;
+  color: #171622;
+  background: var(--toast-accent);
+  border-radius: 0.875em;
+  box-shadow: 0 0.5em 1.25em var(--toast-glow);
 }
 
 .toast__icon i {
-  font-size: 1.25em;
+  font-size: 1.35em;
+  font-weight: 700;
 }
 
 .toast__message {
   flex: 1;
   min-width: 0;
-  font-size: 0.95em;
-  font-weight: 500;
-  line-height: 1.4;
+  font-size: 0.925em;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.005em;
 }
 
 .toast__report {
   flex: 0 0 auto;
   color: var(--toast-accent);
-  font-size: 0.875em;
-  font-weight: 600;
+  font-size: 0.8em;
+  font-weight: 700;
   text-decoration: none;
 }
 
@@ -127,8 +144,8 @@ import { removeToast, toasts } from "@/utils/toast";
   height: 2em;
   padding: 0;
   margin: 0;
-  color: #6c6a7d;
-  background: rgba(36, 35, 56, 0.06);
+  color: #aaa8b8;
+  background: transparent;
   border: 0;
   border-radius: 50%;
   cursor: pointer;
@@ -140,8 +157,8 @@ import { removeToast, toasts } from "@/utils/toast";
 
 .toast__close:hover,
 .toast__close:focus-visible {
-  color: #242338;
-  background: rgba(36, 35, 56, 0.12);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .toast__close:active {
@@ -157,31 +174,29 @@ import { removeToast, toasts } from "@/utils/toast";
   font-size: 1.25em;
 }
 
-:global(:root.dark) .toast {
-  color: #f5f4ff;
-  background: rgba(28, 28, 42, 0.96);
-  border-color: rgba(255, 255, 255, 0.1);
-  border-left-color: var(--toast-accent);
+:global(:root:not(.dark)) .toast {
+  color: #29273a;
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(53, 49, 86, 0.12);
   box-shadow:
-    0 1em 2.5em rgba(0, 0, 0, 0.38),
-    0 0.125em 0.5em rgba(0, 0, 0, 0.22);
+    0 1.5em 4em rgba(37, 33, 77, 0.2),
+    0 0 2.5em var(--toast-glow);
 }
 
-:global(:root.dark) .toast__close {
-  color: #b9b7ca;
-  background: rgba(255, 255, 255, 0.08);
+:global(:root:not(.dark)) .toast__close {
+  color: #777486;
 }
 
-:global(:root.dark) .toast__close:hover,
-:global(:root.dark) .toast__close:focus-visible {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.15);
+:global(:root:not(.dark)) .toast__close:hover,
+:global(:root:not(.dark)) .toast__close:focus-visible {
+  color: #29273a;
+  background: rgba(41, 39, 58, 0.08);
 }
 
 @keyframes toast-enter {
   from {
     opacity: 0;
-    transform: translateY(-0.75em) scale(0.98);
+    transform: translateX(1.5em) scale(0.96);
   }
 
   to {
@@ -190,25 +205,36 @@ import { removeToast, toasts } from "@/utils/toast";
   }
 }
 
+@keyframes toast-timeout {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}
+
 @media (width <= 480px) {
   .toast-host {
-    width: calc(100vw - 1.25em);
+    right: 0.625em;
+    bottom: max(0.625em, env(safe-area-inset-bottom));
+    left: 0.625em;
+    width: auto;
   }
 
   .toast {
-    gap: 0.625em;
-    padding: 0.625em;
-    border-radius: 0.625em;
-  }
-
-  .toast__icon {
-    width: 2em;
-    height: 2em;
+    min-height: 4.25em;
+    border-radius: 1em;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .toast {
+    animation: none;
+  }
+
+  .toast::after {
     animation: none;
   }
 
