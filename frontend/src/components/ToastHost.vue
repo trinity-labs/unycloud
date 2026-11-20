@@ -61,7 +61,7 @@ import { removeToast, toasts } from "@/utils/toast";
   display: flex;
   align-items: center;
   gap: 0.75em;
-  min-height: 4.5em;
+  min-height: 4em;
   padding: 0.75em;
   color: #f8f7ff;
   background: rgba(24, 24, 37, 0.94);
@@ -107,8 +107,8 @@ import { removeToast, toasts } from "@/utils/toast";
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: 2.75em;
-  height: 2.75em;
+  width: 2.25em;
+  height: 2.25em;
   color: #171622;
   background: var(--toast-accent);
   border-radius: 0.875em;
@@ -116,14 +116,14 @@ import { removeToast, toasts } from "@/utils/toast";
 }
 
 .toast__icon i {
-  font-size: 1.35em;
+  font-size: 1.1em;
   font-weight: 700;
 }
 
 .toast__message {
   flex: 1;
   min-width: 0;
-  font-size: 0.925em;
+  font-size: 0.82em;
   font-weight: 600;
   line-height: 1.35;
   letter-spacing: 0.005em;
@@ -223,7 +223,7 @@ import { removeToast, toasts } from "@/utils/toast";
   }
 
   .toast {
-    min-height: 4.25em;
+    min-height: 3.75em;
     border-radius: 1em;
   }
 }
