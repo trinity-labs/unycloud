@@ -41,10 +41,11 @@ import { removeToast, toasts } from "@/utils/toast";
 <style scoped>
 .toast-host {
   position: fixed;
-  right: max(1.25em, env(safe-area-inset-right));
-  bottom: max(1.25em, env(safe-area-inset-bottom));
+  top: max(1.25em, env(safe-area-inset-top));
+  left: 50%;
   z-index: 10000;
   width: min(24em, calc(100vw - 2.5em));
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   gap: 0.75em;
@@ -196,7 +197,7 @@ import { removeToast, toasts } from "@/utils/toast";
 @keyframes toast-enter {
   from {
     opacity: 0;
-    transform: translateX(1.5em) scale(0.96);
+    transform: translateY(-1.5em) scale(0.96);
   }
 
   to {
@@ -217,10 +218,8 @@ import { removeToast, toasts } from "@/utils/toast";
 
 @media (width <= 480px) {
   .toast-host {
-    right: 0.625em;
-    bottom: max(0.625em, env(safe-area-inset-bottom));
-    left: 0.625em;
-    width: auto;
+    top: max(0.625em, env(safe-area-inset-top));
+    width: calc(100vw - 1.25em);
   }
 
   .toast {
