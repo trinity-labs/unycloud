@@ -228,7 +228,7 @@ import { removeToast, toasts } from "@/utils/toast";
     gap: 0.625em;
     min-height: 3.25em;
     padding: 0.55em 0.625em;
-    border-radius: 0.75em;
+    border-radius: 0.5em;
   }
 
   .toast__icon {
