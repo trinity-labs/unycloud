@@ -64,7 +64,7 @@ import { removeToast, toasts } from "@/utils/toast";
   min-height: 4em;
   padding: 0.75em;
   color: #f8f7ff;
-  background: rgba(24, 24, 37, 0.94);
+  background: #181b24eb;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1.125em;
   box-shadow:
@@ -177,7 +177,7 @@ import { removeToast, toasts } from "@/utils/toast";
 
 :global(:root:not(.dark)) .toast {
   color: #29273a;
-  background: rgba(255, 255, 255, 0.92);
+  background: #ffffffeb;
   border-color: rgba(53, 49, 86, 0.12);
   box-shadow:
     0 1.5em 4em rgba(37, 33, 77, 0.2),
