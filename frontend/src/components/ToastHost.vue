@@ -66,7 +66,7 @@ import { removeToast, toasts } from "@/utils/toast";
   color: #f8f7ff;
   background: #181b24eb;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.125em;
+  border-radius: 0.75em;
   box-shadow:
     0 1.5em 4em rgba(14, 13, 31, 0.32),
     0 0 2.5em var(--toast-glow);
@@ -107,16 +107,16 @@ import { removeToast, toasts } from "@/utils/toast";
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: 2.25em;
-  height: 2.25em;
+  width: 2em;
+  height: 2em;
   color: #171622;
   background: var(--toast-accent);
-  border-radius: 0.875em;
+  border-radius: 0.625em;
   box-shadow: 0 0.5em 1.25em var(--toast-glow);
 }
 
 .toast__icon i {
-  font-size: 1.1em;
+  font-size: 1em;
   font-weight: 700;
 }
 
@@ -224,7 +224,7 @@ import { removeToast, toasts } from "@/utils/toast";
 
   .toast {
     min-height: 3.75em;
-    border-radius: 1em;
+    border-radius: 0.75em;
   }
 }
 
