@@ -54,7 +54,6 @@ import { removeToast, toasts } from "@/utils/toast";
 
 .toast {
   --toast-accent: #817cff;
-  --toast-glow: rgba(129, 124, 255, 0.28);
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -67,9 +66,6 @@ import { removeToast, toasts } from "@/utils/toast";
   background: #181b24eb;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.75em;
-  box-shadow:
-    0 1.5em 4em rgba(14, 13, 31, 0.32),
-    0 0 2.5em var(--toast-glow);
   backdrop-filter: blur(1.25em) saturate(140%);
   animation: toast-enter 240ms cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
   pointer-events: auto;
@@ -90,12 +86,10 @@ import { removeToast, toasts } from "@/utils/toast";
 
 .toast--success {
   --toast-accent: #36d399;
-  --toast-glow: rgba(54, 211, 153, 0.22);
 }
 
 .toast--error {
   --toast-accent: #ff6b7a;
-  --toast-glow: rgba(255, 107, 122, 0.24);
 }
 
 .toast--rtl {
@@ -112,7 +106,6 @@ import { removeToast, toasts } from "@/utils/toast";
   color: #171622;
   background: var(--toast-accent);
   border-radius: 0.625em;
-  box-shadow: 0 0.5em 1.25em var(--toast-glow);
 }
 
 .toast__icon i {
@@ -179,19 +172,14 @@ import { removeToast, toasts } from "@/utils/toast";
   color: #29273a;
   background: #ffffffeb;
   border-color: rgba(53, 49, 86, 0.12);
-  box-shadow:
-    0 1.5em 4em rgba(37, 33, 77, 0.2),
-    0 0 2.5em var(--toast-glow);
 }
 
 :root:not(.dark) .toast--success {
   --toast-accent: #16845b;
-  --toast-glow: rgba(22, 132, 91, 0.2);
 }
 
 :root:not(.dark) .toast--error {
   --toast-accent: #d7374b;
-  --toast-glow: rgba(215, 55, 75, 0.2);
 }
 
 :root:not(.dark) .toast__icon {
