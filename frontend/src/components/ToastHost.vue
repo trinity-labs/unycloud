@@ -184,6 +184,20 @@ import { removeToast, toasts } from "@/utils/toast";
     0 0 2.5em var(--toast-glow);
 }
 
+:root:not(.dark) .toast--success {
+  --toast-accent: #16845b;
+  --toast-glow: rgba(22, 132, 91, 0.2);
+}
+
+:root:not(.dark) .toast--error {
+  --toast-accent: #d7374b;
+  --toast-glow: rgba(215, 55, 75, 0.2);
+}
+
+:root:not(.dark) .toast__icon {
+  color: #fff;
+}
+
 :root:not(.dark) .toast__close {
   color: #777486;
 }
