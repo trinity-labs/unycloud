@@ -175,7 +175,7 @@ import { removeToast, toasts } from "@/utils/toast";
   font-size: 1.25em;
 }
 
-:global(:root:not(.dark)) .toast {
+:root:not(.dark) .toast {
   color: #29273a;
   background: #ffffffeb;
   border-color: rgba(53, 49, 86, 0.12);
@@ -184,12 +184,12 @@ import { removeToast, toasts } from "@/utils/toast";
     0 0 2.5em var(--toast-glow);
 }
 
-:global(:root:not(.dark)) .toast__close {
+:root:not(.dark) .toast__close {
   color: #777486;
 }
 
-:global(:root:not(.dark)) .toast__close:hover,
-:global(:root:not(.dark)) .toast__close:focus-visible {
+:root:not(.dark) .toast__close:hover,
+:root:not(.dark) .toast__close:focus-visible {
   color: #29273a;
   background: rgba(41, 39, 58, 0.08);
 }
