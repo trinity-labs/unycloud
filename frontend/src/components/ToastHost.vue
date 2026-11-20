@@ -221,12 +221,37 @@ import { removeToast, toasts } from "@/utils/toast";
 @media (width <= 480px) {
   .toast-host {
     top: max(0.625em, env(safe-area-inset-top));
-    width: calc(100vw - 1.25em);
+    width: min(20em, calc(100vw - 2em));
   }
 
   .toast {
-    min-height: 3.75em;
+    gap: 0.625em;
+    min-height: 3.25em;
+    padding: 0.55em 0.625em;
     border-radius: 0.75em;
+  }
+
+  .toast__icon {
+    width: 1.75em;
+    height: 1.75em;
+    border-radius: 0.5em;
+  }
+
+  .toast__icon i {
+    font-size: 0.9em;
+  }
+
+  .toast__message {
+    font-size: 0.76em;
+  }
+
+  .toast__close {
+    width: 1.75em;
+    height: 1.75em;
+  }
+
+  .toast__close i {
+    font-size: 1.1em;
   }
 }
 
