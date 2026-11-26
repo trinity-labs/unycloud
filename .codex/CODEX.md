@@ -33,10 +33,9 @@ UnyCloud is a maintained, security-focused fork of File Browser.
   is native, not a CSS dock; independent transparency has not been achieved.
   Preserve viewport-fit=cover and the dark PWA launch background #0f1117.
   Native system-bar rendering requires device validation, not desktop emulation.
-  Restore the server manifest colors from before ba182a79 (v0.40.0): dark
-  #151329, light #5a52c8, independently of the violet page metadata.
-  The user requested this targeted rollback after manifest color omission did
-  not resolve the installed PWA report. This is not guaranteed transparency.
+  Use #000000 for theme_color in both install manifests, in every theme,
+  per the user's 2026-11-26 request for a black bottom navigation bar.
+  Keep violet page metadata and the existing launch backgrounds unchanged.
   Existing WebAPKs may retain old metadata; validate on the installed device.
 
 - Repository: `trinity-labs/unycloud`.

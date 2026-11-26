@@ -8,7 +8,7 @@ import (
 	"github.com/filebrowser/filebrowser/v2/settings"
 )
 
-func TestManifestPreservesLegacyThemeColors(t *testing.T) {
+func TestManifestUsesBlackNavigationColor(t *testing.T) {
 	t.Setenv("UNYCLOUD_THEME", "")
 	for _, theme := range []string{"light", "dark"} {
 		w := httptest.NewRecorder()
@@ -21,10 +21,7 @@ func TestManifestPreservesLegacyThemeColors(t *testing.T) {
 		if err := json.Unmarshal(w.Body.Bytes(), &manifest); err != nil {
 			t.Fatal(err)
 		}
-		want := "#5a52c8"
-		if theme == "dark" {
-			want = "#151329"
-		}
+		want := "#000000"
 		if manifest["theme_color"] != want {
 			t.Fatalf("theme %s: manifest color %v, want %s", theme, manifest["theme_color"], want)
 		}
